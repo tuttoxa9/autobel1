@@ -491,26 +491,26 @@ export default function CarDetailsPage() {
                   <Settings className="h-5 w-5 mr-2 text-slate-600" />
                   Основные характеристики
                 </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 text-center">
-                    <Gauge className="h-5 w-5 text-blue-600 mx-auto mb-1" />
-                    <div className="text-xs text-blue-600 font-medium mb-1">Пробег</div>
-                    <div className="font-bold text-slate-900 text-sm">{formatMileage(car.mileage)} км</div>
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-center">
+                    <Gauge className="h-4 w-4 text-slate-600 mx-auto mb-1" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">Пробег</div>
+                    <div className="font-bold text-slate-900 text-xs">{formatMileage(car.mileage)} км</div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-3 text-center">
-                    <Fuel className="h-5 w-5 text-green-600 mx-auto mb-1" />
-                    <div className="text-xs text-green-600 font-medium mb-1">Двигатель</div>
-                    <div className="font-bold text-slate-900 text-sm">{car.engineVolume}л {car.fuelType}</div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-center">
+                    <Fuel className="h-4 w-4 text-slate-600 mx-auto mb-1" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">Двигатель</div>
+                    <div className="font-bold text-slate-900 text-xs">{car.engineVolume}л</div>
                   </div>
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-3 text-center">
-                    <Settings className="h-5 w-5 text-purple-600 mx-auto mb-1" />
-                    <div className="text-xs text-purple-600 font-medium mb-1">КПП</div>
-                    <div className="font-bold text-slate-900 text-sm">{car.transmission}</div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-center">
+                    <Settings className="h-4 w-4 text-slate-600 mx-auto mb-1" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">КПП</div>
+                    <div className="font-bold text-slate-900 text-xs">{car.transmission}</div>
                   </div>
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-3 text-center">
-                    <Car className="h-5 w-5 text-orange-600 mx-auto mb-1" />
-                    <div className="text-xs text-orange-600 font-medium mb-1">Привод</div>
-                    <div className="font-bold text-slate-900 text-sm">{car.driveTrain}</div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-center">
+                    <Car className="h-4 w-4 text-slate-600 mx-auto mb-1" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">Привод</div>
+                    <div className="font-bold text-slate-900 text-xs">{car.driveTrain}</div>
                   </div>
                 </div>
 
@@ -625,25 +625,25 @@ export default function CarDetailsPage() {
               {/* Ключевые характеристики - только для десктопа */}
               <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-slate-100 p-6">
                 <h3 className="text-lg font-semibold text-slate-900 mb-4">Основные характеристики</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
-                    <Gauge className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-                    <div className="text-xs text-blue-600 font-medium mb-1">Пробег</div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="text-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                    <Gauge className="h-5 w-5 text-slate-600 mx-auto mb-2" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">Пробег</div>
                     <div className="font-bold text-slate-900 text-sm">{formatMileage(car.mileage)} км</div>
                   </div>
-                  <div className="text-center p-3 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
-                    <Fuel className="h-6 w-6 text-green-600 mx-auto mb-2" />
-                    <div className="text-xs text-green-600 font-medium mb-1">Двигатель</div>
+                  <div className="text-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                    <Fuel className="h-5 w-5 text-slate-600 mx-auto mb-2" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">Двигатель</div>
                     <div className="font-bold text-slate-900 text-sm">{car.engineVolume}л {car.fuelType}</div>
                   </div>
-                  <div className="text-center p-3 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
-                    <Settings className="h-6 w-6 text-purple-600 mx-auto mb-2" />
-                    <div className="text-xs text-purple-600 font-medium mb-1">КПП</div>
+                  <div className="text-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                    <Settings className="h-5 w-5 text-slate-600 mx-auto mb-2" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">КПП</div>
                     <div className="font-bold text-slate-900 text-sm">{car.transmission}</div>
                   </div>
-                  <div className="text-center p-3 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
-                    <Car className="h-6 w-6 text-orange-600 mx-auto mb-2" />
-                    <div className="text-xs text-orange-600 font-medium mb-1">Привод</div>
+                  <div className="text-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                    <Car className="h-5 w-5 text-slate-600 mx-auto mb-2" />
+                    <div className="text-xs text-slate-600 font-medium mb-1">Привод</div>
                     <div className="font-bold text-slate-900 text-sm">{car.driveTrain}</div>
                   </div>
                 </div>
