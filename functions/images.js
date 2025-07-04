@@ -1,60 +1,77 @@
+// Имя вашего проекта в Firebase (из firebaseConfig)
+const FIREBASE_PROJECT_ID = "autobel-a6390";
+
+// Базовый URL для Firebase Storage
+const STORAGE_BASE_URL = `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_PROJECT_ID}.appspot.com/o/`;
+
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
 
-  // Extract the file path from the URL
-  // Example: /путь/к/картинке.jpg from https://images.belautocenter.by/путь/к/картинке.jpg
-  const filePath = url.pathname.substring(1); // Remove leading slash
+  // Получаем путь к файлу из URL (например, /cars/image1.jpg)
+  // url.pathname.substring(1) убирает первый слэш
+  let imagePath = url.pathname.substring(1);
 
-  if (!filePath) {
+  if (!imagePath) {
     return new Response('Missing file path', { status: 400 });
   }
 
-  // Construct Firebase Storage URL
-  // First encode the entire path, then replace encoded slashes with %2F
-  let firebaseEncodedPath = encodeURIComponent(filePath);
-  firebaseEncodedPath = firebaseEncodedPath.replace(/%2F/g, '%2F'); // This ensures slashes are properly encoded
+  // Firebase Storage требует, чтобы слэши в пути были закодированы как %2F
+  const encodedImagePath = imagePath.replace(/\//g, '%2F');
 
-  const firebaseUrl = `https://firebasestorage.googleapis.com/v0/b/autobel-a6390.appspot.com/o/${firebaseEncodedPath}?alt=media`;
+  // Собираем полный URL для запроса к Firebase Storage
+  // ?alt=media в конце обязательно, чтобы получить сам файл, а не его метаданные
+  const firebaseStorageUrl = `${STORAGE_BASE_URL}${encodedImagePath}?alt=media`;
 
-  // Create cache key
-  const cacheKey = new Request(firebaseUrl);
+  // === КЭШИРОВАНИЕ ===
+  // Создаем ключ для кэша на основе исходного URL запроса
+  const cacheKey = new Request(request.url);
   const cache = caches.default;
 
-  // Check cache first
+  // Сначала проверяем кэш
   let response = await cache.match(cacheKey);
 
   if (!response) {
-    // Fetch from Firebase Storage
-    response = await fetch(firebaseUrl, {
+    // Если в кэше нет, запрашиваем из Firebase
+    response = await fetch(firebaseStorageUrl, {
       headers: {
         'User-Agent': 'Cloudflare-Worker-Image-Cache/1.0'
       }
     });
 
-    if (response.ok) {
-      // Clone response for caching
-      const responseClone = response.clone();
-
-      // Set cache headers
-      const headers = new Headers(response.headers);
-      headers.set('Cache-Control', 'public, max-age=31536000'); // 1 year
-      headers.set('CDN-Cache-Control', 'public, max-age=31536000');
-      headers.set('Cloudflare-CDN-Cache-Control', 'public, max-age=31536000');
-      headers.set('X-Cached-By', 'Cloudflare-Worker');
-
-      // Create new response with cache headers
-      response = new Response(responseClone.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: headers
-      });
-
-      // Cache the response
-      context.waitUntil(cache.put(cacheKey, response.clone()));
+    // Если Firebase вернул ошибку, просто передаем ее дальше
+    if (!response.ok) {
+      return response;
     }
+
+    // Клонируем ответ для кэширования
+    const responseClone = response.clone();
+
+    // Создаем новый ответ с правильными заголовками кэширования
+    const headers = new Headers(response.headers);
+
+    // === САМАЯ ВАЖНАЯ ЧАСТЬ: УПРАВЛЕНИЕ КЭШИРОВАНИЕМ ===
+    // Говорим Cloudflare кэшировать на 30 дней
+    headers.set('Cache-Control', 'public, max-age=2592000');
+    // Говорим браузеру кэшировать на 1 день
+    headers.set('CDN-Cache-Control', 'public, max-age=86400');
+    // Дополнительно для Cloudflare
+    headers.set('Cloudflare-CDN-Cache-Control', 'public, max-age=2592000');
+    // Помечаем, что кэшировано нашим worker
+    headers.set('X-Cached-By', 'Cloudflare-Worker');
+    headers.set('X-Cache-Status', 'MISS');
+
+    // Создаем финальный ответ
+    response = new Response(responseClone.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: headers
+    });
+
+    // Сохраняем в кэш асинхронно (не блокируем ответ)
+    context.waitUntil(cache.put(cacheKey, response.clone()));
   } else {
-    // Add cache hit header
+    // Если нашли в кэше, добавляем соответствующий заголовок
     const headers = new Headers(response.headers);
     headers.set('X-Cache-Status', 'HIT');
 
