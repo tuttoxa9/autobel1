@@ -1,13 +1,12 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
+import Image from "next/image"
 import { doc, getDoc, collection, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Button } from "@/components/ui/button"
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -27,16 +26,13 @@ import {
   ChevronRight,
   Heart,
   Share2,
-  // FileText,
   CheckCircle,
   Calculator,
   Building2,
-  // Percent,
   MapPin,
   Eye,
   Calendar,
   Clock,
-  // Mail,
   AlertCircle
 } from "lucide-react"
 
@@ -90,10 +86,42 @@ const mockCar = {
   },
 }
 
+interface Car {
+  id: string;
+  make: string;
+  model: string;
+  year: number;
+  price: number;
+  currency: string;
+  mileage: number;
+  engineVolume: number;
+  fuelType: string;
+  transmission: string;
+  driveTrain: string;
+  bodyType: string;
+  color: string;
+  description: string;
+  imageUrls: string[];
+  isAvailable: boolean;
+  features: string[];
+  specifications: Record<string, string>;
+}
+
+interface PartnerBank {
+  id: number;
+  name: string;
+  logo: string;
+  rate: number;
+  minDownPayment: number;
+  maxTerm: number;
+  features: string[];
+  color: string;
+}
+
 export default function CarDetailsPage() {
   const params = useParams()
   const router = useRouter()
-  const [car, setCar] = useState(null)
+  const [car, setCar] = useState<Car | null>(null)
   const [loading, setLoading] = useState(true)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isBookingOpen, setIsBookingOpen] = useState(false)
@@ -101,20 +129,18 @@ export default function CarDetailsPage() {
   const [isCreditOpen, setIsCreditOpen] = useState(false)
   const [bookingForm, setBookingForm] = useState({ name: "", phone: "", message: "" })
   const [callbackForm, setCallbackForm] = useState({ name: "", phone: "" })
-  const [partnerBanks, setPartnerBanks] = useState([])
+  const [partnerBanks, setPartnerBanks] = useState<PartnerBank[]>([])
   const [loadingBanks, setLoadingBanks] = useState(true)
-
   // Состояние кредитного калькулятора
   const [creditAmount, setCreditAmount] = useState([75000])
   const [downPayment, setDownPayment] = useState([20000])
   const [loanTerm, setLoanTerm] = useState([60])
-  const [selectedBank, setSelectedBank] = useState(null)
+  const [selectedBank, setSelectedBank] = useState<PartnerBank | null>(null)
 
   useEffect(() => {
     if (params.id) {
       loadCarData(params.id as string)
     }
-
     // Load partner banks from Firestore
     loadPartnerBanks()
   }, [params.id])
@@ -123,10 +149,10 @@ export default function CarDetailsPage() {
     try {
       setLoadingBanks(true)
       const creditDoc = await getDoc(doc(db, "pages", "credit"))
-      if (creditDoc.exists() && creditDoc.data().partners) {
-        const partners = creditDoc.data().partners
+      if (creditDoc.exists() && creditDoc.data()?.partners) {
+        const partners = creditDoc.data()?.partners
         // Convert partners to the format we need
-        const formattedPartners = partners.map((partner, index) => ({
+        const formattedPartners = partners.map((partner: any, index: number) => ({
           id: index + 1,
           name: partner.name,
           logo: partner.logoUrl || "",
@@ -137,7 +163,6 @@ export default function CarDetailsPage() {
           color: ["emerald", "blue", "purple", "red"][index % 4] // Cycle through colors
         }))
         setPartnerBanks(formattedPartners)
-
         // Set the first bank as default selected bank if there are any banks
         if (formattedPartners.length > 0) {
           setSelectedBank(formattedPartners[0])
@@ -160,7 +185,7 @@ export default function CarDetailsPage() {
       const carDoc = await getDoc(doc(db, "cars", carId))
       if (carDoc.exists()) {
         const carData = { id: carDoc.id, ...carDoc.data() }
-        setCar(carData as typeof mockCar)
+        setCar(carData as Car)
         // Устанавливаем значения калькулятора по умолчанию
         const price = carData.price || 95000
         setCreditAmount([price * 0.8])
@@ -201,13 +226,10 @@ export default function CarDetailsPage() {
   // Расчет ежемесячного платежа
   const calculateMonthlyPayment = () => {
     if (!selectedBank) return 0
-
     const principal = creditAmount[0]
     const rate = selectedBank.rate / 100 / 12
     const term = loanTerm[0]
-
     if (rate === 0) return principal / term
-
     const monthlyPayment = principal * (rate * Math.pow(1 + rate, term)) / (Math.pow(1 + rate, term) - 1)
     return monthlyPayment
   }
@@ -223,7 +245,6 @@ export default function CarDetailsPage() {
         status: "new",
         createdAt: new Date(),
       })
-
       // Отправляем уведомление в Telegram
       try {
         await fetch('/api/send-telegram', {
@@ -245,7 +266,6 @@ export default function CarDetailsPage() {
       } catch (telegramError) {
         console.error('Ошибка отправки в Telegram:', telegramError)
       }
-
       setIsBookingOpen(false)
       setBookingForm({ name: "", phone: "", message: "" })
       alert("Заявка на бронирование отправлена! Мы свяжемся с вами в ближайшее время.")
@@ -266,7 +286,6 @@ export default function CarDetailsPage() {
         status: "new",
         createdAt: new Date(),
       })
-
       // Отправляем уведомление в Telegram
       await fetch('/api/send-telegram', {
         method: 'POST',
@@ -279,7 +298,6 @@ export default function CarDetailsPage() {
           type: 'callback'
         })
       })
-
       setIsCallbackOpen(false)
       setCallbackForm({ name: "", phone: "" })
       alert("Заявка отправлена! Мы свяжемся с вами в ближайшее время.")
@@ -354,7 +372,6 @@ export default function CarDetailsPage() {
 
         {/* НОВЫЙ КОМПАКТНЫЙ МАКЕТ */}
         <div className="space-y-6">
-
           {/* Верхний блок: Заголовок + Цена + Статус */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-6">
             <div className="flex flex-col gap-3 sm:gap-4">
@@ -373,7 +390,6 @@ export default function CarDetailsPage() {
                   </Badge>
                 )}
               </div>
-
               {/* Описание и цена */}
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-4">
                 <p className="text-slate-600 text-sm sm:text-base">{car.year} год • {car.color} • {car.bodyType}</p>
@@ -391,18 +407,17 @@ export default function CarDetailsPage() {
 
           {/* Основной контент: Галерея + Информация + Кнопки */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
             {/* Левая колонка: Галерея + Компактные характеристики */}
             <div className="lg:col-span-7 space-y-4">
               {/* Галерея изображений */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
                 <div className="relative h-72 sm:h-96 lg:h-[500px]">
-                  <img
+                  <Image
                     src={car.imageUrls?.[currentImageIndex] || "/placeholder.svg"}
                     alt={`${car.make} ${car.model}`}
-                    className="w-full h-full object-contain bg-gradient-to-br from-slate-50 to-slate-100"
+                    fill
+                    className="object-contain bg-gradient-to-br from-slate-50 to-slate-100"
                   />
-
                   {/* Кнопки избранное и поделиться */}
                   <div className="absolute top-4 right-4 flex space-x-2">
                     <Button
@@ -420,7 +435,6 @@ export default function CarDetailsPage() {
                       <Share2 className="h-4 w-4" />
                     </Button>
                   </div>
-
                   {/* Навигация по фотографиям */}
                   {car.imageUrls && car.imageUrls.length > 1 && (
                     <>
@@ -442,45 +456,41 @@ export default function CarDetailsPage() {
                       </Button>
                     </>
                   )}
-
-                  {/* Индикаторы изображений */}
+                  {/* Индикатор текущего фото */}
                   {car.imageUrls && car.imageUrls.length > 1 && (
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                      {car.imageUrls.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-all ${
-                            index === currentImageIndex
-                              ? "bg-white scale-125"
-                              : "bg-white/50 hover:bg-white/75"
-                          }`}
-                        />
-                      ))}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+                      <div className="bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
+                        <span className="text-white text-sm font-medium">
+                          {currentImageIndex + 1} / {car.imageUrls.length}
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
-
                 {/* Миниатюры */}
                 {car.imageUrls && car.imageUrls.length > 1 && (
-                  <div className="p-4 flex space-x-3 overflow-x-auto">
-                    {car.imageUrls.map((url, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
-                          index === currentImageIndex
-                            ? "border-slate-900"
-                            : "border-slate-200 hover:border-slate-400"
-                        }`}
-                      >
-                        <img
-                          src={url || "/placeholder.svg"}
-                          alt={`Фото ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
-                    ))}
+                  <div className="p-4 bg-slate-50">
+                    <div className="flex space-x-2 overflow-x-auto">
+                      {car.imageUrls.map((url, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                            index === currentImageIndex
+                              ? 'border-blue-500 ring-2 ring-blue-200'
+                              : 'border-slate-200 hover:border-slate-300'
+                          }`}
+                        >
+                          <Image
+                            src={url}
+                            alt={`${car.make} ${car.model} - фото ${index + 1}`}
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

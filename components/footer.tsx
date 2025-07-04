@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { MapPin, Phone, Mail, Clock, Instagram, MessageCircle, Phone as PhoneIcon } from "lucide-react"
+import Image from "next/image"
+import { MapPin, Phone, Mail, Clock, Instagram } from "lucide-react"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -58,7 +59,7 @@ export default function Footer() {
           {/* Колонка 1: Логотип и слоган */}
           <div className="space-y-4">
             <Link href="/" className="flex justify-center md:justify-start">
-              <img src="/logo.png" alt="Логотип" className="h-40 w-40 object-contain" />
+              <Image src="/logo.png" alt="Логотип" width={160} height={160} className="object-contain" />
             </Link>
             <p className="text-gray-400 text-sm">
               Надежный партнер в выборе качественного автомобиля с пробегом в Беларуси

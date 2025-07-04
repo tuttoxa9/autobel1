@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
@@ -28,12 +29,6 @@ export default function AboutPage() {
     },
   })
 
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    loadAboutData()
-  }, [])
-
   const loadAboutData = async () => {
     try {
       const aboutDoc = await getDoc(doc(db, "pages", "about"))
@@ -50,10 +45,12 @@ export default function AboutPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
-    } finally {
-      setLoading(false)
     }
   }
+
+  useEffect(() => {
+    loadAboutData()
+  }, [loadAboutData])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,9 +59,9 @@ export default function AboutPage() {
         <nav className="mb-6">
           <ol className="flex items-center space-x-2 text-sm text-gray-500">
             <li>
-              <a href="/" className="hover:text-blue-600">
+              <Link href="/" className="hover:text-blue-600">
                 Главная
-              </a>
+              </Link>
             </li>
             <li>/</li>
             <li className="text-gray-900">О нас</li>
@@ -73,7 +70,7 @@ export default function AboutPage() {
 
         {/* Заголовок */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">О компании "АвтоБел Центр"</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">О компании &quot;АвтоБел Центр&quot;</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Мы помогаем людям найти идеальный автомобиль уже более 12 лет. Наша миссия — сделать покупку автомобиля
             простой, безопасной и выгодной.
@@ -101,7 +98,7 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Наша история</h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                Компания "АвтоБел Центр" была основана в 2012 году с простой идеей: сделать покупку подержанного автомобиля
+                Компания &quot;АвтоБел Центр&quot; была основана в 2012 году с простой идеей: сделать покупку подержанного автомобиля
                 максимально прозрачной и безопасной для покупателя.
               </p>
               <p>
@@ -109,7 +106,7 @@ export default function AboutPage() {
                 технического состояния и юридической чистоты каждого автомобиля в нашем каталоге.
               </p>
               <p>
-                Сегодня "АвтоБел Центр" — это команда профессионалов, которая помогает тысячам белорусов найти автомобиль
+                Сегодня &quot;АвтоБел Центр&quot; — это команда профессионалов, которая помогает тысячам белорусов найти автомобиль
                 мечты по справедливой цене.
               </p>
             </div>

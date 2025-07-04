@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,13 +12,24 @@ import CarCard from "@/components/car-card"
 import { Filter, SlidersHorizontal } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import CarCardSkeleton from "@/components/car-card-skeleton"
-
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
+interface Car {
+  id: string;
+  make: string;
+  model: string;
+  year: number;
+  price: number;
+  mileage: number;
+  transmission: string;
+  fuelType: string;
+  driveTrain: string;
+}
+
 export default function CatalogPage() {
-  const [cars, setCars] = useState([])
-  const [filteredCars, setFilteredCars] = useState([])
+  const [cars, setCars] = useState<Car[]>([])
+  const [filteredCars, setFilteredCars] = useState<Car[]>([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({
     priceRange: [20000, 150000],
@@ -34,31 +46,7 @@ export default function CatalogPage() {
   })
   const [sortBy, setSortBy] = useState("price-asc")
 
-  useEffect(() => {
-    loadCars()
-  }, [])
-
-  useEffect(() => {
-    applyFilters()
-  }, [cars, filters, sortBy])
-
-  const loadCars = async () => {
-    try {
-      setLoading(true)
-      const snapshot = await getDocs(collection(db, "cars"))
-      const carsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      setCars(carsData as any)
-    } catch (error) {
-      console.error("Ошибка загрузки автомобилей:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     const filtered = cars.filter((car) => {
       return (
         car.price >= filters.priceRange[0] &&
@@ -95,8 +83,31 @@ export default function CatalogPage() {
           return 0
       }
     })
-
     setFilteredCars(filtered)
+  }, [cars, filters, sortBy])
+
+  useEffect(() => {
+    loadCars()
+  }, [])
+
+  useEffect(() => {
+    applyFilters()
+  }, [applyFilters])
+
+  const loadCars = async () => {
+    try {
+      setLoading(true)
+      const snapshot = await getDocs(collection(db, "cars"))
+      const carsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      setCars(carsData as Car[])
+    } catch (error) {
+      console.error("Ошибка загрузки автомобилей:", error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const resetFilters = () => {
@@ -122,9 +133,9 @@ export default function CatalogPage() {
         <nav className="mb-6">
           <ol className="flex items-center space-x-2 text-sm text-gray-500">
             <li>
-              <a href="/" className="hover:text-blue-600">
+              <Link href="/" className="hover:text-blue-600">
                 Главная
-              </a>
+              </Link>
             </li>
             <li>/</li>
             <li className="text-gray-900">Каталог</li>
@@ -161,7 +172,6 @@ export default function CatalogPage() {
                       </SelectContent>
                     </Select>
                   </div>
-
                   <div>
                     <Label>Цена до (BYN)</Label>
                     <Input
@@ -171,7 +181,6 @@ export default function CatalogPage() {
                       onChange={(e) => setFilters({ ...filters, priceTo: e.target.value })}
                     />
                   </div>
-
                   <div className="flex space-x-2">
                     <Button onClick={applyFilters} className="flex-1">
                       Применить
@@ -198,16 +207,16 @@ export default function CatalogPage() {
                 {/* Цена */}
                 <div>
                   <Label className="text-sm font-medium">Цена (BYN)</Label>
-                  <div className="mt-2">
+                  <div className="mt-3">
                     <Slider
                       value={filters.priceRange}
                       onValueChange={(value) => setFilters({ ...filters, priceRange: value })}
-                      max={200000}
+                      max={300000}
                       min={10000}
                       step={5000}
                       className="w-full"
                     />
-                    <div className="flex justify-between text-sm text-gray-500 mt-1">
+                    <div className="flex justify-between text-sm text-gray-500 mt-2">
                       <span>{filters.priceRange[0].toLocaleString()}</span>
                       <span>{filters.priceRange[1].toLocaleString()}</span>
                     </div>
@@ -219,7 +228,7 @@ export default function CatalogPage() {
                   <Label>Марка</Label>
                   <Select value={filters.make} onValueChange={(value) => setFilters({ ...filters, make: value })}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Все марки" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Все марки</SelectItem>
@@ -228,7 +237,12 @@ export default function CatalogPage() {
                       <SelectItem value="Mercedes-Benz">Mercedes-Benz</SelectItem>
                       <SelectItem value="Volkswagen">Volkswagen</SelectItem>
                       <SelectItem value="Toyota">Toyota</SelectItem>
+                      <SelectItem value="Skoda">Skoda</SelectItem>
                       <SelectItem value="Hyundai">Hyundai</SelectItem>
+                      <SelectItem value="Kia">Kia</SelectItem>
+                      <SelectItem value="Mazda">Mazda</SelectItem>
+                      <SelectItem value="Nissan">Nissan</SelectItem>
+                      <SelectItem value="Ford">Ford</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -238,22 +252,23 @@ export default function CatalogPage() {
                   <Label>Модель</Label>
                   <Select value={filters.model} onValueChange={(value) => setFilters({ ...filters, model: value })}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Все модели" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Все модели</SelectItem>
                       <SelectItem value="X5">X5</SelectItem>
+                      <SelectItem value="X3">X3</SelectItem>
+                      <SelectItem value="3 Series">3 Series</SelectItem>
+                      <SelectItem value="5 Series">5 Series</SelectItem>
+                      <SelectItem value="A4">A4</SelectItem>
                       <SelectItem value="A6">A6</SelectItem>
-                      <SelectItem value="C-Class">C-Class</SelectItem>
-                      <SelectItem value="Passat">Passat</SelectItem>
-                      <SelectItem value="Camry">Camry</SelectItem>
-                      <SelectItem value="Tucson">Tucson</SelectItem>
+                      <SelectItem value="Q5">Q5</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Год выпуска */}
-                <div className="grid grid-cols-2 gap-2">
+                {/* Год */}
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label>Год от</Label>
                     <Input
@@ -275,7 +290,7 @@ export default function CatalogPage() {
                 </div>
 
                 {/* Пробег */}
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label>Пробег от</Label>
                     <Input
@@ -296,7 +311,7 @@ export default function CatalogPage() {
                   </div>
                 </div>
 
-                {/* КПП */}
+                {/* Коробка передач */}
                 <div>
                   <Label>Коробка передач</Label>
                   <Select
@@ -308,9 +323,10 @@ export default function CatalogPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="any">Любая</SelectItem>
-                      <SelectItem value="Автомат">Автомат</SelectItem>
                       <SelectItem value="Механика">Механика</SelectItem>
+                      <SelectItem value="Автомат">Автомат</SelectItem>
                       <SelectItem value="Вариатор">Вариатор</SelectItem>
+                      <SelectItem value="Робот">Робот</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -374,7 +390,6 @@ export default function CatalogPage() {
                 <h1 className="text-2xl font-bold text-gray-900">Каталог автомобилей</h1>
                 <p className="text-gray-600">Найдено {filteredCars.length} автомобилей</p>
               </div>
-
               <div className="flex items-center space-x-2">
                 <SlidersHorizontal className="h-4 w-4 text-gray-500" />
                 <Select value={sortBy} onValueChange={setSortBy}>

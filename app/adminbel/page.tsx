@@ -1,7 +1,7 @@
 "use client"
-
 import { useState, useEffect } from "react"
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth"
+import Image from "next/image"
 import { auth } from "@/lib/firebase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,27 +21,23 @@ import AdminPrivacy from "@/components/admin/admin-privacy"
 import AdminLeasing from "@/components/admin/admin-leasing"
 
 export default function AdminPage() {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null)
   const [loginForm, setLoginForm] = useState({ email: "", password: "" })
   const [loginError, setLoginError] = useState("")
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user)
-      setLoading(false)
     })
-
     return () => unsubscribe()
   }, [])
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoginError("")
-
     try {
       await signInWithEmailAndPassword(auth, loginForm.email, loginForm.password)
-    } catch (error) {
+    } catch {
       setLoginError("Неверный email или пароль")
     }
   }
@@ -54,21 +50,13 @@ export default function AdminPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-400"></div>
-      </div>
-    )
-  }
-
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <Card className="w-full max-w-md bg-gray-50 border-gray-200 shadow-lg">
           <CardHeader className="text-center">
             <div className="h-16 w-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <img src="/logo.png" alt="Белавто Центр" className="h-16 w-16 object-contain" />
+              <Image src="/logo.png" alt="Белавто Центр" width={64} height={64} className="object-contain" />
             </div>
             <CardTitle className="text-gray-900 text-2xl">Админ-панель</CardTitle>
             <p className="text-gray-600">Белавто Центр</p>
@@ -123,7 +111,7 @@ export default function AdminPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="h-10 w-10 rounded-xl flex items-center justify-center shadow-lg">
-                <img src="/logo.png" alt="Белавто Центр" className="h-10 w-10 object-contain" />
+                <Image src="/logo.png" alt="Белавто Центр" width={40} height={40} className="object-contain" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Админ-панель</h1>
@@ -225,39 +213,30 @@ export default function AdminPage() {
           <TabsContent value="settings" className="mt-6">
             <AdminSettings />
           </TabsContent>
-
           <TabsContent value="cars" className="mt-6">
             <AdminCars />
           </TabsContent>
-
           <TabsContent value="stories" className="mt-6">
             <AdminStories />
           </TabsContent>
-
           <TabsContent value="leads" className="mt-6">
             <AdminLeads />
           </TabsContent>
-
           <TabsContent value="about" className="mt-6">
             <AdminAbout />
           </TabsContent>
-
           <TabsContent value="credit" className="mt-6">
             <AdminCredit />
           </TabsContent>
-
           <TabsContent value="contacts" className="mt-6">
             <AdminContacts />
           </TabsContent>
-
           <TabsContent value="reviews" className="mt-6">
             <AdminReviews />
           </TabsContent>
-
           <TabsContent value="privacy" className="mt-6">
             <AdminPrivacy />
           </TabsContent>
-
           <TabsContent value="leasing" className="mt-6">
             <AdminLeasing />
           </TabsContent>

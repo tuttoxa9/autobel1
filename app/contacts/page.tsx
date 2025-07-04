@@ -1,8 +1,8 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Button } from "@/components/ui/button"
@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { MapPin, Phone, Mail, Clock, Instagram, MessageCircle } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, Instagram } from "lucide-react"
 import YandexMap from "@/components/yandex-map"
 
 export default function ContactsPage() {
@@ -37,11 +37,8 @@ export default function ContactsPage() {
       instagram: "@avtobusiness_by",
       telegram: "@avtobusiness",
       tiktok: "@avtobusiness_by",
-
     },
   })
-
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadContactsData()
@@ -51,12 +48,10 @@ export default function ContactsPage() {
     try {
       const contactsDoc = await getDoc(doc(db, "pages", "contacts"))
       if (contactsDoc.exists()) {
-        setContactsData(contactsDoc.data())
+        setContactsData(contactsDoc.data() as typeof contactsData)
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -98,8 +93,8 @@ export default function ContactsPage() {
       alert("Ваше сообщение отправлено! Мы свяжемся с вами в ближайшее время.")
       setContactForm({ name: "", phone: "", message: "" })
     } catch (error) {
-      console.error("Ошибка отправки:", error)
-      alert("Произошла ошибка при отправке сообщения. Попробуйте еще раз.")
+      console.error("Ошибка отправки сообщения:", error)
+      alert("Произошла ошибка. Попробуйте еще раз.")
     }
   }
 
@@ -110,9 +105,9 @@ export default function ContactsPage() {
         <nav className="mb-6">
           <ol className="flex items-center space-x-2 text-sm text-gray-500">
             <li>
-              <a href="/" className="hover:text-blue-600">
+              <Link href="/" className="hover:text-blue-600">
                 Главная
-              </a>
+              </Link>
             </li>
             <li>/</li>
             <li className="text-gray-900">Контакты</li>
