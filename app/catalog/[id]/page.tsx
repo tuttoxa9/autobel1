@@ -356,30 +356,35 @@ export default function CarDetailsPage() {
         <div className="space-y-6">
 
           {/* Верхний блок: Заголовок + Цена + Статус */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex flex-wrap items-start gap-2 mb-2">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mr-2">
-                    {car.make} {car.model}
-                  </h1>
-                  {car.isAvailable ? (
-                    <Badge className="bg-green-100 text-green-700 border-green-200 inline-flex mt-1">
-                      В наличии
-                    </Badge>
-                  ) : (
-                    <Badge className="bg-red-100 text-red-700 border-red-200 inline-flex mt-1">
-                      Продан
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-slate-600 text-sm sm:text-lg">{car.year} год • {car.color} • {car.bodyType}</p>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-6">
+            <div className="flex flex-col gap-3 sm:gap-4">
+              {/* Заголовок и статус */}
+              <div className="flex flex-wrap items-start gap-2">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 flex-1 min-w-0">
+                  {car.make} {car.model}
+                </h1>
+                {car.isAvailable ? (
+                  <Badge className="bg-green-100 text-green-700 border-green-200 inline-flex shrink-0">
+                    В наличии
+                  </Badge>
+                ) : (
+                  <Badge className="bg-red-100 text-red-700 border-red-200 inline-flex shrink-0">
+                    Продан
+                  </Badge>
+                )}
               </div>
-              <div className="text-right">
-                <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
-                  {formatPrice(car.price)}
+
+              {/* Описание и цена */}
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-4">
+                <p className="text-slate-600 text-sm sm:text-base">{car.year} год • {car.color} • {car.bodyType}</p>
+                <div className="flex flex-col sm:text-right">
+                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 whitespace-nowrap">
+                    {formatPrice(car.price)}
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-500 whitespace-nowrap">
+                    от {formatPrice(Math.round(car.price * 0.8 / 60))}/мес
+                  </p>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-500">от {formatPrice(Math.round(car.price * 0.8 / 60))}/мес</p>
               </div>
             </div>
           </div>
