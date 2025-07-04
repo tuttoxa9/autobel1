@@ -104,8 +104,8 @@ export default function Header() {
         <div className="md:hidden">
           <Dialog open={isCallbackOpen} onOpenChange={setIsCallbackOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs px-2">
-                <Phone className="h-3 w-3" />
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs w-8 h-8 p-0 rounded-md">
+                <Phone className="h-4 w-4" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">

@@ -566,28 +566,28 @@ export default function CarDetailsPage() {
             <div className="lg:col-span-5 space-y-6">
 
               {/* Ключевые характеристики */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Характеристики</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-slate-50 rounded-lg">
-                    <Gauge className="h-5 w-5 text-slate-600 mx-auto mb-2" />
-                    <div className="text-xs text-slate-500 mb-1">Пробег</div>
-                    <div className="font-semibold text-slate-900 text-sm">{formatMileage(car.mileage)} км</div>
+              <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 sm:mb-4">Характеристики</h3>
+                <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
+                    <Gauge className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">Пробег</div>
+                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{formatMileage(car.mileage)} км</div>
                   </div>
-                  <div className="text-center p-3 bg-slate-50 rounded-lg">
-                    <Fuel className="h-5 w-5 text-slate-600 mx-auto mb-2" />
-                    <div className="text-xs text-slate-500 mb-1">Двигатель</div>
-                    <div className="font-semibold text-slate-900 text-sm">{car.engineVolume}л {car.fuelType}</div>
+                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
+                    <Fuel className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">Двигатель</div>
+                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{car.engineVolume}л {car.fuelType}</div>
                   </div>
-                  <div className="text-center p-3 bg-slate-50 rounded-lg">
-                    <Settings className="h-5 w-5 text-slate-600 mx-auto mb-2" />
-                    <div className="text-xs text-slate-500 mb-1">КПП</div>
-                    <div className="font-semibold text-slate-900 text-sm">{car.transmission}</div>
+                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
+                    <Settings className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">КПП</div>
+                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{car.transmission}</div>
                   </div>
-                  <div className="text-center p-3 bg-slate-50 rounded-lg">
-                    <Car className="h-5 w-5 text-slate-600 mx-auto mb-2" />
-                    <div className="text-xs text-slate-500 mb-1">Привод</div>
-                    <div className="font-semibold text-slate-900 text-sm">{car.driveTrain}</div>
+                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
+                    <Car className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">Привод</div>
+                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{car.driveTrain}</div>
                   </div>
                 </div>
               </div>
