@@ -1,35 +1,24 @@
-# TODO List
+# Исправление отображения изображений
 
-## Cloudflare Worker Setup
-- [x] Configure Git authentication
-- [x] Update Next.js config for Cloudflare compatibility
-- [x] Install Cloudflare Workers dependencies
-- [x] Update wrangler.toml configuration
-- [x] Create main worker entry point
-- [x] Test local development
-- [x] Deploy to Cloudflare
-- [x] Push changes to Git repository
+## Проблема
+- Cloudflare Worker не работает правильно для изображений
+- Изображения не отображаются на сайте
+- Дублирование "images" в пути: `https://images.belautocenter.by/images/cars/photo.jpg` вместо `https://images.belautocenter.by/cars/photo.jpg`
 
-## ✅ Completed Tasks
-- Installed `wrangler`, `@cloudflare/workers-types`, and `@cloudflare/next-on-pages`
-- Updated Next.js config for Cloudflare compatibility with `setupDevPlatform`
-- Added edge runtime exports to API routes and dynamic pages
-- Created `wrangler.toml` configuration file
-- Created TypeScript environment definitions for Cloudflare
-- Added build scripts for Cloudflare Pages
-- Enabled image caching functionality
-- Created Cloudflare function for image handling
-- Successfully built project for Cloudflare Pages
-- Committed and pushed all changes to Git
+## Выполнено ✅
+- ✅ Клонирован репозиторий
+- ✅ Изучена структура проекта
+- ✅ Найдена проблема в функции `getCachedImageUrl` в `lib/image-cache.ts`
+- ✅ Исправлена функция чтобы убирать префикс "images/" из пути
 
-## 🚀 Next Steps for Deployment
-1. Set up Cloudflare account and authenticate wrangler CLI
-2. Configure environment variables in Cloudflare dashboard
-3. Deploy to Cloudflare Pages
-4. Set up custom domain (if needed)
+## Осталось сделать
+- [ ] Установить зависимости проекта
+- [ ] Запустить проект локально для тестирования
+- [ ] Протестировать исправление
+- [ ] Сделать коммит и пуш в GitHub
+- [ ] Проверить работу на продакшене
 
-## Notes
-- Project is now fully configured for Cloudflare Workers deployment
-- Edge runtime is configured for dynamic routes
-- Image caching is ready to work with Cloudflare functions
-- All code has been pushed to GitHub repository
+## Детали исправления
+Исправлена функция `getCachedImageUrl` в `lib/image-cache.ts`:
+- Добавлено удаление префикса "images/" из пути перед отправкой в Cloudflare Worker
+- Теперь пути будут корректными: `cars/photo.jpg` вместо `images/cars/photo.jpg`
