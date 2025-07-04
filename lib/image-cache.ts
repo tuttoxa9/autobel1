@@ -7,6 +7,11 @@ const WORKER_URL = process.env.NEXT_PUBLIC_IMAGE_CACHE_WORKER_URL || 'https://im
  * @returns Cached URL via Cloudflare Worker
  */
 export function getCachedImageUrl(firebaseUrl: string): string {
+  // ВРЕМЕННО: используем прямые Firebase URL пока Worker не работает
+  return firebaseUrl;
+
+  // TODO: Включить когда Worker заработает
+  /*
   // If no Firebase URL provided, return empty string
   if (!firebaseUrl) {
     return '';
@@ -26,6 +31,7 @@ export function getCachedImageUrl(firebaseUrl: string): string {
   // Convert to cached URL
   const encodedUrl = encodeURIComponent(firebaseUrl);
   return `${WORKER_URL}?url=${encodedUrl}`;
+  */
 }
 
 /**
