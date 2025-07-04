@@ -2,17 +2,20 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
 
-  // Extract the Firebase Storage URL from the path
-  const firebaseUrl = url.searchParams.get('url');
+  // Extract the file path from the URL
+  // Example: /путь/к/картинке.jpg from https://images.belautocenter.by/путь/к/картинке.jpg
+  const filePath = url.pathname.substring(1); // Remove leading slash
 
-  if (!firebaseUrl) {
-    return new Response('Missing url parameter', { status: 400 });
+  if (!filePath) {
+    return new Response('Missing file path', { status: 400 });
   }
 
-  // Validate that it's a Firebase Storage URL
-  if (!firebaseUrl.includes('firebasestorage.googleapis.com') && !firebaseUrl.includes('firebasestorage.app')) {
-    return new Response('Invalid Firebase Storage URL', { status: 400 });
-  }
+  // Construct Firebase Storage URL
+  // First encode the entire path, then replace encoded slashes with %2F
+  let firebaseEncodedPath = encodeURIComponent(filePath);
+  firebaseEncodedPath = firebaseEncodedPath.replace(/%2F/g, '%2F'); // This ensures slashes are properly encoded
+
+  const firebaseUrl = `https://firebasestorage.googleapis.com/v0/b/autobel-a6390.appspot.com/o/${firebaseEncodedPath}?alt=media`;
 
   // Create cache key
   const cacheKey = new Request(firebaseUrl);

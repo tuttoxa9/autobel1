@@ -23,9 +23,30 @@ export function getCachedImageUrl(firebaseUrl: string): string {
     return firebaseUrl;
   }
 
-  // Convert to cached URL
-  const encodedUrl = encodeURIComponent(firebaseUrl);
-  return `${WORKER_URL}?url=${encodedUrl}`;
+  try {
+    // Parse Firebase Storage URL and extract the path
+    const url = new URL(firebaseUrl);
+
+    // Extract path from Firebase Storage URL
+    // Example: /v0/b/autobel-a6390.appspot.com/o/путь%2Fк%2Fкартинке.jpg
+    const pathMatch = url.pathname.match(/\/v0\/b\/[^\/]+\/o\/(.+)/);
+
+    if (pathMatch && pathMatch[1]) {
+      // Decode the path and convert %2F back to /
+      const decodedPath = decodeURIComponent(pathMatch[1]);
+
+      // Remove any query parameters like ?alt=media
+      const cleanPath = decodedPath.split('?')[0];
+
+      // Construct new URL: https://images.belautocenter.by/путь/к/картинке.jpg
+      return `${WORKER_URL}/${cleanPath}`;
+    }
+  } catch (error) {
+    console.warn('Failed to parse Firebase URL:', firebaseUrl, error);
+  }
+
+  // Fallback to original URL if parsing fails
+  return firebaseUrl;
 }
 
 /**
