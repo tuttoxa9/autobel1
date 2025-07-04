@@ -3,11 +3,11 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { doc, getDoc, collection, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -27,16 +27,16 @@ import {
   ChevronRight,
   Heart,
   Share2,
-  FileText,
+  // FileText,
   CheckCircle,
   Calculator,
   Building2,
-  Percent,
+  // Percent,
   MapPin,
   Eye,
   Calendar,
   Clock,
-  Mail,
+  // Mail,
   AlertCircle
 } from "lucide-react"
 
@@ -92,6 +92,7 @@ const mockCar = {
 
 export default function CarDetailsPage() {
   const params = useParams()
+  const router = useRouter()
   const [car, setCar] = useState(null)
   const [loading, setLoading] = useState(true)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -313,7 +314,7 @@ export default function CarDetailsPage() {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-slate-900 mb-4">Автомобиль не найден</h1>
           <p className="text-slate-600 mb-8">Извините, автомобиль с таким ID не существует.</p>
-          <Button onClick={() => window.location.href = '/catalog'}>
+          <Button onClick={() => router.push('/catalog')}>
             Вернуться к каталогу
           </Button>
         </div>
@@ -329,7 +330,7 @@ export default function CarDetailsPage() {
           <ol className="flex items-center space-x-2 text-sm text-slate-500">
             <li>
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => router.push('/')}
                 className="hover:text-slate-900 transition-colors font-medium"
               >
                 Главная
@@ -338,7 +339,7 @@ export default function CarDetailsPage() {
             <li>/</li>
             <li>
               <button
-                onClick={() => window.location.href = '/catalog'}
+                onClick={() => router.push('/catalog')}
                 className="hover:text-slate-900 transition-colors font-medium"
               >
                 Каталог
