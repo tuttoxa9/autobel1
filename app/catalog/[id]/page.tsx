@@ -386,7 +386,7 @@ export default function CarDetailsPage() {
           {/* Основной контент: Галерея + Информация + Кнопки */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            {/* Левая колонка: Галерея + Вкладки */}
+            {/* Левая колонка: Галерея + Компактные характеристики */}
             <div className="lg:col-span-7 space-y-4">
               {/* Галерея изображений */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
@@ -479,25 +479,82 @@ export default function CarDetailsPage() {
                 )}
               </div>
 
-              {/* Вкладки (перемещены под фотографию) */}
+              {/* НОВЫЙ КОМПАКТНЫЙ БЛОК ТЕХНИЧЕСКИХ ХАРАКТЕРИСТИК ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */}
+              <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 lg:hidden">
+                <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center">
+                  <Settings className="h-5 w-5 mr-2 text-slate-600" />
+                  Основные характеристики
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 text-center">
+                    <Gauge className="h-5 w-5 text-blue-600 mx-auto mb-1" />
+                    <div className="text-xs text-blue-600 font-medium mb-1">Пробег</div>
+                    <div className="font-bold text-slate-900 text-sm">{formatMileage(car.mileage)} км</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-3 text-center">
+                    <Fuel className="h-5 w-5 text-green-600 mx-auto mb-1" />
+                    <div className="text-xs text-green-600 font-medium mb-1">Двигатель</div>
+                    <div className="font-bold text-slate-900 text-sm">{car.engineVolume}л {car.fuelType}</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-3 text-center">
+                    <Settings className="h-5 w-5 text-purple-600 mx-auto mb-1" />
+                    <div className="text-xs text-purple-600 font-medium mb-1">КПП</div>
+                    <div className="font-bold text-slate-900 text-sm">{car.transmission}</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-3 text-center">
+                    <Car className="h-5 w-5 text-orange-600 mx-auto mb-1" />
+                    <div className="text-xs text-orange-600 font-medium mb-1">Привод</div>
+                    <div className="font-bold text-slate-900 text-sm">{car.driveTrain}</div>
+                  </div>
+                </div>
+
+                {/* Дополнительные характеристики в компактном виде */}
+                {car.specifications && (
+                  <div className="mt-4 space-y-2">
+                    <h4 className="text-sm font-semibold text-slate-700 border-b border-slate-200 pb-1">Подробные характеристики</h4>
+                    <div className="grid grid-cols-1 gap-1.5">
+                      {Object.entries(car.specifications).slice(0, 4).map(([key, value]) => (
+                        <div key={key} className="flex justify-between items-center py-1.5 px-2 bg-slate-50 rounded text-xs">
+                          <span className="text-slate-600 font-medium">{key}</span>
+                          <span className="text-slate-900 font-semibold">{value}</span>
+                        </div>
+                      ))}
+                      {Object.entries(car.specifications).length > 4 && (
+                        <button className="text-blue-600 text-xs font-medium hover:text-blue-800 text-left py-1 px-2">
+                          Показать все характеристики →
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Вкладки (перемещены после характеристик) */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                <Tabs defaultValue="specs" className="w-full">
-                  <TabsList className="grid grid-cols-4 bg-slate-50 rounded-t-xl p-1 w-full h-auto">
-                    <TabsTrigger value="specs" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                      Характеристики
+                <Tabs defaultValue="description" className="w-full">
+                  <TabsList className="grid grid-cols-3 lg:grid-cols-4 bg-slate-50 rounded-t-xl p-1 w-full h-auto">
+                    <TabsTrigger value="description" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                      Описание
                     </TabsTrigger>
                     <TabsTrigger value="equipment" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
                       Комплектация
                     </TabsTrigger>
-                    <TabsTrigger value="description" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                      Описание
-                    </TabsTrigger>
                     <TabsTrigger value="credit" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
                       Кредит
                     </TabsTrigger>
+                    <TabsTrigger value="specs" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis hidden lg:block">
+                      Все характеристики
+                    </TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="specs" className="p-4 min-h-[270px]">
+                  <TabsContent value="description" className="p-4 min-h-[200px]">
+                    <div className="prose prose-slate max-w-none">
+                      <h4 className="text-lg font-semibold text-slate-900 mb-3">Описание автомобиля</h4>
+                      <p className="text-slate-700 text-sm leading-relaxed">{car.description}</p>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="specs" className="p-4 min-h-[200px]">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {car.specifications ? Object.entries(car.specifications).map(([key, value]) => (
                         <div key={key} className="flex justify-between items-center py-2 px-3 bg-slate-50 rounded-lg text-sm">
@@ -510,7 +567,7 @@ export default function CarDetailsPage() {
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="equipment" className="p-4 min-h-[270px]">
+                  <TabsContent value="equipment" className="p-4 min-h-[200px]">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {car.features && car.features.length > 0 ? car.features.map((feature, index) => (
                         <div key={index} className="flex items-center space-x-2 p-2 bg-slate-50 rounded-lg text-sm">
@@ -523,13 +580,7 @@ export default function CarDetailsPage() {
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="description" className="p-4 min-h-[270px]">
-                    <div className="prose prose-slate max-w-none">
-                      <p className="text-slate-700 text-sm leading-relaxed">{car.description}</p>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="credit" className="p-4 min-h-[270px]">
+                  <TabsContent value="credit" className="p-4 min-h-[200px]">
                     <div className="space-y-4">
                       <div className="bg-slate-50 rounded-xl p-4">
                         <h4 className="text-base font-bold text-slate-900 mb-3">Расчет кредита</h4>
@@ -562,34 +613,49 @@ export default function CarDetailsPage() {
               </div>
             </div>
 
-            {/* Боковая панель: Характеристики + Кнопки */}
+            {/* Боковая панель: Характеристики для десктопа + Кнопки */}
             <div className="lg:col-span-5 space-y-6">
 
-              {/* Ключевые характеристики */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 sm:mb-4">Характеристики</h3>
-                <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
-                    <Gauge className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
-                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">Пробег</div>
-                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{formatMileage(car.mileage)} км</div>
+              {/* Ключевые характеристики - только для десктопа */}
+              <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">Основные характеристики</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
+                    <Gauge className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+                    <div className="text-xs text-blue-600 font-medium mb-1">Пробег</div>
+                    <div className="font-bold text-slate-900 text-sm">{formatMileage(car.mileage)} км</div>
                   </div>
-                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
-                    <Fuel className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
-                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">Двигатель</div>
-                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{car.engineVolume}л {car.fuelType}</div>
+                  <div className="text-center p-3 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
+                    <Fuel className="h-6 w-6 text-green-600 mx-auto mb-2" />
+                    <div className="text-xs text-green-600 font-medium mb-1">Двигатель</div>
+                    <div className="font-bold text-slate-900 text-sm">{car.engineVolume}л {car.fuelType}</div>
                   </div>
-                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
-                    <Settings className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
-                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">КПП</div>
-                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{car.transmission}</div>
+                  <div className="text-center p-3 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
+                    <Settings className="h-6 w-6 text-purple-600 mx-auto mb-2" />
+                    <div className="text-xs text-purple-600 font-medium mb-1">КПП</div>
+                    <div className="font-bold text-slate-900 text-sm">{car.transmission}</div>
                   </div>
-                  <div className="text-center p-2 sm:p-3 bg-slate-50 rounded-lg">
-                    <Car className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600 mx-auto mb-1 sm:mb-2" />
-                    <div className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1">Привод</div>
-                    <div className="font-semibold text-slate-900 text-xs sm:text-sm">{car.driveTrain}</div>
+                  <div className="text-center p-3 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
+                    <Car className="h-6 w-6 text-orange-600 mx-auto mb-2" />
+                    <div className="text-xs text-orange-600 font-medium mb-1">Привод</div>
+                    <div className="font-bold text-slate-900 text-sm">{car.driveTrain}</div>
                   </div>
                 </div>
+
+                {/* Дополнительные характеристики для десктопа */}
+                {car.specifications && (
+                  <div className="mt-6 space-y-3">
+                    <h4 className="text-base font-semibold text-slate-700 border-b border-slate-200 pb-2">Подробные характеристики</h4>
+                    <div className="space-y-2">
+                      {Object.entries(car.specifications).slice(0, 6).map(([key, value]) => (
+                        <div key={key} className="flex justify-between items-center py-2 px-3 bg-slate-50 rounded-lg text-sm">
+                          <span className="text-slate-600 font-medium">{key}</span>
+                          <span className="text-slate-900 font-semibold">{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Кнопки действий */}
