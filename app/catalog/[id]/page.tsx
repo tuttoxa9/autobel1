@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { doc, getDoc, collection, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import { getCachedImageUrl } from "@/lib/image-cache"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -413,7 +414,7 @@ export default function CarDetailsPage() {
               <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
                 <div className="relative h-72 sm:h-96 lg:h-[500px]">
                   <Image
-                    src={car.imageUrls?.[currentImageIndex] || "/placeholder.svg"}
+                    src={getCachedImageUrl(car.imageUrls?.[currentImageIndex] || "/placeholder.svg")}
                     alt={`${car.make} ${car.model}`}
                     fill
                     className="object-contain bg-gradient-to-br from-slate-50 to-slate-100"
@@ -482,7 +483,7 @@ export default function CarDetailsPage() {
                           }`}
                         >
                           <Image
-                            src={url}
+                            src={getCachedImageUrl(url)}
                             alt={`${car.make} ${car.model} - фото ${index + 1}`}
                             width={64}
                             height={64}

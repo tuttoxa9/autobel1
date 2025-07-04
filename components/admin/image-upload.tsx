@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import { uploadImage } from "@/lib/storage"
+import { getCachedImageUrl } from "@/lib/image-cache"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Upload, X, Loader2 } from "lucide-react"
@@ -55,7 +56,7 @@ export default function ImageUpload({ onUpload, path, currentImage, className }:
     <div className={className}>
       {preview ? (
         <Card className="relative">
-          <img src={preview || "/placeholder.svg"} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
+          <img src={getCachedImageUrl(preview || "/placeholder.svg")} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
           <Button
             size="sm"
             variant="destructive"

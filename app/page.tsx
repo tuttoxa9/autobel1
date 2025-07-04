@@ -14,6 +14,7 @@ import FadeInImage from "@/components/fade-in-image"
 import { CheckCircle } from "lucide-react"
 import { collection, query, orderBy, limit, getDocs, doc, getDoc, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import { getCachedImageUrl } from "@/lib/image-cache"
 
 interface HomepageSettings {
   heroTitle: string
@@ -147,7 +148,7 @@ export default function HomePage() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/image_(2).jpg')`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${getCachedImageUrl('/image_(2).jpg')}')`,
             backgroundSize: 'cover'
           }}
         />
@@ -223,7 +224,7 @@ export default function HomePage() {
         <div
           className="absolute inset-0 opacity-20 bg-no-repeat bg-center mix-blend-overlay bg-[length:90%] md:bg-[length:60%]"
           style={{
-            backgroundImage: `url('/car.png')`,
+            backgroundImage: `url('${getCachedImageUrl('/car.png')}')`,
             backgroundPosition: 'center 70%',
             filter: 'brightness(0) invert(1)'
           }}
