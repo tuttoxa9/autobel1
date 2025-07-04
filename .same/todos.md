@@ -1,24 +1,16 @@
-# Autobel1 - Cloudflare Integration Todos
+# TODO List
 
-## 🎯 Цель проекта
-Настроить кэширование изображений через Cloudflare Worker при сохранении деплоя на Vercel
+## Cloudflare Worker Setup
+- [ ] Configure Git authentication
+- [ ] Update Next.js config for Cloudflare compatibility
+- [ ] Install Cloudflare Workers dependencies
+- [ ] Update wrangler.toml configuration
+- [ ] Create main worker entry point
+- [ ] Test local development
+- [ ] Deploy to Cloudflare
+- [ ] Push changes to Git repository
 
-## ✅ Уже готово
-- [x] Cloudflare Worker создан и настроен
-- [x] Функция getCachedImageUrl() реализована
-- [x] Интеграция во все компоненты проекта
-- [x] Firebase Storage настроен
-
-## 🔧 Нужно исправить
-- [x] Обновить URL воркера в image-cache.ts (с .workers.dev на images.autobelcenter.by)
-- [ ] Развернуть воркер на Cloudflare
-- [ ] Настроить DNS записи на Cloudflare для autobelcenter.by
-- [ ] Протестировать работу кэширования
-
-## 🌐 DNS Конфигурация
-- autobelcenter.by → CNAME → autobel1.vercel.app
-- images.autobelcenter.by → Worker Route
-
-## 📋 Инструкции по деплою
-- [ ] Создать документацию по настройке Cloudflare DNS
-- [ ] Создать команды для деплоя воркера
+## Notes
+- Project is a Next.js car dealership application
+- Already has image caching worker in cloudflare-worker directory
+- Need to adapt for full Cloudflare Workers deployment

@@ -12,9 +12,15 @@
     "build": "next build",
     "dev": "next dev -H 0.0.0.0",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@cloudflare/next-on-pages": "^1.13.12",
+    "@cloudflare/workers-types": "^4.20250704.0",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -68,6 +74,7 @@
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.1.0",
     "vaul": "^0.9.6",
+    "wrangler": "^4.23.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
