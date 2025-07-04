@@ -1,5 +1,5 @@
 // Cloudflare Worker URL for image caching
-const WORKER_URL = process.env.NEXT_PUBLIC_IMAGE_CACHE_WORKER_URL || 'https://autobel-image-cache.tuttoxa9.workers.dev';
+const WORKER_URL = process.env.NEXT_PUBLIC_IMAGE_CACHE_WORKER_URL || 'https://images.belautocenter.by';
 
 /**
  * Converts Firebase Storage URL to cached URL via Cloudflare Worker
