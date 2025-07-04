@@ -38,11 +38,8 @@ export function getCachedImageUrl(firebaseUrl: string): string {
       // Remove any query parameters like ?alt=media
       const cleanPath = decodedPath.split('?')[0];
 
-      // Remove 'images/' prefix if it exists (since our Worker expects paths without it)
-      const finalPath = cleanPath.startsWith('images/') ? cleanPath.substring(7) : cleanPath;
-
-      // Construct new URL: https://images.belautocenter.by/cars/картинка.jpg (without images/ prefix)
-      return `${WORKER_URL}/${finalPath}`;
+      // Construct new URL: https://images.belautocenter.by/images/cars/картинка.jpg
+      return `${WORKER_URL}/${cleanPath}`;
     }
   } catch (error) {
     console.warn('Failed to parse Firebase URL:', firebaseUrl, error);
