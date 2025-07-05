@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, Loader2, DollarSign, Clock, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart, Calendar } from "lucide-react"
 import { doc, getDoc, addDoc, collection, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import LeasingConditions from "@/components/leasing-conditions"
 
 interface LeasingPageSettings {
   title: string
@@ -85,22 +86,22 @@ export default function LeasingPage() {
             {
               icon: "car",
               title: "Возраст автомобиля",
-              description: "От 2000 года выпуска"
+              description: "Авто от 2000 года выпуска"
             },
             {
               icon: "calendar",
               title: "Срок лизинга",
-              description: "До 10 лет"
+              description: "Срок лизинга до 10 лет"
             },
             {
               icon: "dollar-sign",
               title: "Валюта договора",
-              description: "BYN, USD, EUR"
+              description: "Валюта: BYN, USD, EUR"
             },
             {
               icon: "check-circle",
               title: "Досрочное погашение",
-              description: "После 6 месяцев без штрафных санкций"
+              description: "Досрочное погашение после 6 месяцев без штрафных санкций"
             }
           ],
           additionalNote: "Все дополнительные вопросы обсуждаемы с каждым клиентом индивидуально"
@@ -527,43 +528,10 @@ export default function LeasingPage() {
         </div>
 
         {/* Условия лизинга */}
-        {console.log("Conditions data:", settings?.conditions)}
-        {settings?.conditions && settings.conditions.length > 0 && (
-          <section className="py-16">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Условия для оформления лизинга</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">Простые и понятные условия для получения автомобиля в лизинг</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {settings.conditions.map((condition, index) => {
-                const IconComponent = getIcon(condition.icon)
-                return (
-                  <Card key={index} className="hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-white to-gray-50 group">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-14 h-14 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <IconComponent className="h-7 w-7 text-green-600" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{condition.title}</h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">{condition.description}</p>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
-
-            {settings.additionalNote && (
-              <div className="text-center">
-                <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full border border-blue-200">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-3">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                  </div>
-                  <p className="text-gray-700 font-medium">{settings.additionalNote}</p>
-                </div>
-              </div>
-            )}
-          </section>
-        )}
+        <LeasingConditions
+          conditions={settings?.conditions}
+          additionalNote={settings?.additionalNote}
+        />
 
         {/* Преимущества */}
         {settings?.benefits && settings.benefits.length > 0 && (
