@@ -98,9 +98,9 @@ export default function CreditPage() {
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("ru-BY", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "BYN",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(amount)
   }
@@ -381,7 +381,7 @@ export default function CreditPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="carPrice">Стоимость автомобиля (BYN)</Label>
+                      <Label htmlFor="carPrice">Стоимость автомобиля ($)</Label>
                       <Input
                         id="carPrice"
                         type="number"
@@ -392,7 +392,7 @@ export default function CreditPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="downPayment">Первоначальный взнос (BYN)</Label>
+                      <Label htmlFor="downPayment">Первоначальный взнос ($)</Label>
                       <Input
                         id="downPayment"
                         type="number"

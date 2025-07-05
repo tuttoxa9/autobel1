@@ -99,7 +99,7 @@ export default function AdminLeasing() {
       {
         icon: "dollar-sign",
         title: "Валюта договора",
-        description: "BYN, USD, EUR"
+        description: "USD, EUR"
       },
       {
         icon: "check-circle",
@@ -210,7 +210,7 @@ export default function AdminLeasing() {
         {
           icon: "dollar-sign",
           title: "Валюта договора",
-          description: "BYN, USD, EUR"
+          description: "USD, EUR"
         },
         {
           icon: "check-circle",

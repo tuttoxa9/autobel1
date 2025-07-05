@@ -32,7 +32,8 @@ export default function CatalogPage() {
   const [filteredCars, setFilteredCars] = useState<Car[]>([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({
-    priceRange: [20000, 150000],
+    priceFrom: "",
+    priceTo: "",
     make: "all",
     model: "all",
     yearFrom: "",
@@ -42,15 +43,14 @@ export default function CatalogPage() {
     transmission: "any",
     fuelType: "any",
     driveTrain: "any",
-    priceTo: "",
   })
   const [sortBy, setSortBy] = useState("price-asc")
 
   const applyFilters = useCallback(() => {
     const filtered = cars.filter((car) => {
       return (
-        car.price >= filters.priceRange[0] &&
-        car.price <= filters.priceRange[1] &&
+        (filters.priceFrom === "" || filters.priceFrom === "0" || car.price >= Number.parseInt(filters.priceFrom)) &&
+        (filters.priceTo === "" || filters.priceTo === "0" || car.price <= Number.parseInt(filters.priceTo)) &&
         (filters.make === "all" || car.make === filters.make) &&
         (filters.model === "all" || car.model === filters.model) &&
         (filters.yearFrom === "" || car.year >= Number.parseInt(filters.yearFrom)) &&
@@ -59,8 +59,7 @@ export default function CatalogPage() {
         (filters.mileageTo === "" || car.mileage <= Number.parseInt(filters.mileageTo)) &&
         (filters.transmission === "any" || car.transmission === filters.transmission) &&
         (filters.fuelType === "any" || car.fuelType === filters.fuelType) &&
-        (filters.driveTrain === "any" || car.driveTrain === filters.driveTrain) &&
-        (filters.priceTo === "" || car.price <= Number.parseInt(filters.priceTo))
+        (filters.driveTrain === "any" || car.driveTrain === filters.driveTrain)
       )
     })
 
@@ -112,7 +111,8 @@ export default function CatalogPage() {
 
   const resetFilters = () => {
     setFilters({
-      priceRange: [20000, 150000],
+      priceFrom: "",
+      priceTo: "",
       make: "all",
       model: "all",
       yearFrom: "",
@@ -122,7 +122,6 @@ export default function CatalogPage() {
       transmission: "any",
       fuelType: "any",
       driveTrain: "any",
-      priceTo: "",
     })
   }
 
@@ -173,10 +172,19 @@ export default function CatalogPage() {
                     </Select>
                   </div>
                   <div>
-                    <Label>Цена до (BYN)</Label>
+                    <Label>Цена от ($)</Label>
                     <Input
                       type="number"
-                      placeholder="100000"
+                      placeholder="0"
+                      value={filters.priceFrom}
+                      onChange={(e) => setFilters({ ...filters, priceFrom: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label>Цена до ($)</Label>
+                    <Input
+                      type="number"
+                      placeholder="0"
                       value={filters.priceTo}
                       onChange={(e) => setFilters({ ...filters, priceTo: e.target.value })}
                     />
@@ -206,19 +214,25 @@ export default function CatalogPage() {
               <CardContent className="space-y-6">
                 {/* Цена */}
                 <div>
-                  <Label className="text-sm font-medium">Цена (BYN)</Label>
-                  <div className="mt-3">
-                    <Slider
-                      value={filters.priceRange}
-                      onValueChange={(value) => setFilters({ ...filters, priceRange: value })}
-                      max={300000}
-                      min={10000}
-                      step={5000}
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-sm text-gray-500 mt-2">
-                      <span>{filters.priceRange[0].toLocaleString()}</span>
-                      <span>{filters.priceRange[1].toLocaleString()}</span>
+                  <Label className="text-sm font-medium">Цена ($)</Label>
+                  <div className="grid grid-cols-2 gap-3 mt-3">
+                    <div>
+                      <Label className="text-xs">От</Label>
+                      <Input
+                        type="number"
+                        placeholder="0"
+                        value={filters.priceFrom}
+                        onChange={(e) => setFilters({ ...filters, priceFrom: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">До</Label>
+                      <Input
+                        type="number"
+                        placeholder="0"
+                        value={filters.priceTo}
+                        onChange={(e) => setFilters({ ...filters, priceTo: e.target.value })}
+                      />
                     </div>
                   </div>
                 </div>

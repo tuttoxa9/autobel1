@@ -207,7 +207,7 @@ export default function AdminCars() {
                   />
                 </div>
                 <div>
-                  <Label>Цена (BYN)</Label>
+                  <Label>Цена ($)</Label>
                   <Input
                     type="number"
                     value={carForm.price}
@@ -494,7 +494,7 @@ export default function AdminCars() {
               </div>
               <div className="text-sm text-gray-600 space-y-1">
                 <p>Год: {car.year}</p>
-                <p>Цена: {car.price?.toLocaleString()} BYN</p>
+                <p>Цена: ${car.price?.toLocaleString()}</p>
                 <p>Пробег: {car.mileage?.toLocaleString()} км</p>
               </div>
               <div className="flex space-x-2 mt-4">

@@ -46,7 +46,7 @@ const mockCar = {
   model: "X5",
   year: 2020,
   price: 95000,
-  currency: "BYN",
+  currency: "USD",
   mileage: 45000,
   engineVolume: 3.0,
   fuelType: "Дизель",
@@ -206,9 +206,9 @@ export default function CarDetailsPage() {
   }
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("ru-BY", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "BYN",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(price)
   }

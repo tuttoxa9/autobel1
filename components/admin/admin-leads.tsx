@@ -184,7 +184,7 @@ export default function AdminLeads() {
                   )}
                   {lead.carPrice && (
                     <div>
-                      <span className="font-medium">Стоимость авто:</span> {Number(lead.carPrice).toLocaleString()} BYN
+                      <span className="font-medium">Стоимость авто:</span> ${Number(lead.carPrice).toLocaleString()}
                     </div>
                   )}
                   {lead.message && (

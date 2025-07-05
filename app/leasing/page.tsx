@@ -101,7 +101,7 @@ export default function LeasingPage() {
             {
               icon: "dollar-sign",
               title: "Валюта договора",
-              description: "Валюта: BYN, USD, EUR"
+              description: "Валюта: USD, EUR"
             },
             {
               icon: "check-circle",
@@ -139,9 +139,9 @@ export default function LeasingPage() {
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("ru-BY", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "BYN",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(amount)
   }
@@ -506,7 +506,7 @@ export default function LeasingPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="carPrice">Стоимость автомобиля (BYN)</Label>
+                      <Label htmlFor="carPrice">Стоимость автомобиля ($)</Label>
                       <Input
                         id="carPrice"
                         type="number"
@@ -517,7 +517,7 @@ export default function LeasingPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="advance">Авансовый платеж (BYN)</Label>
+                      <Label htmlFor="advance">Авансовый платеж ($)</Label>
                       <Input
                         id="advance"
                         type="number"

@@ -23,9 +23,9 @@ interface CarCardProps {
 
 export default function CarCard({ car }: CarCardProps) {
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("ru-BY", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "BYN",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(price)
   }
