@@ -132,18 +132,23 @@ export default function AboutPage() {
             <div className="space-y-6">
               {aboutData?.principles?.items?.map((principle, index) => {
                 const getIcon = (iconName: string) => {
+                  console.log("Principle icon:", iconName, "at index:", index); // Дебаг
                   switch (iconName) {
                     case "shield": return Shield
                     case "award": return Award
                     case "users": return Users
                     case "car": return Car
                     case "phone": return Phone
-                    case "mappin": return MapPin
+                    case "mappin":
+                    case "map-pin": return MapPin
                     case "clock": return Clock
-                    case "checkcircle": return CheckCircle
+                    case "checkcircle":
+                    case "check-circle": return CheckCircle
                     case "star": return Star
                     case "wrench": return Wrench
-                    default: return Shield
+                    default:
+                      console.log("Unknown principle icon:", iconName); // Дебаг
+                      return Shield
                   }
                 }
                 const IconComponent = getIcon(principle?.icon || 'shield')
@@ -177,18 +182,23 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
             {aboutData?.services?.items?.map((service, index) => {
               const getIcon = (iconName: string) => {
+                console.log("Service icon:", iconName, "at index:", index); // Дебаг
                 switch (iconName) {
                   case "shield": return Shield
                   case "award": return Award
                   case "users": return Users
                   case "car": return Car
                   case "phone": return Phone
-                  case "mappin": return MapPin
+                  case "mappin":
+                  case "map-pin": return MapPin
                   case "clock": return Clock
-                  case "checkcircle": return CheckCircle
+                  case "checkcircle":
+                  case "check-circle": return CheckCircle
                   case "star": return Star
                   case "wrench": return Wrench
-                  default: return Shield
+                  default:
+                    console.log("Unknown icon:", iconName); // Дебаг
+                    return Shield
                 }
               }
               const IconComponent = getIcon(service?.icon || 'shield')
