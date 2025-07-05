@@ -170,6 +170,11 @@ export default function AdminLeasing() {
           title: "Для юридических лиц",
           description: "Специальные условия для бизнеса",
         },
+        {
+          icon: "file-text",
+          title: "Минимум документов",
+          description: "Упрощенный пакет документов для оформления",
+        },
       ],
       leasingCompanies: [
         {
@@ -415,6 +420,7 @@ export default function AdminLeasing() {
                       <SelectItem value="check-circle">Галочка</SelectItem>
                       <SelectItem value="calendar">Календарь</SelectItem>
                       <SelectItem value="dollar-sign">Доллар</SelectItem>
+                      <SelectItem value="file-text">Документ</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Car, Calendar, DollarSign, CheckCircle, Clock, CreditCard, Shield, Users } from "lucide-react"
+import { Car, Calendar, DollarSign, CheckCircle, Clock, CreditCard, Shield, Users, FileText } from "lucide-react"
 
 interface LeasingCondition {
   icon: string
@@ -33,6 +33,8 @@ export default function LeasingConditions({ conditions, additionalNote }: Leasin
         return Shield
       case "users":
         return Users
+      case "file-text":
+        return FileText
       default:
         return CheckCircle
     }
