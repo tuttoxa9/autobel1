@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, Loader2, DollarSign, Clock, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart, Calendar } from "lucide-react"
-import { doc, getDoc, addDoc, collection } from "firebase/firestore"
+import { doc, getDoc, addDoc, collection, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
 interface LeasingPageSettings {
@@ -70,18 +70,48 @@ export default function LeasingPage() {
       const doc_snap = await getDoc(doc_ref)
 
       if (doc_snap.exists()) {
-        setSettings(doc_snap.data() as LeasingPageSettings)
+        const data = doc_snap.data() as LeasingPageSettings
+        console.log("Loaded leasing data:", data)
+        setSettings(data)
       } else {
         // Default fallback data only if no data exists
-        setSettings({
-          title: "Лизинг автомобилей для бизнеса",
-          subtitle: "Выгодное решение для предпринимателей и юридических лиц",
-          description: "Лизинг автомобилей - это удобный способ получить транспорт для бизнеса без больших первоначальных затрат.",
+        const defaultData: LeasingPageSettings = {
+          title: "Автомобиль в лизинг – выгодное решение для сохранения финансовой гибкости",
+          subtitle: "Пользуйтесь автомобилем, оплачивая его стоимость по частям, и наслаждайтесь комфортом без лишних хлопот",
+          description: "Лизинг автомобилей - это удобный способ получить транспорт для бизнеса без больших первоначальных затрат. Налоговые льготы, гибкие условия и возможность выкупа.",
           benefits: [],
           leasingCompanies: [],
-          conditions: [],
+          conditions: [
+            {
+              icon: "car",
+              title: "Возраст автомобиля",
+              description: "От 2000 года выпуска"
+            },
+            {
+              icon: "calendar",
+              title: "Срок лизинга",
+              description: "До 10 лет"
+            },
+            {
+              icon: "dollar-sign",
+              title: "Валюта договора",
+              description: "BYN, USD, EUR"
+            },
+            {
+              icon: "check-circle",
+              title: "Досрочное погашение",
+              description: "После 6 месяцев без штрафных санкций"
+            }
+          ],
           additionalNote: "Все дополнительные вопросы обсуждаемы с каждым клиентом индивидуально"
-        })
+        }
+        setSettings(defaultData)
+        // Also save to Firebase for future use
+        try {
+          await setDoc(doc(db, "pages", "leasing"), defaultData)
+        } catch (error) {
+          console.error("Error saving default data:", error)
+        }
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
@@ -497,6 +527,7 @@ export default function LeasingPage() {
         </div>
 
         {/* Условия лизинга */}
+        {console.log("Conditions data:", settings?.conditions)}
         {settings?.conditions && settings.conditions.length > 0 && (
           <section className="py-16">
             <div className="text-center mb-12">

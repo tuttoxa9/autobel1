@@ -45,8 +45,8 @@ export default function AdminLeasing() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [leasingData, setLeasingData] = useState<LeasingPageData>({
-    title: "Лизинг автомобилей для бизнеса",
-    subtitle: "Выгодное решение для предпринимателей и юридических лиц",
+    title: "Автомобиль в лизинг – выгодное решение для сохранения финансовой гибкости",
+    subtitle: "Пользуйтесь автомобилем, оплачивая его стоимость по частям, и наслаждайтесь комфортом без лишних хлопот",
     description: "Лизинг автомобилей - это удобный способ получить транспорт для бизнеса без больших первоначальных затрат. Налоговые льготы, гибкие условия и возможность выкупа.",
     benefits: [
       {
@@ -138,6 +138,7 @@ export default function AdminLeasing() {
   const saveLeasingData = async () => {
     try {
       setSaving(true)
+      console.log("Saving leasing data:", leasingData)
       await setDoc(doc(db, "pages", "leasing"), leasingData)
       alert("Данные успешно сохранены!")
     } catch (error) {
@@ -145,6 +146,82 @@ export default function AdminLeasing() {
       alert("Ошибка при сохранении данных")
     } finally {
       setSaving(false)
+    }
+  }
+
+  const resetToDefaults = async () => {
+    const defaultData: LeasingPageData = {
+      title: "Автомобиль в лизинг – выгодное решение для сохранения финансовой гибкости",
+      subtitle: "Пользуйтесь автомобилем, оплачивая его стоимость по частям, и наслаждайтесь комфортом без лишних хлопот",
+      description: "Лизинг автомобилей - это удобный способ получить транспорт для бизнеса без больших первоначальных затрат. Налоговые льготы, гибкие условия и возможность выкупа.",
+      benefits: [
+        {
+          icon: "trending-down",
+          title: "Низкий первоначальный взнос",
+          description: "От 10% от стоимости автомобиля",
+        },
+        {
+          icon: "shield",
+          title: "Налоговые льготы",
+          description: "Лизинговые платежи включаются в расходы",
+        },
+        {
+          icon: "building",
+          title: "Для юридических лиц",
+          description: "Специальные условия для бизнеса",
+        },
+      ],
+      leasingCompanies: [
+        {
+          name: "БелЛизинг",
+          logoUrl: "",
+          minAdvance: 10,
+          maxTerm: 60,
+        },
+        {
+          name: "Лизинг-Центр",
+          logoUrl: "",
+          minAdvance: 15,
+          maxTerm: 48,
+        },
+        {
+          name: "АвтоЛизинг",
+          logoUrl: "",
+          minAdvance: 20,
+          maxTerm: 36,
+        },
+      ],
+      conditions: [
+        {
+          icon: "car",
+          title: "Возраст автомобиля",
+          description: "От 2000 года выпуска"
+        },
+        {
+          icon: "calendar",
+          title: "Срок лизинга",
+          description: "До 10 лет"
+        },
+        {
+          icon: "dollar-sign",
+          title: "Валюта договора",
+          description: "BYN, USD, EUR"
+        },
+        {
+          icon: "check-circle",
+          title: "Досрочное погашение",
+          description: "После 6 месяцев без штрафных санкций"
+        }
+      ],
+      additionalNote: "Все дополнительные вопросы обсуждаемы с каждым клиентом индивидуально"
+    }
+    setLeasingData(defaultData)
+    try {
+      await setDoc(doc(db, "pages", "leasing"), defaultData)
+      alert("Данные сброшены к значениям по умолчанию и сохранены!")
+    } catch (error) {
+      console.error("Ошибка сброса данных:", error)
+      alert("Ошибка при сбросе данных")
     }
   }
 
@@ -242,19 +319,24 @@ export default function AdminLeasing() {
           </h2>
           <p className="text-gray-600">Настройка контента и партнеров для страницы лизинга</p>
         </div>
-        <Button onClick={saveLeasingData} disabled={saving}>
-          {saving ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Сохранение...
-            </>
-          ) : (
-            <>
-              <Save className="mr-2 h-4 w-4" />
-              Сохранить
-            </>
-          )}
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={resetToDefaults} variant="outline">
+            Сбросить к умолчаниям
+          </Button>
+          <Button onClick={saveLeasingData} disabled={saving}>
+            {saving ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Сохранение...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Сохранить
+              </>
+            )}
+          </Button>
+        </div>
       </div>
 
       {/* Основная информация */}
