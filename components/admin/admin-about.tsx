@@ -14,6 +14,8 @@ export default function AdminAbout() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [aboutData, setAboutData] = useState({
+    pageTitle: "О компании \"АвтоБел Центр\"",
+    pageSubtitle: "Мы помогаем людям найти идеальный автомобиль уже более 12 лет. Наша миссия — сделать покупку автомобиля простой, безопасной и выгодной.",
     stats: [
       { label: "Довольных клиентов", value: "2500+" },
       { label: "Лет на рынке", value: "12" },
@@ -231,6 +233,44 @@ export default function AdminAbout() {
       </div>
 
       <div className="space-y-6">
+        {/* Заголовки страницы */}
+        <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
+          <CardHeader>
+            <CardTitle className="text-white">Заголовки страницы</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label className="text-white">Заголовок страницы</Label>
+              <Input
+                value={aboutData?.pageTitle || ''}
+                onChange={(e) =>
+                  setAboutData({
+                    ...aboutData,
+                    pageTitle: e.target.value,
+                  })
+                }
+                className="bg-slate-700 border-slate-600 text-white"
+                placeholder="О компании..."
+              />
+            </div>
+            <div>
+              <Label className="text-white">Подзаголовок страницы</Label>
+              <Textarea
+                value={aboutData?.pageSubtitle || ''}
+                onChange={(e) =>
+                  setAboutData({
+                    ...aboutData,
+                    pageSubtitle: e.target.value,
+                  })
+                }
+                className="bg-slate-700 border-slate-600 text-white"
+                rows={3}
+                placeholder="Описание компании..."
+              />
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Статистика */}
           <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">

@@ -6,9 +6,13 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
 import { Shield, Users, Award, Clock } from "lucide-react"
+import AboutPageSkeleton from "@/components/about-page-skeleton"
 
 export default function AboutPage() {
+  const [loading, setLoading] = useState(true)
   const [aboutData, setAboutData] = useState({
+    pageTitle: "О компании \"АвтоБел Центр\"",
+    pageSubtitle: "Мы помогаем людям найти идеальный автомобиль уже более 12 лет. Наша миссия — сделать покупку автомобиля простой, безопасной и выгодной.",
     stats: [
       { icon: Users, label: "Довольных клиентов", value: "2500+" },
       { icon: Award, label: "Лет на рынке", value: "12" },
@@ -39,6 +43,8 @@ export default function AboutPage() {
         setAboutData(prev => ({
           ...prev,
           ...data,
+          pageTitle: data?.pageTitle || prev.pageTitle,
+          pageSubtitle: data?.pageSubtitle || prev.pageSubtitle,
           stats: data?.stats?.map((stat, index) => ({
             ...stat,
             icon: [Users, Award, Shield, Clock][index] || Users
@@ -52,12 +58,18 @@ export default function AboutPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     loadAboutData()
   }, [])
+
+  if (loading) {
+    return <AboutPageSkeleton />
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -77,10 +89,9 @@ export default function AboutPage() {
 
         {/* Заголовок */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">О компании &quot;АвтоБел Центр&quot;</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">{aboutData.pageTitle}</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Мы помогаем людям найти идеальный автомобиль уже более 12 лет. Наша миссия — сделать покупку автомобиля
-            простой, безопасной и выгодной.
+            {aboutData.pageSubtitle}
           </p>
         </div>
 
@@ -106,26 +117,11 @@ export default function AboutPage() {
               {aboutData.history?.title || "Наша история"}
             </h2>
             <div className="space-y-4 text-gray-700">
-              {aboutData.history?.content ? aboutData.history.content.map((paragraph, index) => (
+              {aboutData.history?.content?.map((paragraph, index) => (
                 <p key={index}>
                   {paragraph}
                 </p>
-              )) : (
-                <>
-                  <p>
-                    Компания &quot;АвтоБел Центр&quot; была основана в 2012 году с простой идеей: сделать покупку подержанного автомобиля
-                    максимально прозрачной и безопасной для покупателя.
-                  </p>
-                  <p>
-                    За годы работы мы выработали строгие стандарты отбора автомобилей, создали собственную систему проверки
-                    технического состояния и юридической чистоты каждого автомобиля в нашем каталоге.
-                  </p>
-                  <p>
-                    Сегодня &quot;АвтоБел Центр&quot; — это команда профессионалов, которая помогает тысячам белорусов найти автомобиль
-                    мечты по справедливой цене.
-                  </p>
-                </>
-              )}
+              ))}
             </div>
           </div>
 
@@ -134,7 +130,7 @@ export default function AboutPage() {
               {aboutData.principles?.title || "Наши принципы"}
             </h2>
             <div className="space-y-6">
-              {aboutData?.principles?.items ? aboutData.principles.items.map((principle, index) => {
+              {aboutData?.principles?.items?.map((principle, index) => {
                 const getIcon = (iconName: string) => {
                   switch (iconName) {
                     case "shield": return Shield
@@ -161,46 +157,7 @@ export default function AboutPage() {
                     </div>
                   </div>
                 )
-              }) : (
-                <>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <Shield className="h-4 w-4 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Честность и прозрачность</h3>
-                      <p className="text-gray-600">
-                        Мы предоставляем полную информацию о каждом автомобиле, включая историю обслуживания и возможные
-                        недостатки.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <Award className="h-4 w-4 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Качество превыше всего</h3>
-                      <p className="text-gray-600">
-                        Каждый автомобиль проходит тщательную проверку нашими специалистами перед попаданием в каталог.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <Users className="h-4 w-4 text-yellow-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Клиент — наш приоритет</h3>
-                      <p className="text-gray-600">
-                        Мы сопровождаем клиента на всех этапах покупки: от выбора до оформления документов.
-                      </p>
-                    </div>
-                  </div>
-                </>
-              )}
+              })}
             </div>
           </div>
         </div>
@@ -211,7 +168,7 @@ export default function AboutPage() {
             {aboutData.services?.title || "Наши услуги"}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            {aboutData?.services?.items ? aboutData.services.items.map((service, index) => {
+            {aboutData?.services?.items?.map((service, index) => {
               const getIcon = (iconName: string) => {
                 switch (iconName) {
                   case "shield": return Shield
@@ -244,45 +201,7 @@ export default function AboutPage() {
                   </CardContent>
                 </Card>
               )
-            }) : (
-              <>
-                <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-blue-50 to-white">
-                  <CardContent className="p-4 lg:p-6 text-center">
-                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                      <Shield className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
-                    </div>
-                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Проверка автомобилей</h3>
-                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                      Комплексная диагностика технического состояния и проверка юридической чистоты
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-green-50 to-white">
-                  <CardContent className="p-4 lg:p-6 text-center">
-                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                      <Award className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
-                    </div>
-                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Гарантия</h3>
-                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                      Предоставляем гарантию на каждый проданный автомобиль сроком до 6 месяцев
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-amber-50 to-white md:col-span-3 lg:col-span-1">
-                  <CardContent className="p-4 lg:p-6 text-center">
-                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                      <Users className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
-                    </div>
-                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Кредитование</h3>
-                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                      Помощь в оформлении автокредита в партнерских банках на выгодных условиях
-                    </p>
-                  </CardContent>
-                </Card>
-              </>
-            )}
+            })}
           </div>
         </div>
 
