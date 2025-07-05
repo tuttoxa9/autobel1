@@ -6,8 +6,9 @@ import { db } from "@/lib/firebase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Save, Loader2 } from "lucide-react"
+import { Save, Loader2, Plus, Trash2 } from "lucide-react"
 
 export default function AdminAbout() {
   const [loading, setLoading] = useState(true)
@@ -19,6 +20,54 @@ export default function AdminAbout() {
       { label: "Проданных автомобилей", value: "5000+" },
       { label: "Среднее время продажи", value: "7 дней" },
     ],
+    history: {
+      title: "Наша история",
+      content: [
+        'Компания "АвтоБел Центр" была основана в 2012 году с простой идеей: сделать покупку подержанного автомобиля максимально прозрачной и безопасной для покупателя.',
+        'За годы работы мы выработали строгие стандарты отбора автомобилей, создали собственную систему проверки технического состояния и юридической чистоты каждого автомобиля в нашем каталоге.',
+        'Сегодня "АвтоБел Центр" — это команда профессионалов, которая помогает тысячам белорусов найти автомобиль мечты по справедливой цене.'
+      ]
+    },
+    principles: {
+      title: "Наши принципы",
+      items: [
+        {
+          title: "Честность и прозрачность",
+          description: "Мы предоставляем полную информацию о каждом автомобиле, включая историю обслуживания и возможные недостатки.",
+          icon: "shield"
+        },
+        {
+          title: "Качество превыше всего",
+          description: "Каждый автомобиль проходит тщательную проверку нашими специалистами перед попаданием в каталог.",
+          icon: "award"
+        },
+        {
+          title: "Клиент — наш приоритет",
+          description: "Мы сопровождаем клиента на всех этапах покупки: от выбора до оформления документов.",
+          icon: "users"
+        }
+      ]
+    },
+    services: {
+      title: "Наши услуги",
+      items: [
+        {
+          title: "Проверка автомобилей",
+          description: "Комплексная диагностика технического состояния и проверка юридической чистоты",
+          icon: "shield"
+        },
+        {
+          title: "Гарантия",
+          description: "Предоставляем гарантию на каждый проданный автомобиль сроком до 6 месяцев",
+          icon: "award"
+        },
+        {
+          title: "Кредитование",
+          description: "Помощь в оформлении автокредита в партнерских банках на выгодных условиях",
+          icon: "users"
+        }
+      ]
+    },
     companyInfo: {
       fullName: 'ООО "Белавто Центр"',
       unp: "123456789",
@@ -69,6 +118,87 @@ export default function AdminAbout() {
     setAboutData({ ...aboutData, stats: newStats })
   }
 
+  const updateHistoryParagraph = (index, value) => {
+    const newContent = [...aboutData.history.content]
+    newContent[index] = value
+    setAboutData({
+      ...aboutData,
+      history: { ...aboutData.history, content: newContent }
+    })
+  }
+
+  const addHistoryParagraph = () => {
+    setAboutData({
+      ...aboutData,
+      history: {
+        ...aboutData.history,
+        content: [...aboutData.history.content, ""]
+      }
+    })
+  }
+
+  const removeHistoryParagraph = (index) => {
+    const newContent = aboutData.history.content.filter((_, i) => i !== index)
+    setAboutData({
+      ...aboutData,
+      history: { ...aboutData.history, content: newContent }
+    })
+  }
+
+  const updatePrinciple = (index, field, value) => {
+    const newPrinciples = [...aboutData.principles.items]
+    newPrinciples[index] = { ...newPrinciples[index], [field]: value }
+    setAboutData({
+      ...aboutData,
+      principles: { ...aboutData.principles, items: newPrinciples }
+    })
+  }
+
+  const addPrinciple = () => {
+    setAboutData({
+      ...aboutData,
+      principles: {
+        ...aboutData.principles,
+        items: [...aboutData.principles.items, { title: "", description: "", icon: "shield" }]
+      }
+    })
+  }
+
+  const removePrinciple = (index) => {
+    const newPrinciples = aboutData.principles.items.filter((_, i) => i !== index)
+    setAboutData({
+      ...aboutData,
+      principles: { ...aboutData.principles, items: newPrinciples }
+    })
+  }
+
+  const updateService = (index, field, value) => {
+    const newServices = [...aboutData.services.items]
+    newServices[index] = { ...newServices[index], [field]: value }
+    setAboutData({
+      ...aboutData,
+      services: { ...aboutData.services, items: newServices }
+    })
+  }
+
+  const addService = () => {
+    setAboutData({
+      ...aboutData,
+      services: {
+        ...aboutData.services,
+        items: [...aboutData.services.items, { title: "", description: "", icon: "shield" }]
+      }
+    })
+  }
+
+  const removeService = (index) => {
+    const newServices = aboutData.services.items.filter((_, i) => i !== index)
+    setAboutData({
+      ...aboutData,
+      services: { ...aboutData.services, items: newServices }
+    })
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -87,99 +217,282 @@ export default function AdminAbout() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Статистика */}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Статистика */}
+          <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-white">Статистика</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {aboutData.stats.map((stat, index) => (
+                <div key={index} className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-white">Название</Label>
+                    <Input
+                      value={stat.label}
+                      onChange={(e) => updateStat(index, "label", e.target.value)}
+                      className="bg-slate-700 border-slate-600 text-white"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-white">Значение</Label>
+                    <Input
+                      value={stat.value}
+                      onChange={(e) => updateStat(index, "value", e.target.value)}
+                      className="bg-slate-700 border-slate-600 text-white"
+                    />
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Информация о компании */}
+          <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-white">Информация о компании</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label className="text-white">Полное наименование</Label>
+                <Input
+                  value={aboutData.companyInfo.fullName}
+                  onChange={(e) =>
+                    setAboutData({
+                      ...aboutData,
+                      companyInfo: { ...aboutData.companyInfo, fullName: e.target.value },
+                    })
+                  }
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-white">УНП</Label>
+                <Input
+                  value={aboutData.companyInfo.unp}
+                  onChange={(e) =>
+                    setAboutData({
+                      ...aboutData,
+                      companyInfo: { ...aboutData.companyInfo, unp: e.target.value },
+                    })
+                  }
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-white">Дата регистрации</Label>
+                <Input
+                  value={aboutData.companyInfo.registrationDate}
+                  onChange={(e) =>
+                    setAboutData({
+                      ...aboutData,
+                      companyInfo: { ...aboutData.companyInfo, registrationDate: e.target.value },
+                    })
+                  }
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-white">Юридический адрес</Label>
+                <Input
+                  value={aboutData.companyInfo.legalAddress}
+                  onChange={(e) =>
+                    setAboutData({
+                      ...aboutData,
+                      companyInfo: { ...aboutData.companyInfo, legalAddress: e.target.value },
+                    })
+                  }
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* История компании */}
         <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
           <CardHeader>
-            <CardTitle className="text-white">Статистика</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {aboutData.stats.map((stat, index) => (
-              <div key={index} className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-white">Название</Label>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-white">История компании</CardTitle>
+                <div className="mt-2">
+                  <Label className="text-white text-sm">Заголовок секции</Label>
                   <Input
-                    value={stat.label}
-                    onChange={(e) => updateStat(index, "label", e.target.value)}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    value={aboutData.history.title}
+                    onChange={(e) =>
+                      setAboutData({
+                        ...aboutData,
+                        history: { ...aboutData.history, title: e.target.value },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white mt-1"
                   />
                 </div>
-                <div>
-                  <Label className="text-white">Значение</Label>
+              </div>
+              <Button onClick={addHistoryParagraph} size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500">
+                <Plus className="h-4 w-4 mr-2" />
+                Добавить абзац
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {aboutData.history.content.map((paragraph, index) => (
+              <div key={index} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-white">Абзац {index + 1}</Label>
+                  {aboutData.history.content.length > 1 && (
+                    <Button
+                      onClick={() => removeHistoryParagraph(index)}
+                      size="sm"
+                      variant="outline"
+                      className="border-red-500 text-red-400 hover:bg-red-500/10"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+                <Textarea
+                  value={paragraph}
+                  onChange={(e) => updateHistoryParagraph(index, e.target.value)}
+                  className="bg-slate-700 border-slate-600 text-white"
+                  rows={3}
+                />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Принципы компании */}
+        <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-white">Принципы компании</CardTitle>
+                <div className="mt-2">
+                  <Label className="text-white text-sm">Заголовок секции</Label>
                   <Input
-                    value={stat.value}
-                    onChange={(e) => updateStat(index, "value", e.target.value)}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    value={aboutData.principles.title}
+                    onChange={(e) =>
+                      setAboutData({
+                        ...aboutData,
+                        principles: { ...aboutData.principles, title: e.target.value },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white mt-1"
                   />
+                </div>
+              </div>
+              <Button onClick={addPrinciple} size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500">
+                <Plus className="h-4 w-4 mr-2" />
+                Добавить принцип
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {aboutData.principles.items.map((principle, index) => (
+              <div key={index} className="p-4 bg-slate-700/50 rounded-lg space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-white font-medium">Принцип {index + 1}</h4>
+                  <Button
+                    onClick={() => removePrinciple(index)}
+                    size="sm"
+                    variant="outline"
+                    className="border-red-500 text-red-400 hover:bg-red-500/10"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label className="text-white">Заголовок</Label>
+                    <Input
+                      value={principle.title}
+                      onChange={(e) => updatePrinciple(index, "title", e.target.value)}
+                      className="bg-slate-600 border-slate-500 text-white"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label className="text-white">Описание</Label>
+                    <Textarea
+                      value={principle.description}
+                      onChange={(e) => updatePrinciple(index, "description", e.target.value)}
+                      className="bg-slate-600 border-slate-500 text-white"
+                      rows={2}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
           </CardContent>
         </Card>
 
-        {/* Информация о компании */}
+        {/* Услуги компании */}
         <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
           <CardHeader>
-            <CardTitle className="text-white">Информация о компании</CardTitle>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-white">Услуги компании</CardTitle>
+                <div className="mt-2">
+                  <Label className="text-white text-sm">Заголовок секции</Label>
+                  <Input
+                    value={aboutData.services.title}
+                    onChange={(e) =>
+                      setAboutData({
+                        ...aboutData,
+                        services: { ...aboutData.services, title: e.target.value },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white mt-1"
+                  />
+                </div>
+              </div>
+              <Button onClick={addService} size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500">
+                <Plus className="h-4 w-4 mr-2" />
+                Добавить услугу
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <Label className="text-white">Полное наименование</Label>
-              <Input
-                value={aboutData.companyInfo.fullName}
-                onChange={(e) =>
-                  setAboutData({
-                    ...aboutData,
-                    companyInfo: { ...aboutData.companyInfo, fullName: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
-            </div>
-            <div>
-              <Label className="text-white">УНП</Label>
-              <Input
-                value={aboutData.companyInfo.unp}
-                onChange={(e) =>
-                  setAboutData({
-                    ...aboutData,
-                    companyInfo: { ...aboutData.companyInfo, unp: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
-            </div>
-            <div>
-              <Label className="text-white">Дата регистрации</Label>
-              <Input
-                value={aboutData.companyInfo.registrationDate}
-                onChange={(e) =>
-                  setAboutData({
-                    ...aboutData,
-                    companyInfo: { ...aboutData.companyInfo, registrationDate: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
-            </div>
-            <div>
-              <Label className="text-white">Юридический адрес</Label>
-              <Input
-                value={aboutData.companyInfo.legalAddress}
-                onChange={(e) =>
-                  setAboutData({
-                    ...aboutData,
-                    companyInfo: { ...aboutData.companyInfo, legalAddress: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
-            </div>
+            {aboutData.services.items.map((service, index) => (
+              <div key={index} className="p-4 bg-slate-700/50 rounded-lg space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-white font-medium">Услуга {index + 1}</h4>
+                  <Button
+                    onClick={() => removeService(index)}
+                    size="sm"
+                    variant="outline"
+                    className="border-red-500 text-red-400 hover:bg-red-500/10"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label className="text-white">Заголовок</Label>
+                    <Input
+                      value={service.title}
+                      onChange={(e) => updateService(index, "title", e.target.value)}
+                      className="bg-slate-600 border-slate-500 text-white"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label className="text-white">Описание</Label>
+                    <Textarea
+                      value={service.description}
+                      onChange={(e) => updateService(index, "description", e.target.value)}
+                      className="bg-slate-600 border-slate-500 text-white"
+                      rows={2}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
 
         {/* Банковские реквизиты */}
-        <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700 lg:col-span-2">
+        <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
           <CardHeader>
             <CardTitle className="text-white">Банковские реквизиты</CardTitle>
           </CardHeader>

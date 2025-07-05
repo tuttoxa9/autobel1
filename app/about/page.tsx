@@ -95,105 +95,187 @@ export default function AboutPage() {
         {/* Основной контент */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Наша история</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              {aboutData.history?.title || "Наша история"}
+            </h2>
             <div className="space-y-4 text-gray-700">
-              <p>
-                Компания &quot;АвтоБел Центр&quot; была основана в 2012 году с простой идеей: сделать покупку подержанного автомобиля
-                максимально прозрачной и безопасной для покупателя.
-              </p>
-              <p>
-                За годы работы мы выработали строгие стандарты отбора автомобилей, создали собственную систему проверки
-                технического состояния и юридической чистоты каждого автомобиля в нашем каталоге.
-              </p>
-              <p>
-                Сегодня &quot;АвтоБел Центр&quot; — это команда профессионалов, которая помогает тысячам белорусов найти автомобиль
-                мечты по справедливой цене.
-              </p>
+              {aboutData.history?.content ? aboutData.history.content.map((paragraph, index) => (
+                <p key={index}>
+                  {paragraph}
+                </p>
+              )) : (
+                <>
+                  <p>
+                    Компания &quot;АвтоБел Центр&quot; была основана в 2012 году с простой идеей: сделать покупку подержанного автомобиля
+                    максимально прозрачной и безопасной для покупателя.
+                  </p>
+                  <p>
+                    За годы работы мы выработали строгие стандарты отбора автомобилей, создали собственную систему проверки
+                    технического состояния и юридической чистоты каждого автомобиля в нашем каталоге.
+                  </p>
+                  <p>
+                    Сегодня &quot;АвтоБел Центр&quot; — это команда профессионалов, которая помогает тысячам белорусов найти автомобиль
+                    мечты по справедливой цене.
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Наши принципы</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              {aboutData.principles?.title || "Наши принципы"}
+            </h2>
             <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <Shield className="h-4 w-4 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Честность и прозрачность</h3>
-                  <p className="text-gray-600">
-                    Мы предоставляем полную информацию о каждом автомобиле, включая историю обслуживания и возможные
-                    недостатки.
-                  </p>
-                </div>
-              </div>
+              {aboutData.principles?.items ? aboutData.principles.items.map((principle, index) => {
+                const getIcon = (iconName: string) => {
+                  switch (iconName) {
+                    case "shield": return Shield
+                    case "award": return Award
+                    case "users": return Users
+                    default: return Shield
+                  }
+                }
+                const IconComponent = getIcon(principle.icon)
+                const getIconColor = (index: number) => {
+                  const colors = ["blue", "green", "yellow"]
+                  return colors[index % colors.length]
+                }
+                const color = getIconColor(index)
 
-              <div className="flex items-start space-x-4">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <Award className="h-4 w-4 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Качество превыше всего</h3>
-                  <p className="text-gray-600">
-                    Каждый автомобиль проходит тщательную проверку нашими специалистами перед попаданием в каталог.
-                  </p>
-                </div>
-              </div>
+                return (
+                  <div key={index} className="flex items-start space-x-4">
+                    <div className={`w-8 h-8 bg-${color}-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1`}>
+                      <IconComponent className={`h-4 w-4 text-${color}-600`} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">{principle.title}</h3>
+                      <p className="text-gray-600">{principle.description}</p>
+                    </div>
+                  </div>
+                )
+              }) : (
+                <>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <Shield className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">Честность и прозрачность</h3>
+                      <p className="text-gray-600">
+                        Мы предоставляем полную информацию о каждом автомобиле, включая историю обслуживания и возможные
+                        недостатки.
+                      </p>
+                    </div>
+                  </div>
 
-              <div className="flex items-start space-x-4">
-                <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <Users className="h-4 w-4 text-yellow-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Клиент — наш приоритет</h3>
-                  <p className="text-gray-600">
-                    Мы сопровождаем клиента на всех этапах покупки: от выбора до оформления документов.
-                  </p>
-                </div>
-              </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <Award className="h-4 w-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">Качество превыше всего</h3>
+                      <p className="text-gray-600">
+                        Каждый автомобиль проходит тщательную проверку нашими специалистами перед попаданием в каталог.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <Users className="h-4 w-4 text-yellow-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">Клиент — наш приоритет</h3>
+                      <p className="text-gray-600">
+                        Мы сопровождаем клиента на всех этапах покупки: от выбора до оформления документов.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
 
         {/* Услуги */}
         <div className="mb-16">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">Наши услуги</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
+            {aboutData.services?.title || "Наши услуги"}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-blue-50 to-white">
-              <CardContent className="p-4 lg:p-6 text-center">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                  <Shield className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
-                </div>
-                <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Проверка автомобилей</h3>
-                <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                  Комплексная диагностика технического состояния и проверка юридической чистоты
-                </p>
-              </CardContent>
-            </Card>
+            {aboutData.services?.items ? aboutData.services.items.map((service, index) => {
+              const getIcon = (iconName: string) => {
+                switch (iconName) {
+                  case "shield": return Shield
+                  case "award": return Award
+                  case "users": return Users
+                  default: return Shield
+                }
+              }
+              const IconComponent = getIcon(service.icon)
+              const getGradientColor = (index: number) => {
+                const colors = [
+                  { from: "blue-500", to: "blue-600", bg: "blue-50" },
+                  { from: "green-500", to: "green-600", bg: "green-50" },
+                  { from: "amber-500", to: "amber-600", bg: "amber-50" }
+                ]
+                return colors[index % colors.length]
+              }
+              const colors = getGradientColor(index)
 
-            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-green-50 to-white">
-              <CardContent className="p-4 lg:p-6 text-center">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                  <Award className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
-                </div>
-                <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Гарантия</h3>
-                <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                  Предоставляем гарантию на каждый проданный автомобиль сроком до 6 месяцев
-                </p>
-              </CardContent>
-            </Card>
+              return (
+                <Card key={index} className={`border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-${colors.bg} to-white ${index === 2 && aboutData.services.items.length === 3 ? 'md:col-span-3 lg:col-span-1' : ''}`}>
+                  <CardContent className="p-4 lg:p-6 text-center">
+                    <div className={`w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-${colors.from} to-${colors.to} rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
+                      <IconComponent className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
+                    </div>
+                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">{service.title}</h3>
+                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+                      {service.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              )
+            }) : (
+              <>
+                <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-blue-50 to-white">
+                  <CardContent className="p-4 lg:p-6 text-center">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                      <Shield className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
+                    </div>
+                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Проверка автомобилей</h3>
+                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+                      Комплексная диагностика технического состояния и проверка юридической чистоты
+                    </p>
+                  </CardContent>
+                </Card>
 
-            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-amber-50 to-white md:col-span-3 lg:col-span-1">
-              <CardContent className="p-4 lg:p-6 text-center">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                  <Users className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
-                </div>
-                <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Кредитование</h3>
-                <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                  Помощь в оформлении автокредита в партнерских банках на выгодных условиях
-                </p>
-              </CardContent>
-            </Card>
+                <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-green-50 to-white">
+                  <CardContent className="p-4 lg:p-6 text-center">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                      <Award className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
+                    </div>
+                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Гарантия</h3>
+                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+                      Предоставляем гарантию на каждый проданный автомобиль сроком до 6 месяцев
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-amber-50 to-white md:col-span-3 lg:col-span-1">
+                  <CardContent className="p-4 lg:p-6 text-center">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                      <Users className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
+                    </div>
+                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">Кредитование</h3>
+                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+                      Помощь в оформлении автокредита в партнерских банках на выгодных условиях
+                    </p>
+                  </CardContent>
+                </Card>
+              </>
+            )}
           </div>
         </div>
 
