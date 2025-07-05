@@ -5,7 +5,7 @@ import Link from "next/link"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
-import { Shield, Users, Award, Clock, Car, Phone, MapPin, CheckCircle, Star, Wrench } from "lucide-react"
+import { Shield, Users, Award, Clock, Car, Phone, MapPin, CheckCircle, Star, Wrench, CreditCard, DollarSign, FileText, Building, TrendingUp, Calculator, Handshake } from "lucide-react"
 import AboutPageSkeleton from "@/components/about-page-skeleton"
 
 export default function AboutPage() {
@@ -132,7 +132,7 @@ export default function AboutPage() {
             <div className="space-y-6">
               {aboutData?.principles?.items?.map((principle, index) => {
                 const getIcon = (iconName: string) => {
-                  console.log("Principle icon:", iconName, "at index:", index); // Дебаг
+
                   switch (iconName) {
                     case "shield": return Shield
                     case "award": return Award
@@ -146,8 +146,19 @@ export default function AboutPage() {
                     case "check-circle": return CheckCircle
                     case "star": return Star
                     case "wrench": return Wrench
+                    case "credit-card":
+                    case "creditcard": return CreditCard
+                    case "dollar-sign":
+                    case "dollarsign": return DollarSign
+                    case "file-text":
+                    case "filetext": return FileText
+                    case "building": return Building
+                    case "trending-up":
+                    case "trendingup": return TrendingUp
+                    case "calculator": return Calculator
+                    case "handshake": return Handshake
                     default:
-                      console.log("Unknown principle icon:", iconName); // Дебаг
+
                       return Shield
                   }
                 }
@@ -182,7 +193,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
             {aboutData?.services?.items?.map((service, index) => {
               const getIcon = (iconName: string) => {
-                console.log("Service icon:", iconName, "at index:", index); // Дебаг
+
                 switch (iconName) {
                   case "shield": return Shield
                   case "award": return Award
@@ -196,8 +207,19 @@ export default function AboutPage() {
                   case "check-circle": return CheckCircle
                   case "star": return Star
                   case "wrench": return Wrench
+                  case "credit-card":
+                  case "creditcard": return CreditCard
+                  case "dollar-sign":
+                  case "dollarsign": return DollarSign
+                  case "file-text":
+                  case "filetext": return FileText
+                  case "building": return Building
+                  case "trending-up":
+                  case "trendingup": return TrendingUp
+                  case "calculator": return Calculator
+                  case "handshake": return Handshake
                   default:
-                    console.log("Unknown icon:", iconName); // Дебаг
+
                     return Shield
                 }
               }

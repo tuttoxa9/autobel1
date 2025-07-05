@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Save, Loader2, Plus, Trash2, Shield, Award, Users, Car, Phone, MapPin, Clock, CheckCircle, Star, Wrench } from "lucide-react"
+import { Save, Loader2, Plus, Trash2, Shield, Award, Users, Car, Phone, MapPin, Clock, CheckCircle, Star, Wrench, CreditCard, DollarSign, FileText, Building, TrendingUp, Calculator, Handshake } from "lucide-react"
 
 export default function AdminAbout() {
   const [loading, setLoading] = useState(true)
@@ -533,6 +533,42 @@ export default function AdminAbout() {
                             <span>Инструмент</span>
                           </div>
                         </SelectItem>
+                        <SelectItem value="creditcard" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <CreditCard className="h-4 w-4" />
+                            <span>Кредит</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="dollarsign" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <DollarSign className="h-4 w-4" />
+                            <span>Деньги</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="filetext" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <FileText className="h-4 w-4" />
+                            <span>Документ</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="building" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Building className="h-4 w-4" />
+                            <span>Здание</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="calculator" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Calculator className="h-4 w-4" />
+                            <span>Калькулятор</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="handshake" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Handshake className="h-4 w-4" />
+                            <span>Рукопожатие</span>
+                          </div>
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -665,6 +701,42 @@ export default function AdminAbout() {
                           <div className="flex items-center space-x-2">
                             <Wrench className="h-4 w-4" />
                             <span>Инструмент</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="creditcard" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <CreditCard className="h-4 w-4" />
+                            <span>Кредит</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="dollarsign" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <DollarSign className="h-4 w-4" />
+                            <span>Деньги</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="filetext" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <FileText className="h-4 w-4" />
+                            <span>Документ</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="building" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Building className="h-4 w-4" />
+                            <span>Здание</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="calculator" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Calculator className="h-4 w-4" />
+                            <span>Калькулятор</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="handshake" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Handshake className="h-4 w-4" />
+                            <span>Рукопожатие</span>
                           </div>
                         </SelectItem>
                       </SelectContent>
