@@ -90,7 +90,13 @@ export default function AdminAbout() {
     try {
       const aboutDoc = await getDoc(doc(db, "pages", "about"))
       if (aboutDoc.exists()) {
-        setAboutData(aboutDoc.data())
+        const data = aboutDoc.data()
+        if (data) {
+          setAboutData(prev => ({
+            ...prev,
+            ...data
+          }))
+        }
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
@@ -113,12 +119,14 @@ export default function AdminAbout() {
   }
 
   const updateStat = (index, field, value) => {
+    if (!aboutData?.stats) return
     const newStats = [...aboutData.stats]
     newStats[index] = { ...newStats[index], [field]: value }
     setAboutData({ ...aboutData, stats: newStats })
   }
 
   const updateHistoryParagraph = (index, value) => {
+    if (!aboutData?.history?.content) return
     const newContent = [...aboutData.history.content]
     newContent[index] = value
     setAboutData({
@@ -138,6 +146,7 @@ export default function AdminAbout() {
   }
 
   const removeHistoryParagraph = (index) => {
+    if (!aboutData?.history?.content) return
     const newContent = aboutData.history.content.filter((_, i) => i !== index)
     setAboutData({
       ...aboutData,
@@ -146,6 +155,7 @@ export default function AdminAbout() {
   }
 
   const updatePrinciple = (index, field, value) => {
+    if (!aboutData?.principles?.items) return
     const newPrinciples = [...aboutData.principles.items]
     newPrinciples[index] = { ...newPrinciples[index], [field]: value }
     setAboutData({
@@ -165,6 +175,7 @@ export default function AdminAbout() {
   }
 
   const removePrinciple = (index) => {
+    if (!aboutData?.principles?.items) return
     const newPrinciples = aboutData.principles.items.filter((_, i) => i !== index)
     setAboutData({
       ...aboutData,
@@ -173,6 +184,7 @@ export default function AdminAbout() {
   }
 
   const updateService = (index, field, value) => {
+    if (!aboutData?.services?.items) return
     const newServices = [...aboutData.services.items]
     newServices[index] = { ...newServices[index], [field]: value }
     setAboutData({
@@ -192,6 +204,7 @@ export default function AdminAbout() {
   }
 
   const removeService = (index) => {
+    if (!aboutData?.services?.items) return
     const newServices = aboutData.services.items.filter((_, i) => i !== index)
     setAboutData({
       ...aboutData,
@@ -225,12 +238,12 @@ export default function AdminAbout() {
               <CardTitle className="text-white">Статистика</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {aboutData.stats.map((stat, index) => (
+              {aboutData?.stats?.map((stat, index) => (
                 <div key={index} className="grid grid-cols-2 gap-4">
                   <div>
                     <Label className="text-white">Название</Label>
                     <Input
-                      value={stat.label}
+                      value={stat?.label || ''}
                       onChange={(e) => updateStat(index, "label", e.target.value)}
                       className="bg-slate-700 border-slate-600 text-white"
                     />
@@ -238,7 +251,7 @@ export default function AdminAbout() {
                   <div>
                     <Label className="text-white">Значение</Label>
                     <Input
-                      value={stat.value}
+                      value={stat?.value || ''}
                       onChange={(e) => updateStat(index, "value", e.target.value)}
                       className="bg-slate-700 border-slate-600 text-white"
                     />
@@ -257,7 +270,7 @@ export default function AdminAbout() {
               <div>
                 <Label className="text-white">Полное наименование</Label>
                 <Input
-                  value={aboutData.companyInfo.fullName}
+                  value={aboutData?.companyInfo?.fullName || ''}
                   onChange={(e) =>
                     setAboutData({
                       ...aboutData,
@@ -270,7 +283,7 @@ export default function AdminAbout() {
               <div>
                 <Label className="text-white">УНП</Label>
                 <Input
-                  value={aboutData.companyInfo.unp}
+                  value={aboutData?.companyInfo?.unp || ''}
                   onChange={(e) =>
                     setAboutData({
                       ...aboutData,
@@ -283,7 +296,7 @@ export default function AdminAbout() {
               <div>
                 <Label className="text-white">Дата регистрации</Label>
                 <Input
-                  value={aboutData.companyInfo.registrationDate}
+                  value={aboutData?.companyInfo?.registrationDate || ''}
                   onChange={(e) =>
                     setAboutData({
                       ...aboutData,
@@ -296,7 +309,7 @@ export default function AdminAbout() {
               <div>
                 <Label className="text-white">Юридический адрес</Label>
                 <Input
-                  value={aboutData.companyInfo.legalAddress}
+                  value={aboutData?.companyInfo?.legalAddress || ''}
                   onChange={(e) =>
                     setAboutData({
                       ...aboutData,
@@ -319,7 +332,7 @@ export default function AdminAbout() {
                 <div className="mt-2">
                   <Label className="text-white text-sm">Заголовок секции</Label>
                   <Input
-                    value={aboutData.history.title}
+                    value={aboutData?.history?.title || ''}
                     onChange={(e) =>
                       setAboutData({
                         ...aboutData,
@@ -337,11 +350,11 @@ export default function AdminAbout() {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {aboutData.history.content.map((paragraph, index) => (
+            {aboutData?.history?.content?.map((paragraph, index) => (
               <div key={index} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label className="text-white">Абзац {index + 1}</Label>
-                  {aboutData.history.content.length > 1 && (
+                  {(aboutData?.history?.content?.length || 0) > 1 && (
                     <Button
                       onClick={() => removeHistoryParagraph(index)}
                       size="sm"
@@ -372,7 +385,7 @@ export default function AdminAbout() {
                 <div className="mt-2">
                   <Label className="text-white text-sm">Заголовок секции</Label>
                   <Input
-                    value={aboutData.principles.title}
+                    value={aboutData?.principles?.title || ''}
                     onChange={(e) =>
                       setAboutData({
                         ...aboutData,
@@ -390,7 +403,7 @@ export default function AdminAbout() {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {aboutData.principles.items.map((principle, index) => (
+            {aboutData?.principles?.items?.map((principle, index) => (
               <div key={index} className="p-4 bg-slate-700/50 rounded-lg space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-white font-medium">Принцип {index + 1}</h4>
@@ -407,7 +420,7 @@ export default function AdminAbout() {
                   <div>
                     <Label className="text-white">Заголовок</Label>
                     <Input
-                      value={principle.title}
+                      value={principle?.title || ''}
                       onChange={(e) => updatePrinciple(index, "title", e.target.value)}
                       className="bg-slate-600 border-slate-500 text-white"
                     />
@@ -415,7 +428,7 @@ export default function AdminAbout() {
                   <div className="md:col-span-2">
                     <Label className="text-white">Описание</Label>
                     <Textarea
-                      value={principle.description}
+                      value={principle?.description || ''}
                       onChange={(e) => updatePrinciple(index, "description", e.target.value)}
                       className="bg-slate-600 border-slate-500 text-white"
                       rows={2}
@@ -436,7 +449,7 @@ export default function AdminAbout() {
                 <div className="mt-2">
                   <Label className="text-white text-sm">Заголовок секции</Label>
                   <Input
-                    value={aboutData.services.title}
+                    value={aboutData?.services?.title || ''}
                     onChange={(e) =>
                       setAboutData({
                         ...aboutData,
@@ -454,7 +467,7 @@ export default function AdminAbout() {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {aboutData.services.items.map((service, index) => (
+            {aboutData?.services?.items?.map((service, index) => (
               <div key={index} className="p-4 bg-slate-700/50 rounded-lg space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-white font-medium">Услуга {index + 1}</h4>
@@ -471,7 +484,7 @@ export default function AdminAbout() {
                   <div>
                     <Label className="text-white">Заголовок</Label>
                     <Input
-                      value={service.title}
+                      value={service?.title || ''}
                       onChange={(e) => updateService(index, "title", e.target.value)}
                       className="bg-slate-600 border-slate-500 text-white"
                     />
@@ -479,7 +492,7 @@ export default function AdminAbout() {
                   <div className="md:col-span-2">
                     <Label className="text-white">Описание</Label>
                     <Textarea
-                      value={service.description}
+                      value={service?.description || ''}
                       onChange={(e) => updateService(index, "description", e.target.value)}
                       className="bg-slate-600 border-slate-500 text-white"
                       rows={2}
@@ -500,7 +513,7 @@ export default function AdminAbout() {
             <div>
               <Label className="text-white">Расчетный счет</Label>
               <Input
-                value={aboutData.bankDetails.account}
+                value={aboutData?.bankDetails?.account || ''}
                 onChange={(e) =>
                   setAboutData({
                     ...aboutData,
@@ -513,7 +526,7 @@ export default function AdminAbout() {
             <div>
               <Label className="text-white">Банк</Label>
               <Input
-                value={aboutData.bankDetails.bankName}
+                value={aboutData?.bankDetails?.bankName || ''}
                 onChange={(e) =>
                   setAboutData({
                     ...aboutData,
@@ -526,7 +539,7 @@ export default function AdminAbout() {
             <div>
               <Label className="text-white">БИК</Label>
               <Input
-                value={aboutData.bankDetails.bik}
+                value={aboutData?.bankDetails?.bik || ''}
                 onChange={(e) =>
                   setAboutData({
                     ...aboutData,
@@ -539,7 +552,7 @@ export default function AdminAbout() {
             <div>
               <Label className="text-white">Адрес банка</Label>
               <Input
-                value={aboutData.bankDetails.bankAddress}
+                value={aboutData?.bankDetails?.bankAddress || ''}
                 onChange={(e) =>
                   setAboutData({
                     ...aboutData,

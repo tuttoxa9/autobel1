@@ -34,14 +34,21 @@ export default function AboutPage() {
       const aboutDoc = await getDoc(doc(db, "pages", "about"))
       if (aboutDoc.exists()) {
         const data = aboutDoc.data()
-        setAboutData({
-          ...aboutData,
+
+        // Merge data with proper null checks
+        setAboutData(prev => ({
+          ...prev,
           ...data,
-          stats: data.stats?.map((stat, index) => ({
+          stats: data?.stats?.map((stat, index) => ({
             ...stat,
             icon: [Users, Award, Shield, Clock][index] || Users
-          })) || aboutData.stats
-        })
+          })) || prev.stats,
+          history: data?.history || prev.history,
+          principles: data?.principles || prev.principles,
+          services: data?.services || prev.services,
+          companyInfo: data?.companyInfo || prev.companyInfo,
+          bankDetails: data?.bankDetails || prev.bankDetails
+        }))
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
@@ -50,7 +57,7 @@ export default function AboutPage() {
 
   useEffect(() => {
     loadAboutData()
-  }, [loadAboutData])
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -79,14 +86,14 @@ export default function AboutPage() {
 
         {/* Статистика */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-12">
-          {aboutData.stats.map((stat, index) => (
+          {aboutData?.stats?.map((stat, index) => (
             <Card key={index} className="border-0 shadow-sm bg-gradient-to-br from-white to-gray-50/80">
               <CardContent className="p-3 lg:p-6 text-center">
                 <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-2 lg:mb-3 shadow-md">
-                  <stat.icon className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
+                  {stat?.icon && <stat.icon className="h-5 w-5 lg:h-6 lg:w-6 text-white" />}
                 </div>
-                <div className="text-lg lg:text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                <div className="text-xs lg:text-sm text-gray-600 leading-tight">{stat.label}</div>
+                <div className="text-lg lg:text-2xl font-bold text-gray-900 mb-1">{stat?.value || ''}</div>
+                <div className="text-xs lg:text-sm text-gray-600 leading-tight">{stat?.label || ''}</div>
               </CardContent>
             </Card>
           ))}
@@ -127,7 +134,7 @@ export default function AboutPage() {
               {aboutData.principles?.title || "Наши принципы"}
             </h2>
             <div className="space-y-6">
-              {aboutData.principles?.items ? aboutData.principles.items.map((principle, index) => {
+              {aboutData?.principles?.items ? aboutData.principles.items.map((principle, index) => {
                 const getIcon = (iconName: string) => {
                   switch (iconName) {
                     case "shield": return Shield
@@ -136,7 +143,7 @@ export default function AboutPage() {
                     default: return Shield
                   }
                 }
-                const IconComponent = getIcon(principle.icon)
+                const IconComponent = getIcon(principle?.icon || 'shield')
                 const getIconColor = (index: number) => {
                   const colors = ["blue", "green", "yellow"]
                   return colors[index % colors.length]
@@ -149,8 +156,8 @@ export default function AboutPage() {
                       <IconComponent className={`h-4 w-4 text-${color}-600`} />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{principle.title}</h3>
-                      <p className="text-gray-600">{principle.description}</p>
+                      <h3 className="font-semibold text-gray-900 mb-2">{principle?.title || ''}</h3>
+                      <p className="text-gray-600">{principle?.description || ''}</p>
                     </div>
                   </div>
                 )
@@ -204,7 +211,7 @@ export default function AboutPage() {
             {aboutData.services?.title || "Наши услуги"}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            {aboutData.services?.items ? aboutData.services.items.map((service, index) => {
+            {aboutData?.services?.items ? aboutData.services.items.map((service, index) => {
               const getIcon = (iconName: string) => {
                 switch (iconName) {
                   case "shield": return Shield
@@ -213,7 +220,7 @@ export default function AboutPage() {
                   default: return Shield
                 }
               }
-              const IconComponent = getIcon(service.icon)
+              const IconComponent = getIcon(service?.icon || 'shield')
               const getGradientColor = (index: number) => {
                 const colors = [
                   { from: "blue-500", to: "blue-600", bg: "blue-50" },
@@ -225,14 +232,14 @@ export default function AboutPage() {
               const colors = getGradientColor(index)
 
               return (
-                <Card key={index} className={`border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-${colors.bg} to-white ${index === 2 && aboutData.services.items.length === 3 ? 'md:col-span-3 lg:col-span-1' : ''}`}>
+                <Card key={index} className={`border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-${colors.bg} to-white ${index === 2 && aboutData?.services?.items?.length === 3 ? 'md:col-span-3 lg:col-span-1' : ''}`}>
                   <CardContent className="p-4 lg:p-6 text-center">
                     <div className={`w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-${colors.from} to-${colors.to} rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
                       <IconComponent className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
                     </div>
-                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">{service.title}</h3>
+                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">{service?.title || ''}</h3>
                     <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                      {service.description}
+                      {service?.description || ''}
                     </p>
                   </CardContent>
                 </Card>
@@ -288,16 +295,16 @@ export default function AboutPage() {
                 <h3 className="font-semibold text-gray-900 mb-4">Общая информация</h3>
                 <div className="space-y-2 text-gray-600">
                   <p>
-                    <span className="font-medium">Полное наименование:</span> {aboutData.companyInfo.fullName}
+                    <span className="font-medium">Полное наименование:</span> {aboutData?.companyInfo?.fullName || ''}
                   </p>
                   <p>
-                    <span className="font-medium">УНП:</span> {aboutData.companyInfo.unp}
+                    <span className="font-medium">УНП:</span> {aboutData?.companyInfo?.unp || ''}
                   </p>
                   <p>
-                    <span className="font-medium">Дата регистрации:</span> {aboutData.companyInfo.registrationDate}
+                    <span className="font-medium">Дата регистрации:</span> {aboutData?.companyInfo?.registrationDate || ''}
                   </p>
                   <p>
-                    <span className="font-medium">Юридический адрес:</span> {aboutData.companyInfo.legalAddress}
+                    <span className="font-medium">Юридический адрес:</span> {aboutData?.companyInfo?.legalAddress || ''}
                   </p>
                 </div>
               </div>
@@ -305,16 +312,16 @@ export default function AboutPage() {
                 <h3 className="font-semibold text-gray-900 mb-4">Банковские реквизиты</h3>
                 <div className="space-y-2 text-gray-600">
                   <p>
-                    <span className="font-medium">Расчетный счет:</span> {aboutData.bankDetails.account}
+                    <span className="font-medium">Расчетный счет:</span> {aboutData?.bankDetails?.account || ''}
                   </p>
                   <p>
-                    <span className="font-medium">Банк:</span> {aboutData.bankDetails.bankName}
+                    <span className="font-medium">Банк:</span> {aboutData?.bankDetails?.bankName || ''}
                   </p>
                   <p>
-                    <span className="font-medium">БИК:</span> {aboutData.bankDetails.bik}
+                    <span className="font-medium">БИК:</span> {aboutData?.bankDetails?.bik || ''}
                   </p>
                   <p>
-                    <span className="font-medium">Адрес банка:</span> {aboutData.bankDetails.bankAddress}
+                    <span className="font-medium">Адрес банка:</span> {aboutData?.bankDetails?.bankAddress || ''}
                   </p>
                 </div>
               </div>
