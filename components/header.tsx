@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -215,7 +216,14 @@ export default function Header() {
 
         {/* Логотип */}
         <Link href="/" className="flex items-center space-x-3">
-          <span className="font-display font-bold text-base sm:text-xl text-gray-900 tracking-tight">Белавто Центр</span>
+          <Image
+            src="/logo4.png"
+            alt="Белавто Центр"
+            width={120}
+            height={40}
+            className="h-8 w-auto sm:h-10"
+            priority
+          />
         </Link>
 
         {/* Десктопное меню */}
