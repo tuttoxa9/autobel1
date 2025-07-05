@@ -479,27 +479,52 @@ export default function CreditPage() {
                 <p className="text-gray-600">Работаем с ведущими банками Беларуси</p>
               </div>
 
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {settings?.partners?.map((partner, index) => (
-                  <Card key={index} className="hover:shadow-md transition-shadow">
+                  <Card key={index} className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-l-4 border-l-blue-500 hover:border-l-blue-600">
                     <CardContent className="p-4">
                       <div className="flex items-center space-x-3">
-                        <img
-                          src={partner.logoUrl || "/placeholder.svg"}
-                          alt={partner.name}
-                          className="h-8 w-12 object-contain flex-shrink-0"
-                        />
-                        <div className="flex-1">
-                          <h3 className="text-sm font-semibold mb-1">{partner.name}</h3>
-                          <div className="flex space-x-4 text-xs text-gray-600">
-                            <span>от {partner.minRate}%</span>
-                            <span>до {partner.maxTerm} мес.</span>
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:from-blue-100 group-hover:to-blue-200 transition-colors">
+                          <img
+                            src={partner.logoUrl || "/placeholder.svg"}
+                            alt={partner.name}
+                            className="h-8 w-10 object-contain"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+                            {partner.name}
+                          </h3>
+                          <div className="flex items-center space-x-3 text-sm">
+                            <div className="flex items-center space-x-1">
+                              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                              <span className="text-gray-600">от {partner.minRate}%</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                              <span className="text-gray-600">до {partner.maxTerm} мес.</span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+
+              {/* Дополнительная информация */}
+              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Building className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Персональные условия</h4>
+                    <p className="text-sm text-gray-600">
+                      Обращайтесь к нам для получения индивидуального предложения с учётом ваших потребностей
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
