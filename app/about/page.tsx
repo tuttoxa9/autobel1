@@ -187,30 +187,30 @@ export default function AboutPage() {
 
         {/* Услуги - Компактный современный дизайн */}
         <div className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 lg:mb-12">
+            <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-3 lg:mb-4">
               {aboutData.services?.title || "Наши услуги"}
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base lg:text-lg text-gray-600 max-w-2xl mx-auto">
               Полный спектр услуг для комфортной покупки автомобиля
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {aboutData?.services?.items?.map((service, index) => (
               <div key={index} className="group">
-                <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-300 h-full">
+                <div className="bg-white border border-gray-200 rounded-lg lg:rounded-xl p-4 lg:p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-300 h-full">
                   {/* Галочка */}
-                  <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-gray-200 transition-colors duration-300">
-                    <Check className="h-5 w-5 text-gray-600" />
+                  <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gray-100 rounded-md lg:rounded-lg flex items-center justify-center mb-3 lg:mb-4 group-hover:bg-gray-200 transition-colors duration-300">
+                    <Check className="h-4 w-4 lg:h-5 lg:w-5 text-gray-600" />
                   </div>
 
                   {/* Контент */}
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+                  <div className="space-y-2 lg:space-y-3">
+                    <h3 className="text-base lg:text-lg font-semibold text-gray-900 leading-tight">
                       {service?.title || ''}
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-gray-600 text-xs lg:text-sm leading-relaxed">
                       {service?.description || ''}
                     </p>
                   </div>
