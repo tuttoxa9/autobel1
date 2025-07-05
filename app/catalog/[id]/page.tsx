@@ -557,25 +557,7 @@ export default function CarDetailsPage() {
                   </div>
                 </div>
 
-                {/* Дополнительные характеристики в компактном виде */}
-                {car.specifications && (
-                  <div className="mt-4 space-y-2">
-                    <h4 className="text-sm font-semibold text-slate-700 border-b border-slate-200 pb-1">Подробные характеристики</h4>
-                    <div className="grid grid-cols-1 gap-1.5">
-                      {Object.entries(car.specifications).slice(0, 4).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center py-1.5 px-2 bg-slate-50 rounded text-xs">
-                          <span className="text-slate-600 font-medium">{key}</span>
-                          <span className="text-slate-900 font-semibold">{value}</span>
-                        </div>
-                      ))}
-                      {Object.entries(car.specifications).length > 4 && (
-                        <button className="text-blue-600 text-xs font-medium hover:text-blue-800 text-left py-1 px-2">
-                          Показать все характеристики →
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )}
+
               </div>
 
               {/* Вкладки (перемещены после характеристик) */}
@@ -704,20 +686,7 @@ export default function CarDetailsPage() {
                   </div>
                 </div>
 
-                {/* Дополнительные характеристики для десктопа */}
-                {car.specifications && (
-                  <div className="mt-6 space-y-3">
-                    <h4 className="text-base font-semibold text-slate-700 border-b border-slate-200 pb-2">Подробные характеристики</h4>
-                    <div className="space-y-2">
-                      {Object.entries(car.specifications).slice(0, 6).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center py-2 px-3 bg-slate-50 rounded-lg text-sm">
-                          <span className="text-slate-600 font-medium">{key}</span>
-                          <span className="text-slate-900 font-semibold">{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+
               </div>
 
               {/* Кнопки действий */}
