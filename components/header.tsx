@@ -161,6 +161,7 @@ export default function Header() {
             className="h-10 w-auto sm:h-12"
             priority
           />
+          <span className="font-display font-bold text-base sm:text-xl text-gray-900 tracking-tight">Белавто Центр</span>
         </Link>
 
         {/* Мобильное меню (справа) */}
