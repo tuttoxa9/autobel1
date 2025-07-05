@@ -5,8 +5,7 @@ import "./globals.css"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import MobileDock from "@/components/mobile-dock"
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { fetchUsdBynRate } from "@/lib/utils";
+import { UsdBynRateProvider } from "@/components/providers/usd-byn-rate-provider"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -17,9 +16,6 @@ const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
   variable: '--font-montserrat',
 })
-
-const UsdBynRateContext = createContext<number | null>(null);
-export const useUsdBynRate = () => useContext(UsdBynRateContext);
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://autobelcenter.by'),
@@ -103,22 +99,18 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [usdBynRate, setUsdBynRate] = useState<number | null>(null);
-
-  useEffect(() => {
-    fetchUsdBynRate().then(setUsdBynRate);
-  }, []);
-
   return (
-    <UsdBynRateContext.Provider value={usdBynRate}>
-      <div className={`${inter.variable} ${montserrat.variable} font-sans min-h-screen bg-white flex flex-col`}>
-        <Header />
-        <main className="flex-1 flex flex-col">
-          {children}
-        </main>
-        <Footer />
-        <MobileDock />
-      </div>
-    </UsdBynRateContext.Provider>
+    <html lang="ru" className={`${inter.variable} ${montserrat.variable}`}>
+      <body className="font-sans min-h-screen bg-white flex flex-col">
+        <UsdBynRateProvider>
+          <Header />
+          <main className="flex-1 flex flex-col">
+            {children}
+          </main>
+          <Footer />
+          <MobileDock />
+        </UsdBynRateProvider>
+      </body>
+    </html>
   )
 }
