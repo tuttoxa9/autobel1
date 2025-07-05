@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calculator, CreditCard, CheckCircle, Building, Percent, Clock } from "lucide-react"
+import { Calculator, CreditCard, CheckCircle, Building, Percent, Clock, Loader2 } from "lucide-react"
 import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -31,49 +31,8 @@ interface CreditPageSettings {
 }
 
 export default function CreditPage() {
-  const [settings, setSettings] = useState<CreditPageSettings>({
-    title: "Автокредит на выгодных условиях",
-    subtitle: "Получите кредит на автомобиль мечты уже сегодня",
-    description:
-      "Мы работаем с ведущими банками Беларуси и поможем вам получить автокредит на самых выгодных условиях. Минимальный пакет документов, быстрое рассмотрение заявки.",
-    benefits: [
-      {
-        icon: "percent",
-        title: "Низкие процентные ставки",
-        description: "От 12% годовых в белорусских рублях",
-      },
-      {
-        icon: "clock",
-        title: "Быстрое оформление",
-        description: "Рассмотрение заявки в течение 1 дня",
-      },
-      {
-        icon: "building",
-        title: "Надежные банки-партнеры",
-        description: "Работаем только с проверенными банками",
-      },
-    ],
-    partners: [
-      {
-        name: "Беларусбанк",
-        logoUrl: "/placeholder.svg?height=60&width=120",
-        minRate: 12,
-        maxTerm: 84,
-      },
-      {
-        name: "Альфа-Банк",
-        logoUrl: "/placeholder.svg?height=60&width=120",
-        minRate: 13,
-        maxTerm: 72,
-      },
-      {
-        name: "БПС-Сбербанк",
-        logoUrl: "/placeholder.svg?height=60&width=120",
-        minRate: 14,
-        maxTerm: 60,
-      },
-    ],
-  })
+  const [settings, setSettings] = useState<CreditPageSettings | null>(null)
+  const [loading, setLoading] = useState(true)
 
   const [calculator, setCalculator] = useState({
     carPrice: [50000],
@@ -94,17 +53,30 @@ export default function CreditPage() {
   })
 
   useEffect(() => {
-    loadPageSettings()
+    loadSettings()
   }, [])
 
-  const loadPageSettings = async () => {
+  const loadSettings = async () => {
     try {
-      const pageDoc = await getDoc(doc(db, "pages", "credit"))
-      if (pageDoc.exists()) {
-        setSettings(pageDoc.data() as CreditPageSettings)
+      const doc_ref = doc(db, "pages", "credit")
+      const doc_snap = await getDoc(doc_ref)
+
+      if (doc_snap.exists()) {
+        setSettings(doc_snap.data() as CreditPageSettings)
+      } else {
+        // Default fallback data only if no data exists
+        setSettings({
+          title: "Автокредит на выгодных условиях",
+          subtitle: "Получите кредит на автомобиль мечты уже сегодня",
+          description: "Мы работаем с ведущими банками Беларуси и поможем вам получить автокредит на самых выгодных условиях.",
+          benefits: [],
+          partners: []
+        })
       }
     } catch (error) {
-      console.error("Ошибка загрузки настроек страницы кредита:", error)
+      console.error("Ошибка загрузки настроек:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -202,6 +174,28 @@ export default function CreditPage() {
   const totalAmount = monthlyPayment * calculator.loanTerm[0]
   const overpayment = totalAmount - (calculator.carPrice[0] - calculator.downPayment[0])
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Загружаем информацию о кредитах</h2>
+          <p className="text-gray-600">Подготавливаем для вас самые выгодные предложения...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!settings) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Не удалось загрузить информацию о кредитах</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container px-4 py-8">
@@ -220,9 +214,9 @@ export default function CreditPage() {
 
         {/* Заголовок */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{settings.title}</h1>
-          <p className="text-xl text-gray-600 mb-6">{settings.subtitle}</p>
-          <p className="text-gray-700 max-w-3xl mx-auto">{settings.description}</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">{settings?.title}</h1>
+          <p className="text-xl text-gray-600 mb-6">{settings?.subtitle}</p>
+          <p className="text-gray-700 max-w-3xl mx-auto">{settings?.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -410,7 +404,7 @@ export default function CreditPage() {
                           <SelectValue placeholder="Выберите банк" />
                         </SelectTrigger>
                         <SelectContent>
-                          {settings.partners && settings.partners.map((partner) => (
+                          {settings?.partners?.map((partner) => (
                             <SelectItem
                               key={partner.name}
                               value={partner.name.toLowerCase().replace(/[\s-]/g, '')}
@@ -451,7 +445,7 @@ export default function CreditPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings.benefits && settings.benefits.map((benefit, index) => {
+            {settings?.benefits?.map((benefit, index) => {
               const IconComponent = getIcon(benefit.icon)
               return (
                 <div key={index} className="text-center group">
@@ -474,7 +468,7 @@ export default function CreditPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings.partners && settings.partners.map((partner, index) => (
+            {settings?.partners?.map((partner, index) => (
               <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <img

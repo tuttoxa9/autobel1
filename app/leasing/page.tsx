@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield } from "lucide-react"
+import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, Loader2 } from "lucide-react"
 import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -31,49 +31,8 @@ interface LeasingPageSettings {
 }
 
 export default function LeasingPage() {
-  const [settings, setSettings] = useState<LeasingPageSettings>({
-    title: "Лизинг автомобилей для бизнеса",
-    subtitle: "Выгодное решение для предпринимателей и юридических лиц",
-    description:
-      "Лизинг автомобилей - это удобный способ получить транспорт для бизнеса без больших первоначальных затрат. Налоговые льготы, гибкие условия и возможность выкупа.",
-    benefits: [
-      {
-        icon: "trending-down",
-        title: "Низкий первоначальный взнос",
-        description: "От 10% от стоимости автомобиля",
-      },
-      {
-        icon: "shield",
-        title: "Налоговые льготы",
-        description: "Лизинговые платежи включаются в расходы",
-      },
-      {
-        icon: "building",
-        title: "Для юридических лиц",
-        description: "Специальные условия для бизнеса",
-      },
-    ],
-    leasingCompanies: [
-      {
-        name: "БелЛизинг",
-        logoUrl: "/placeholder.svg?height=60&width=120",
-        minAdvance: 10,
-        maxTerm: 60,
-      },
-      {
-        name: "Лизинг-Центр",
-        logoUrl: "/placeholder.svg?height=60&width=120",
-        minAdvance: 15,
-        maxTerm: 48,
-      },
-      {
-        name: "АвтоЛизинг",
-        logoUrl: "/placeholder.svg?height=60&width=120",
-        minAdvance: 20,
-        maxTerm: 36,
-      },
-    ],
-  })
+  const [settings, setSettings] = useState<LeasingPageSettings | null>(null)
+  const [loading, setLoading] = useState(true)
 
   const [calculator, setCalculator] = useState({
     carPrice: [80000],
@@ -96,17 +55,30 @@ export default function LeasingPage() {
   })
 
   useEffect(() => {
-    loadPageSettings()
+    loadSettings()
   }, [])
 
-  const loadPageSettings = async () => {
+  const loadSettings = async () => {
     try {
-      const pageDoc = await getDoc(doc(db, "pages", "leasing"))
-      if (pageDoc.exists()) {
-        setSettings(pageDoc.data() as LeasingPageSettings)
+      const doc_ref = doc(db, "pages", "leasing")
+      const doc_snap = await getDoc(doc_ref)
+
+      if (doc_snap.exists()) {
+        setSettings(doc_snap.data() as LeasingPageSettings)
+      } else {
+        // Default fallback data only if no data exists
+        setSettings({
+          title: "Лизинг автомобилей для бизнеса",
+          subtitle: "Выгодное решение для предпринимателей и юридических лиц",
+          description: "Лизинг автомобилей - это удобный способ получить транспорт для бизнеса без больших первоначальных затрат.",
+          benefits: [],
+          leasingCompanies: []
+        })
       }
     } catch (error) {
-      console.error("Ошибка загрузки настроек страницы лизинга:", error)
+      console.error("Ошибка загрузки настроек:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -208,6 +180,28 @@ export default function LeasingPage() {
   const residualValue = (calculator.carPrice[0] * calculator.residualValue[0]) / 100
   const totalPayments = monthlyPayment * calculator.leasingTerm[0] + calculator.advance[0]
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Загружаем информацию о лизинге</h2>
+          <p className="text-gray-600">Подбираем лучшие условия для вашего бизнеса...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!settings) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Не удалось загрузить информацию о лизинге</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container px-4 py-8">
@@ -226,9 +220,9 @@ export default function LeasingPage() {
 
         {/* Заголовок */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{settings.title}</h1>
-          <p className="text-xl text-gray-600 mb-6">{settings.subtitle}</p>
-          <p className="text-gray-700 max-w-3xl mx-auto">{settings.description}</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">{settings?.title}</h1>
+          <p className="text-xl text-gray-600 mb-6">{settings?.subtitle}</p>
+          <p className="text-gray-700 max-w-3xl mx-auto">{settings?.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -471,7 +465,7 @@ export default function LeasingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings.benefits.map((benefit, index) => {
+            {settings?.benefits?.map((benefit, index) => {
               const IconComponent = getIcon(benefit.icon)
               return (
                 <div key={index} className="text-center group">
@@ -494,7 +488,7 @@ export default function LeasingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings.leasingCompanies.map((company, index) => (
+            {settings?.leasingCompanies?.map((company, index) => (
               <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <img
