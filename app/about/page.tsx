@@ -185,15 +185,20 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Услуги */}
+        {/* Услуги - Новый минималистичный дизайн */}
         <div className="mb-16">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
-            {aboutData.services?.title || "Наши услуги"}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              {aboutData.services?.title || "Наши услуги"}
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Комплексные решения для покупки автомобиля
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {aboutData?.services?.items?.map((service, index) => {
               const getIcon = (iconName: string) => {
-                console.log(`Услуга ${index + 1}: иконка = "${iconName}", тип = ${typeof iconName}`);
                 switch (iconName) {
                   case "shield": return Shield
                   case "award": return Award
@@ -218,40 +223,31 @@ export default function AboutPage() {
                   case "trendingup": return TrendingUp
                   case "calculator": return Calculator
                   case "handshake": return Handshake
-                  default:
-                    console.log(`НЕИЗВЕСТНАЯ ИКОНКА для услуги ${index + 1}: "${iconName}"`);
-                    return Shield
+                  default: return Shield
                 }
               }
-              // Принудительная проверка для отладки
-              let iconToUse = service?.icon || 'shield';
-              if (index === 2 && !service?.icon) {
-                console.log("ПРИНУДИТЕЛЬНО устанавливаем иконку award для третьей услуги");
-                iconToUse = 'award';
-              }
-              const IconComponent = getIcon(iconToUse)
-              const getGradientColor = (index: number) => {
-                const colors = [
-                  { from: "blue-500", to: "blue-600", bg: "blue-50" },
-                  { from: "green-500", to: "green-600", bg: "green-50" },
-                  { from: "amber-500", to: "amber-600", bg: "amber-50" }
-                ]
-                return colors[index % colors.length]
-              }
-              const colors = getGradientColor(index)
+
+              const IconComponent = getIcon(service?.icon || 'shield')
 
               return (
-                <Card key={index} className={`border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-${colors.bg} to-white ${index === 2 && aboutData?.services?.items?.length === 3 ? 'md:col-span-3 lg:col-span-1' : ''}`}>
-                  <CardContent className="p-4 lg:p-6 text-center">
-                    <div className={`w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-${colors.from} to-${colors.to} rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
-                      <IconComponent className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
+                <div key={index} className="group">
+                  <div className="bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-lg transition-shadow duration-300 h-full">
+                    {/* Иконка */}
+                    <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-gray-100 transition-colors duration-300">
+                      <IconComponent className="h-8 w-8 text-gray-700" />
                     </div>
-                    <h3 className="text-lg lg:text-xl font-semibold mb-2 text-gray-900">{service?.title || ''}</h3>
-                    <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                      {service?.description || ''}
-                    </p>
-                  </CardContent>
-                </Card>
+
+                    {/* Контент */}
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold text-gray-900 leading-tight">
+                        {service?.title || ''}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        {service?.description || ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               )
             })}
           </div>

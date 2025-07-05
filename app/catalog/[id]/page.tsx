@@ -142,6 +142,9 @@ export default function CarDetailsPage() {
   const [downPayment, setDownPayment] = useState([20000])
   const [loanTerm, setLoanTerm] = useState([60])
   const [selectedBank, setSelectedBank] = useState<PartnerBank | null>(null)
+  // Touch events для свайпов на мобильных устройствах
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
 
   useEffect(() => {
     if (params.id) {
@@ -321,6 +324,32 @@ export default function CarDetailsPage() {
     setCurrentImageIndex((prev) => (prev - 1 + (car?.imageUrls?.length || 1)) % (car?.imageUrls?.length || 1))
   }
 
+  // Минимальное расстояние для свайпа
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe && car?.imageUrls && car.imageUrls.length > 1) {
+      nextImage()
+    }
+    if (isRightSwipe && car?.imageUrls && car.imageUrls.length > 1) {
+      prevImage()
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex items-center justify-center">
@@ -422,30 +451,19 @@ export default function CarDetailsPage() {
             <div className="lg:col-span-7 space-y-4">
               {/* Галерея изображений */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                <div className="relative h-72 sm:h-96 lg:h-[500px]">
+                <div
+                  className="relative h-72 sm:h-96 lg:h-[500px] select-none"
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
+                >
                   <Image
                     src={getCachedImageUrl(car.imageUrls?.[currentImageIndex] || "/placeholder.svg")}
                     alt={`${car.make} ${car.model}`}
                     fill
                     className="object-contain bg-gradient-to-br from-slate-50 to-slate-100"
                   />
-                  {/* Кнопки избранное и поделиться */}
-                  <div className="absolute top-4 right-4 flex space-x-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="bg-white/90 hover:bg-white text-slate-700 backdrop-blur-sm rounded-full w-10 h-10 p-0"
-                    >
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="bg-white/90 hover:bg-white text-slate-700 backdrop-blur-sm rounded-full w-10 h-10 p-0"
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+
                   {/* Навигация по фотографиям */}
                   {car.imageUrls && car.imageUrls.length > 1 && (
                     <>
@@ -521,7 +539,9 @@ export default function CarDetailsPage() {
                   <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-center">
                     <Fuel className="h-4 w-4 text-slate-600 mx-auto mb-1" />
                     <div className="text-xs text-slate-600 font-medium mb-1">Двигатель</div>
-                    <div className="font-bold text-slate-900 text-xs">{car.engineVolume}л</div>
+                    <div className="font-bold text-slate-900 text-xs leading-tight">
+                      {car.engineVolume}л<br/>{car.fuelType}
+                    </div>
                   </div>
                   <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-center">
                     <Settings className="h-4 w-4 text-slate-600 mx-auto mb-1" />
@@ -559,9 +579,9 @@ export default function CarDetailsPage() {
               {/* Вкладки (перемещены после характеристик) */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
                 <Tabs defaultValue="description" className="w-full">
-                  <TabsList className="grid grid-cols-3 lg:grid-cols-4 bg-slate-50 rounded-t-xl p-1 w-full h-auto">
+                  <TabsList className="grid grid-cols-3 bg-slate-50 rounded-t-xl p-1 w-full h-auto">
                     <TabsTrigger value="description" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                      Описание
+                      Подробное описание
                     </TabsTrigger>
                     <TabsTrigger value="equipment" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
                       Комплектация
@@ -569,30 +589,33 @@ export default function CarDetailsPage() {
                     <TabsTrigger value="credit" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
                       Кредит
                     </TabsTrigger>
-                    <TabsTrigger value="specs" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis hidden lg:block">
-                      Все характеристики
-                    </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="description" className="p-4 min-h-[200px]">
-                    <div className="prose prose-slate max-w-none">
-                      <h4 className="text-lg font-semibold text-slate-900 mb-3">Описание автомобиля</h4>
-                      <p className="text-slate-700 text-sm leading-relaxed">{car.description}</p>
-                    </div>
-                  </TabsContent>
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="text-lg font-semibold text-slate-900 mb-3">Описание автомобиля</h4>
+                        <p className="text-slate-700 text-sm leading-relaxed mb-4">{car.description}</p>
+                      </div>
 
-                  <TabsContent value="specs" className="p-4 min-h-[200px]">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {car.specifications ? Object.entries(car.specifications).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center py-2 px-3 bg-slate-50 rounded-lg text-sm">
-                          <span className="text-slate-600 font-medium">{key}</span>
-                          <span className="text-slate-900 font-semibold">{value}</span>
+                      {/* Интегрированные характеристики */}
+                      {car.specifications && (
+                        <div>
+                          <h4 className="text-lg font-semibold text-slate-900 mb-3">Технические характеристики</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {Object.entries(car.specifications).map(([key, value]) => (
+                              <div key={key} className="flex justify-between items-center py-2 px-3 bg-slate-50 rounded-lg text-sm">
+                                <span className="text-slate-600 font-medium">{key}</span>
+                                <span className="text-slate-900 font-semibold">{value}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      )) : (
-                        <p className="text-slate-500 col-span-2 text-center py-4">Характеристики не указаны</p>
                       )}
                     </div>
                   </TabsContent>
+
+
 
                   <TabsContent value="equipment" className="p-4 min-h-[200px]">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
