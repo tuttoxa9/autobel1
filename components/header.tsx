@@ -102,54 +102,17 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container flex h-16 items-center justify-between px-4">
-        {/* Кнопка звонка для мобильных (слева) */}
-        <div className="md:hidden">
-          <Dialog open={isCallbackOpen} onOpenChange={(open) => { setIsCallbackOpen(open); if (!open) setPhoneLoading(false); }}>
-            <DialogTrigger asChild>
-              <Button
-                size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-xs w-8 h-8 p-0 rounded-full"
-                onClick={() => setPhoneLoading(true)}
-              >
-                {phoneLoading ? (
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                ) : (
-                  <Phone className="h-4 w-4" />
-                )}
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Заказать обратный звонок</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleCallbackSubmit} className="space-y-4">
-                <div>
-                  <Label htmlFor="name">Ваше имя</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Введите ваше имя"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="phone">Номер телефона</Label>
-                  <Input
-                    id="phone"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: formatPhoneNumber(e.target.value) })}
-                    placeholder="+375 XX XXX-XX-XX"
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  Заказать звонок
-                </Button>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+        {/* Логотип */}
+        <Link href="/" className="flex items-center space-x-3">
+          <Image
+            src="/logo4.png"
+            alt="Белавто Центр"
+            width={140}
+            height={46}
+            className="h-10 w-auto sm:h-12"
+            priority
+          />
+        </Link>
 
         {/* Мобильное меню (теперь справа) */}
         <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -214,18 +177,6 @@ export default function Header() {
           </SheetContent>
         </Sheet>
 
-        {/* Логотип */}
-        <Link href="/" className="flex items-center space-x-3">
-          <Image
-            src="/logo4.png"
-            alt="Белавто Центр"
-            width={120}
-            height={40}
-            className="h-8 w-auto sm:h-10"
-            priority
-          />
-        </Link>
-
         {/* Десктопное меню */}
         <nav className="hidden md:flex items-center space-x-8">
           {navigation.map((item) => (
@@ -240,6 +191,55 @@ export default function Header() {
             </Link>
           ))}
         </nav>
+
+        {/* Кнопка звонка для мобильных (слева) */}
+        <div className="md:hidden">
+          <Dialog open={isCallbackOpen} onOpenChange={(open) => { setIsCallbackOpen(open); if (!open) setPhoneLoading(false); }}>
+            <DialogTrigger asChild>
+              <Button
+                size="sm"
+                className="bg-white hover:bg-gray-50 border-2 border-black text-xs w-8 h-8 p-0 rounded-full"
+                onClick={() => setPhoneLoading(true)}
+              >
+                {phoneLoading ? (
+                  <Loader2 className="h-3 w-3 animate-spin text-black" />
+                ) : (
+                  <Phone className="h-4 w-4 text-black" />
+                )}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Заказать обратный звонок</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleCallbackSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="name">Ваше имя</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Введите ваше имя"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Номер телефона</Label>
+                  <Input
+                    id="phone"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: formatPhoneNumber(e.target.value) })}
+                    placeholder="+375 XX XXX-XX-XX"
+                    required
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Заказать звонок
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
 
         {/* Контакты и кнопка звонка для десктопа */}
         <div className="hidden md:flex items-center space-x-4">
