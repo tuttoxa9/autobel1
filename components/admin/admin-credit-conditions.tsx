@@ -9,14 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { Plus, Edit, Trash2, Save, GripVertical } from "lucide-react"
+import { Plus, Edit, Trash2, Save, GripVertical, Percent, Clock, Building, CreditCard, CheckCircle, DollarSign, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart, Shield, TrendingDown } from "lucide-react"
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
 interface CreditCondition {
   id: string
-  title: string
-  description: string
+  condition: string
   icon: string
   isActive: boolean
   order: number
@@ -30,10 +29,56 @@ export default function AdminCreditConditions() {
   const [editingCondition, setEditingCondition] = useState<CreditCondition | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case "percent":
+        return Percent
+      case "clock":
+        return Clock
+      case "building":
+        return Building
+      case "creditcard":
+        return CreditCard
+      case "checkcircle":
+        return CheckCircle
+      case "dollar-sign":
+        return DollarSign
+      case "file-text":
+        return FileText
+      case "users":
+        return Users
+      case "zap":
+        return Zap
+      case "award":
+        return Award
+      case "target":
+        return Target
+      case "briefcase":
+        return Briefcase
+      case "trending-up":
+        return TrendingUp
+      case "handshake":
+        return Handshake
+      case "check-square":
+        return CheckSquare
+      case "coins":
+        return Coins
+      case "timer":
+        return Timer
+      case "heart":
+        return Heart
+      case "shield":
+        return Shield
+      case "trending-down":
+        return TrendingDown
+      default:
+        return Percent
+    }
+  }
+
   const [form, setForm] = useState({
-    title: "",
-    description: "",
-    icon: "📋",
+    condition: "",
+    icon: "percent",
     isActive: true,
   })
 
@@ -99,9 +144,8 @@ export default function AdminCreditConditions() {
 
   const resetForm = () => {
     setForm({
-      title: "",
-      description: "",
-      icon: "📋",
+      condition: "",
+      icon: "percent",
       isActive: true,
     })
     setEditingCondition(null)
@@ -110,8 +154,7 @@ export default function AdminCreditConditions() {
   const handleEdit = (condition: CreditCondition) => {
     setEditingCondition(condition)
     setForm({
-      title: condition.title,
-      description: condition.description,
+      condition: condition.condition,
       icon: condition.icon,
       isActive: condition.isActive,
     })
@@ -172,37 +215,49 @@ export default function AdminCreditConditions() {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="title">Заголовок</Label>
-                <Input
-                  id="title"
-                  value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  placeholder="Например: Минимальный первоначальный взнос"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="description">Описание</Label>
+                <Label htmlFor="condition">Условие</Label>
                 <Textarea
-                  id="description"
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="Подробное описание условия"
+                  id="condition"
+                  value={form.condition}
+                  onChange={(e) => setForm({ ...form, condition: e.target.value })}
+                  placeholder="Введите условие кредитования"
                   rows={3}
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="icon">Иконка (эмодзи)</Label>
-                <Input
-                  id="icon"
+                <Label htmlFor="icon">Иконка</Label>
+                <Select
                   value={form.icon}
-                  onChange={(e) => setForm({ ...form, icon: e.target.value })}
-                  placeholder="📋"
-                  maxLength={2}
-                />
+                  onValueChange={(value) => setForm({ ...form, icon: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Выберите иконку" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="percent">Процент (Percent)</SelectItem>
+                    <SelectItem value="clock">Часы (Clock)</SelectItem>
+                    <SelectItem value="building">Здание (Building)</SelectItem>
+                    <SelectItem value="creditcard">Кредитная карта (CreditCard)</SelectItem>
+                    <SelectItem value="checkcircle">Галочка (CheckCircle)</SelectItem>
+                    <SelectItem value="dollar-sign">Доллар (DollarSign)</SelectItem>
+                    <SelectItem value="file-text">Документ (FileText)</SelectItem>
+                    <SelectItem value="users">Пользователи (Users)</SelectItem>
+                    <SelectItem value="zap">Молния (Zap)</SelectItem>
+                    <SelectItem value="award">Награда (Award)</SelectItem>
+                    <SelectItem value="target">Цель (Target)</SelectItem>
+                    <SelectItem value="briefcase">Портфель (Briefcase)</SelectItem>
+                    <SelectItem value="trending-up">Рост (TrendingUp)</SelectItem>
+                    <SelectItem value="handshake">Рукопожатие (Handshake)</SelectItem>
+                    <SelectItem value="check-square">Квадрат с галочкой (CheckSquare)</SelectItem>
+                    <SelectItem value="coins">Монеты (Coins)</SelectItem>
+                    <SelectItem value="timer">Таймер (Timer)</SelectItem>
+                    <SelectItem value="heart">Сердце (Heart)</SelectItem>
+                    <SelectItem value="shield">Щит (Shield)</SelectItem>
+                    <SelectItem value="trending-down">Падение (TrendingDown)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="flex items-center space-x-2">
@@ -240,11 +295,15 @@ export default function AdminCreditConditions() {
                   <GripVertical className="h-5 w-5 text-gray-400" />
                 </div>
 
-                <div className="text-2xl">{condition.icon}</div>
+                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+                  {(() => {
+                    const IconComponent = getIcon(condition.icon)
+                    return <IconComponent className="h-5 w-5 text-blue-600" />
+                  })()}
+                </div>
 
                 <div className="flex-1">
-                  <h3 className="font-semibold">{condition.title}</h3>
-                  <p className="text-sm text-gray-600">{condition.description}</p>
+                  <p className="text-sm text-gray-700">{condition.condition}</p>
                 </div>
 
                 <div className="flex items-center space-x-2">

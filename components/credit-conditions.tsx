@@ -6,12 +6,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { getCachedImageUrl } from "@/lib/image-cache"
+import { Percent, Clock, Building, CreditCard, CheckCircle, DollarSign, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart, Shield, TrendingDown } from "lucide-react"
 
 interface CreditCondition {
   id: string
-  title: string
-  description: string
-  icon?: string
+  condition: string
+  icon: string
   isActive: boolean
   order: number
   createdAt: Date
@@ -20,6 +20,53 @@ interface CreditCondition {
 export default function CreditConditions() {
   const [conditions, setConditions] = useState<CreditCondition[]>([])
   const [loading, setLoading] = useState(true)
+
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case "percent":
+        return Percent
+      case "clock":
+        return Clock
+      case "building":
+        return Building
+      case "creditcard":
+        return CreditCard
+      case "checkcircle":
+        return CheckCircle
+      case "dollar-sign":
+        return DollarSign
+      case "file-text":
+        return FileText
+      case "users":
+        return Users
+      case "zap":
+        return Zap
+      case "award":
+        return Award
+      case "target":
+        return Target
+      case "briefcase":
+        return Briefcase
+      case "trending-up":
+        return TrendingUp
+      case "handshake":
+        return Handshake
+      case "check-square":
+        return CheckSquare
+      case "coins":
+        return Coins
+      case "timer":
+        return Timer
+      case "heart":
+        return Heart
+      case "shield":
+        return Shield
+      case "trending-down":
+        return TrendingDown
+      default:
+        return Percent
+    }
+  }
 
   useEffect(() => {
     loadConditions()
@@ -80,19 +127,17 @@ export default function CreditConditions() {
           >
             <CardContent className="p-6">
               <div className="flex items-start space-x-4">
-                {condition.icon && (
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                      <span className="text-xl">{condition.icon}</span>
-                    </div>
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                    {(() => {
+                      const IconComponent = getIcon(condition.icon)
+                      return <IconComponent className="h-6 w-6 text-blue-600" />
+                    })()}
                   </div>
-                )}
+                </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    {condition.title}
-                  </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    {condition.description}
+                    {condition.condition}
                   </p>
                 </div>
               </div>

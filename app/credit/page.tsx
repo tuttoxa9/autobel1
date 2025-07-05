@@ -479,21 +479,21 @@ export default function CreditPage() {
                 <p className="text-gray-600">Работаем с ведущими банками Беларуси</p>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-3">
                 {settings?.partners?.map((partner, index) => (
-                  <Card key={index} className="hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex items-center space-x-4">
+                  <Card key={index} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-3">
                         <img
                           src={partner.logoUrl || "/placeholder.svg"}
                           alt={partner.name}
-                          className="h-12 w-16 object-contain flex-shrink-0"
+                          className="h-8 w-12 object-contain flex-shrink-0"
                         />
                         <div className="flex-1">
-                          <h3 className="text-lg font-semibold mb-1">{partner.name}</h3>
-                          <div className="space-y-1 text-sm text-gray-600">
-                            <p>Ставка от {partner.minRate}% годовых</p>
-                            <p>Срок до {partner.maxTerm} месяцев</p>
+                          <h3 className="text-sm font-semibold mb-1">{partner.name}</h3>
+                          <div className="flex space-x-4 text-xs text-gray-600">
+                            <span>от {partner.minRate}%</span>
+                            <span>до {partner.maxTerm} мес.</span>
                           </div>
                         </div>
                       </div>
