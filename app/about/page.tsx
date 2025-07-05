@@ -5,7 +5,7 @@ import Link from "next/link"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
-import { Shield, Users, Award, Clock } from "lucide-react"
+import { Shield, Users, Award, Clock, Car, Phone, MapPin, CheckCircle, Star, Wrench } from "lucide-react"
 import AboutPageSkeleton from "@/components/about-page-skeleton"
 
 export default function AboutPage() {
@@ -136,6 +136,13 @@ export default function AboutPage() {
                     case "shield": return Shield
                     case "award": return Award
                     case "users": return Users
+                    case "car": return Car
+                    case "phone": return Phone
+                    case "mappin": return MapPin
+                    case "clock": return Clock
+                    case "checkcircle": return CheckCircle
+                    case "star": return Star
+                    case "wrench": return Wrench
                     default: return Shield
                   }
                 }
@@ -174,6 +181,13 @@ export default function AboutPage() {
                   case "shield": return Shield
                   case "award": return Award
                   case "users": return Users
+                  case "car": return Car
+                  case "phone": return Phone
+                  case "mappin": return MapPin
+                  case "clock": return Clock
+                  case "checkcircle": return CheckCircle
+                  case "star": return Star
+                  case "wrench": return Wrench
                   default: return Shield
                 }
               }

@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Save, Loader2, Plus, Trash2 } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Save, Loader2, Plus, Trash2, Shield, Award, Users, Car, Phone, MapPin, Clock, CheckCircle, Star, Wrench } from "lucide-react"
 
 export default function AdminAbout() {
   const [loading, setLoading] = useState(true)
@@ -456,7 +457,7 @@ export default function AdminAbout() {
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
                     <Label className="text-white">Заголовок</Label>
                     <Input
@@ -464,6 +465,76 @@ export default function AdminAbout() {
                       onChange={(e) => updatePrinciple(index, "title", e.target.value)}
                       className="bg-slate-600 border-slate-500 text-white"
                     />
+                  </div>
+                  <div>
+                    <Label className="text-white">Иконка</Label>
+                    <Select value={principle?.icon || 'shield'} onValueChange={(value) => updatePrinciple(index, "icon", value)}>
+                      <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                        <SelectValue placeholder="Выберите иконку" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-700 border-slate-600">
+                        <SelectItem value="shield" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Shield className="h-4 w-4" />
+                            <span>Защита</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="award" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Award className="h-4 w-4" />
+                            <span>Награда</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="users" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4" />
+                            <span>Люди</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="car" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Car className="h-4 w-4" />
+                            <span>Автомобиль</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="phone" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Phone className="h-4 w-4" />
+                            <span>Телефон</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="mappin" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="h-4 w-4" />
+                            <span>Карта</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="clock" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="h-4 w-4" />
+                            <span>Время</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="checkcircle" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle className="h-4 w-4" />
+                            <span>Проверка</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="star" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Star className="h-4 w-4" />
+                            <span>Звезда</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="wrench" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Wrench className="h-4 w-4" />
+                            <span>Инструмент</span>
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="md:col-span-2">
                     <Label className="text-white">Описание</Label>
@@ -520,7 +591,7 @@ export default function AdminAbout() {
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
                     <Label className="text-white">Заголовок</Label>
                     <Input
@@ -528,6 +599,76 @@ export default function AdminAbout() {
                       onChange={(e) => updateService(index, "title", e.target.value)}
                       className="bg-slate-600 border-slate-500 text-white"
                     />
+                  </div>
+                  <div>
+                    <Label className="text-white">Иконка</Label>
+                    <Select value={service?.icon || 'shield'} onValueChange={(value) => updateService(index, "icon", value)}>
+                      <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                        <SelectValue placeholder="Выберите иконку" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-700 border-slate-600">
+                        <SelectItem value="shield" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Shield className="h-4 w-4" />
+                            <span>Защита</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="award" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Award className="h-4 w-4" />
+                            <span>Награда</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="users" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4" />
+                            <span>Люди</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="car" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Car className="h-4 w-4" />
+                            <span>Автомобиль</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="phone" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Phone className="h-4 w-4" />
+                            <span>Телефон</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="mappin" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="h-4 w-4" />
+                            <span>Карта</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="clock" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="h-4 w-4" />
+                            <span>Время</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="checkcircle" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle className="h-4 w-4" />
+                            <span>Проверка</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="star" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Star className="h-4 w-4" />
+                            <span>Звезда</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="wrench" className="text-white hover:bg-slate-600">
+                          <div className="flex items-center space-x-2">
+                            <Wrench className="h-4 w-4" />
+                            <span>Инструмент</span>
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="md:col-span-2">
                     <Label className="text-white">Описание</Label>
