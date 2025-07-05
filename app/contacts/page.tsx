@@ -34,9 +34,22 @@ export default function ContactsPage() {
       weekends: "Суббота - Воскресенье: 10:00 - 19:00",
     },
     socialMedia: {
-      instagram: "@avtobusiness_by",
-      telegram: "@avtobusiness",
-      tiktok: "@avtobusiness_by",
+      instagram: {
+        name: "@avtobusiness_by",
+        url: "https://instagram.com/avtobusiness_by"
+      },
+      telegram: {
+        name: "@avtobusiness",
+        url: "https://t.me/avtobusiness"
+      },
+      vk: {
+        name: "vk.com/avtobusiness",
+        url: "https://vk.com/avtobusiness"
+      },
+      tiktok: {
+        name: "@avtobusiness_by",
+        url: "https://tiktok.com/@avtobusiness_by"
+      },
     },
   })
 
@@ -205,48 +218,79 @@ export default function ContactsPage() {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="grid grid-cols-2 gap-3">
-                  <a
-                    href="#"
-                    className="flex items-center space-x-3 p-4 bg-gradient-to-br from-pink-50 to-white rounded-2xl hover:shadow-md hover:scale-105 transition-all duration-300 group border-0"
-                  >
-                    <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Instagram className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 text-sm">Instagram</p>
-                      <p className="text-xs text-gray-500 truncate">{contactsData.socialMedia.instagram}</p>
-                    </div>
-                  </a>
+                  {contactsData.socialMedia.instagram && (
+                    <a
+                      href={contactsData.socialMedia.instagram.url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-3 p-4 bg-gradient-to-br from-pink-50 to-white rounded-2xl hover:shadow-md hover:scale-105 transition-all duration-300 group border-0"
+                    >
+                      <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <Instagram className="h-5 w-5 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900 text-sm">Instagram</p>
+                        <p className="text-xs text-gray-500 truncate">{contactsData.socialMedia.instagram.name}</p>
+                      </div>
+                    </a>
+                  )}
 
-                  <a
-                    href="#"
-                    className="flex items-center space-x-3 p-4 bg-gradient-to-br from-blue-50 to-white rounded-2xl hover:shadow-md hover:scale-105 transition-all duration-300 group border-0"
-                  >
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16l-1.584 7.44c-.12.528-.432.66-.876.412l-2.424-1.788-1.164 1.12c-.132.132-.24.24-.492.24l.168-2.388 4.416-3.984c.192-.168-.036-.264-.3-.096l-5.46 3.432-2.352-.744c-.516-.156-.528-.516.108-.768l9.192-3.54c.432-.156.804.108.672.672z"/>
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 text-sm">Telegram</p>
-                      <p className="text-xs text-gray-500 truncate">{contactsData.socialMedia.telegram}</p>
-                    </div>
-                  </a>
+                  {contactsData.socialMedia.telegram && (
+                    <a
+                      href={contactsData.socialMedia.telegram.url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-3 p-4 bg-gradient-to-br from-blue-50 to-white rounded-2xl hover:shadow-md hover:scale-105 transition-all duration-300 group border-0"
+                    >
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16l-1.584 7.44c-.12.528-.432.66-.876.412l-2.424-1.788-1.164 1.12c-.132.132-.24.24-.492.24l.168-2.388 4.416-3.984c.192-.168-.036-.264-.3-.096l-5.46 3.432-2.352-.744c-.516-.156-.528-.516.108-.768l9.192-3.54c.432-.156.804.108.672.672z"/>
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900 text-sm">Telegram</p>
+                        <p className="text-xs text-gray-500 truncate">{contactsData.socialMedia.telegram.name}</p>
+                      </div>
+                    </a>
+                  )}
 
-                  <a
-                    href="#"
-                    className="flex items-center space-x-3 p-4 bg-gradient-to-br from-indigo-50 to-white rounded-2xl hover:shadow-md hover:scale-105 transition-all duration-300 group border-0"
-                  >
-                    <div className="w-10 h-10 bg-gradient-to-br from-black to-gray-800 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 text-sm">TikTok</p>
-                      <p className="text-xs text-gray-500 truncate">{contactsData.socialMedia.tiktok}</p>
-                    </div>
-                  </a>
+                  {contactsData.socialMedia.vk && (
+                    <a
+                      href={contactsData.socialMedia.vk.url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-3 p-4 bg-gradient-to-br from-blue-50 to-white rounded-2xl hover:shadow-md hover:scale-105 transition-all duration-300 group border-0"
+                    >
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zM18.947 17.684c-.474 0-.947-.947-2.526-2.526-1.263-1.263-1.263-1.263-2.526 0v2.526c0 .947-.474.947-.947.947s-.947 0-.947-.947V6.316c0-.947.474-.947.947-.947s.947 0 .947.947v7.368c1.263-1.263 1.263-1.263 2.526 0 1.579 1.579 2.052 2.526 2.526 2.526.474 0 .947 0 .947-.947v-.947c0-.474-.474-.474-.947-.474z"/>
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900 text-sm">VKontakte</p>
+                        <p className="text-xs text-gray-500 truncate">{contactsData.socialMedia.vk.name}</p>
+                      </div>
+                    </a>
+                  )}
+
+                  {contactsData.socialMedia.tiktok && (
+                    <a
+                      href={contactsData.socialMedia.tiktok.url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-3 p-4 bg-gradient-to-br from-indigo-50 to-white rounded-2xl hover:shadow-md hover:scale-105 transition-all duration-300 group border-0"
+                    >
+                      <div className="w-10 h-10 bg-gradient-to-br from-black to-gray-800 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900 text-sm">TikTok</p>
+                        <p className="text-xs text-gray-500 truncate">{contactsData.socialMedia.tiktok.name}</p>
+                      </div>
+                    </a>
+                  )}
 
 
                 </div>

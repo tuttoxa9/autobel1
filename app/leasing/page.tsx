@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, Loader2, DollarSign, Clock, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart } from "lucide-react"
+import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, Loader2, DollarSign, Clock, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart, Calendar } from "lucide-react"
 import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -28,6 +28,12 @@ interface LeasingPageSettings {
     minAdvance: number
     maxTerm: number
   }>
+  conditions?: Array<{
+    icon: string
+    title: string
+    description: string
+  }>
+  additionalNote?: string
 }
 
 export default function LeasingPage() {
@@ -72,7 +78,9 @@ export default function LeasingPage() {
           subtitle: "Выгодное решение для предпринимателей и юридических лиц",
           description: "Лизинг автомобилей - это удобный способ получить транспорт для бизнеса без больших первоначальных затрат.",
           benefits: [],
-          leasingCompanies: []
+          leasingCompanies: [],
+          conditions: [],
+          additionalNote: "Все дополнительные вопросы обсуждаемы с каждым клиентом индивидуально"
         })
       }
     } catch (error) {
@@ -199,6 +207,8 @@ export default function LeasingPage() {
         return Timer
       case "heart":
         return Heart
+      case "calendar":
+        return Calendar
       default:
         return Car
     }
@@ -486,54 +496,99 @@ export default function LeasingPage() {
           </div>
         </div>
 
-        {/* Преимущества */}
-        <section className="py-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Преимущества лизинга</h2>
-          </div>
+        {/* Условия лизинга */}
+        {settings?.conditions && settings.conditions.length > 0 && (
+          <section className="py-16">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Условия для оформления лизинга</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">Простые и понятные условия для получения автомобиля в лизинг</p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings?.benefits?.map((benefit, index) => {
-              const IconComponent = getIcon(benefit.icon)
-              return (
-                <div key={index} className="text-center group">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <IconComponent className="h-8 w-8 text-purple-600" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {settings.conditions.map((condition, index) => {
+                const IconComponent = getIcon(condition.icon)
+                return (
+                  <Card key={index} className="hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-white to-gray-50 group">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-14 h-14 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <IconComponent className="h-7 w-7 text-green-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{condition.title}</h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">{condition.description}</p>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+
+            {settings.additionalNote && (
+              <div className="text-center">
+                <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full border border-blue-200">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-3">
+                    <CheckCircle className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
+                  <p className="text-gray-700 font-medium">{settings.additionalNote}</p>
                 </div>
-              )
-            })}
-          </div>
-        </section>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* Преимущества */}
+        {settings?.benefits && settings.benefits.length > 0 && (
+          <section className="py-16 bg-gray-50 -mx-4">
+            <div className="container px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Преимущества лизинга</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">Узнайте, почему лизинг — это выгодное решение для вашего бизнеса</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {settings.benefits.map((benefit, index) => {
+                  const IconComponent = getIcon(benefit.icon)
+                  return (
+                    <div key={index} className="text-center group">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <IconComponent className="h-8 w-8 text-purple-600" />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
+                      <p className="text-gray-600">{benefit.description}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Лизинговые компании */}
-        <section className="py-16 bg-white rounded-lg">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Наши партнеры по лизингу</h2>
-            <p className="text-gray-600">Работаем с ведущими лизинговыми компаниями Беларуси</p>
-          </div>
+        {settings?.leasingCompanies && settings.leasingCompanies.length > 0 && (
+          <section className="py-16">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Наши партнеры по лизингу</h2>
+              <p className="text-gray-600">Работаем с ведущими лизинговыми компаниями Беларуси</p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings?.leasingCompanies?.map((company, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <img
-                    src={company.logoUrl || "/placeholder.svg"}
-                    alt={company.name}
-                    className="h-16 mx-auto mb-4 object-contain"
-                  />
-                  <h3 className="text-xl font-semibold mb-2">{company.name}</h3>
-                  <div className="space-y-1 text-sm text-gray-600">
-                    <p>Аванс от {company.minAdvance}%</p>
-                    <p>Срок до {company.maxTerm} месяцев</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {settings.leasingCompanies.map((company, index) => (
+                <Card key={index} className="text-center hover:shadow-lg transition-shadow border-0 bg-white">
+                  <CardContent className="p-6">
+                    <img
+                      src={company.logoUrl || "/placeholder.svg"}
+                      alt={company.name}
+                      className="h-16 mx-auto mb-4 object-contain"
+                    />
+                    <h3 className="text-xl font-semibold mb-2">{company.name}</h3>
+                    <div className="space-y-1 text-sm text-gray-600">
+                      <p>Аванс от {company.minAdvance}%</p>
+                      <p>Срок до {company.maxTerm} месяцев</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   )

@@ -26,10 +26,22 @@ export default function AdminContacts() {
       weekends: "Суббота - Воскресенье: 10:00 - 19:00",
     },
     socialMedia: {
-      instagram: "@avtobusiness_by",
-      telegram: "@avtobusiness",
-      vk: "vk.com/avtobusiness",
-      tiktok: "@avtobusiness_by",
+      instagram: {
+        name: "@avtobusiness_by",
+        url: "https://instagram.com/avtobusiness_by"
+      },
+      telegram: {
+        name: "@avtobusiness",
+        url: "https://t.me/avtobusiness"
+      },
+      vk: {
+        name: "vk.com/avtobusiness",
+        url: "https://vk.com/avtobusiness"
+      },
+      tiktok: {
+        name: "@avtobusiness_by",
+        url: "https://tiktok.com/@avtobusiness_by"
+      },
     },
   })
 
@@ -204,58 +216,186 @@ export default function AdminContacts() {
           <CardHeader>
             <CardTitle className="text-white">Социальные сети</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <div>
-              <Label className="text-white">Instagram</Label>
-              <Input
-                value={contactsData.socialMedia.instagram}
-                onChange={(e) =>
-                  setContactsData({
-                    ...contactsData,
-                    socialMedia: { ...contactsData.socialMedia, instagram: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
+              <Label className="text-white mb-2 block">Instagram</Label>
+              <div className="space-y-2">
+                <div>
+                  <Label className="text-gray-300 text-sm">Имя аккаунта</Label>
+                  <Input
+                    value={contactsData.socialMedia.instagram?.name || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          instagram: {
+                            name: e.target.value,
+                            url: contactsData.socialMedia.instagram?.url || ''
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="@avtobusiness_by"
+                  />
+                </div>
+                <div>
+                  <Label className="text-gray-300 text-sm">Ссылка</Label>
+                  <Input
+                    value={contactsData.socialMedia.instagram?.url || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          instagram: {
+                            name: contactsData.socialMedia.instagram?.name || '',
+                            url: e.target.value
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="https://instagram.com/avtobusiness_by"
+                  />
+                </div>
+              </div>
             </div>
             <div>
-              <Label className="text-white">Telegram</Label>
-              <Input
-                value={contactsData.socialMedia.telegram}
-                onChange={(e) =>
-                  setContactsData({
-                    ...contactsData,
-                    socialMedia: { ...contactsData.socialMedia, telegram: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
+              <Label className="text-white mb-2 block">Telegram</Label>
+              <div className="space-y-2">
+                <div>
+                  <Label className="text-gray-300 text-sm">Имя аккаунта</Label>
+                  <Input
+                    value={contactsData.socialMedia.telegram?.name || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          telegram: {
+                            name: e.target.value,
+                            url: contactsData.socialMedia.telegram?.url || ''
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="@avtobusiness"
+                  />
+                </div>
+                <div>
+                  <Label className="text-gray-300 text-sm">Ссылка</Label>
+                  <Input
+                    value={contactsData.socialMedia.telegram?.url || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          telegram: {
+                            name: contactsData.socialMedia.telegram?.name || '',
+                            url: e.target.value
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="https://t.me/avtobusiness"
+                  />
+                </div>
+              </div>
             </div>
             <div>
-              <Label className="text-white">VKontakte</Label>
-              <Input
-                value={contactsData.socialMedia.vk}
-                onChange={(e) =>
-                  setContactsData({
-                    ...contactsData,
-                    socialMedia: { ...contactsData.socialMedia, vk: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
+              <Label className="text-white mb-2 block">VKontakte</Label>
+              <div className="space-y-2">
+                <div>
+                  <Label className="text-gray-300 text-sm">Имя аккаунта</Label>
+                  <Input
+                    value={contactsData.socialMedia.vk?.name || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          vk: {
+                            name: e.target.value,
+                            url: contactsData.socialMedia.vk?.url || ''
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="vk.com/avtobusiness"
+                  />
+                </div>
+                <div>
+                  <Label className="text-gray-300 text-sm">Ссылка</Label>
+                  <Input
+                    value={contactsData.socialMedia.vk?.url || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          vk: {
+                            name: contactsData.socialMedia.vk?.name || '',
+                            url: e.target.value
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="https://vk.com/avtobusiness"
+                  />
+                </div>
+              </div>
             </div>
             <div>
-              <Label className="text-white">TikTok</Label>
-              <Input
-                value={contactsData.socialMedia.tiktok}
-                onChange={(e) =>
-                  setContactsData({
-                    ...contactsData,
-                    socialMedia: { ...contactsData.socialMedia, tiktok: e.target.value },
-                  })
-                }
-                className="bg-slate-700 border-slate-600 text-white"
-              />
+              <Label className="text-white mb-2 block">TikTok</Label>
+              <div className="space-y-2">
+                <div>
+                  <Label className="text-gray-300 text-sm">Имя аккаунта</Label>
+                  <Input
+                    value={contactsData.socialMedia.tiktok?.name || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          tiktok: {
+                            name: e.target.value,
+                            url: contactsData.socialMedia.tiktok?.url || ''
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="@avtobusiness_by"
+                  />
+                </div>
+                <div>
+                  <Label className="text-gray-300 text-sm">Ссылка</Label>
+                  <Input
+                    value={contactsData.socialMedia.tiktok?.url || ''}
+                    onChange={(e) =>
+                      setContactsData({
+                        ...contactsData,
+                        socialMedia: {
+                          ...contactsData.socialMedia,
+                          tiktok: {
+                            name: contactsData.socialMedia.tiktok?.name || '',
+                            url: e.target.value
+                          }
+                        },
+                      })
+                    }
+                    className="bg-slate-700 border-slate-600 text-white"
+                    placeholder="https://tiktok.com/@avtobusiness_by"
+                  />
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

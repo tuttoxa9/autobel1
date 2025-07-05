@@ -25,12 +25,20 @@ interface LeasingCompany {
   maxTerm: number
 }
 
+interface LeasingCondition {
+  icon: string
+  title: string
+  description: string
+}
+
 interface LeasingPageData {
   title: string
   subtitle: string
   description: string
   benefits: LeasingBenefit[]
   leasingCompanies: LeasingCompany[]
+  conditions: LeasingCondition[]
+  additionalNote: string
 }
 
 export default function AdminLeasing() {
@@ -77,6 +85,29 @@ export default function AdminLeasing() {
         maxTerm: 36,
       },
     ],
+    conditions: [
+      {
+        icon: "car",
+        title: "Возраст автомобиля",
+        description: "От 2000 года выпуска"
+      },
+      {
+        icon: "calendar",
+        title: "Срок лизинга",
+        description: "До 10 лет"
+      },
+      {
+        icon: "dollar-sign",
+        title: "Валюта договора",
+        description: "BYN, USD, EUR"
+      },
+      {
+        icon: "check-circle",
+        title: "Досрочное погашение",
+        description: "После 6 месяцев без штрафных санкций"
+      }
+    ],
+    additionalNote: "Все дополнительные вопросы обсуждаемы с каждым клиентом индивидуально"
   })
 
   useEffect(() => {
@@ -92,7 +123,9 @@ export default function AdminLeasing() {
         setLeasingData({
           ...data,
           benefits: data.benefits || [],
-          leasingCompanies: data.leasingCompanies || []
+          leasingCompanies: data.leasingCompanies || [],
+          conditions: data.conditions || [],
+          additionalNote: data.additionalNote || "Все дополнительные вопросы обсуждаемы с каждым клиентом индивидуально"
         })
       }
     } catch (error) {
@@ -164,6 +197,31 @@ export default function AdminLeasing() {
   const removeLeasingCompany = (index: number) => {
     const updatedCompanies = (leasingData.leasingCompanies || []).filter((_, i) => i !== index)
     setLeasingData({ ...leasingData, leasingCompanies: updatedCompanies })
+  }
+
+  const addCondition = () => {
+    setLeasingData({
+      ...leasingData,
+      conditions: [
+        ...(leasingData.conditions || []),
+        {
+          icon: "check-circle",
+          title: "",
+          description: "",
+        },
+      ],
+    })
+  }
+
+  const updateCondition = (index: number, field: keyof LeasingCondition, value: string) => {
+    const updatedConditions = [...(leasingData.conditions || [])]
+    updatedConditions[index] = { ...updatedConditions[index], [field]: value }
+    setLeasingData({ ...leasingData, conditions: updatedConditions })
+  }
+
+  const removeCondition = (index: number) => {
+    const updatedConditions = (leasingData.conditions || []).filter((_, i) => i !== index)
+    setLeasingData({ ...leasingData, conditions: updatedConditions })
   }
 
   if (loading) {
@@ -273,6 +331,8 @@ export default function AdminLeasing() {
                       <SelectItem value="car">Автомобиль</SelectItem>
                       <SelectItem value="calculator">Калькулятор</SelectItem>
                       <SelectItem value="check-circle">Галочка</SelectItem>
+                      <SelectItem value="calendar">Календарь</SelectItem>
+                      <SelectItem value="dollar-sign">Доллар</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -359,6 +419,79 @@ export default function AdminLeasing() {
               </div>
             </div>
           ))}
+        </CardContent>
+      </Card>
+
+      {/* Условия лизинга */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            Условия лизинга
+            <Button onClick={addCondition} size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Добавить условие
+            </Button>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {(leasingData.conditions || []).map((condition, index) => (
+            <div key={index} className="p-4 border rounded-lg space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-medium">Условие {index + 1}</h4>
+                <Button onClick={() => removeCondition(index)} variant="destructive" size="sm">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label>Иконка</Label>
+                  <Select
+                    value={condition.icon}
+                    onValueChange={(value) => updateCondition(index, "icon", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="car">Автомобиль</SelectItem>
+                      <SelectItem value="calendar">Календарь</SelectItem>
+                      <SelectItem value="dollar-sign">Доллар</SelectItem>
+                      <SelectItem value="check-circle">Галочка</SelectItem>
+                      <SelectItem value="clock">Часы</SelectItem>
+                      <SelectItem value="shield">Щит</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Заголовок</Label>
+                  <Input
+                    value={condition.title}
+                    onChange={(e) => updateCondition(index, "title", e.target.value)}
+                    placeholder="Название условия"
+                  />
+                </div>
+                <div>
+                  <Label>Описание</Label>
+                  <Input
+                    value={condition.description}
+                    onChange={(e) => updateCondition(index, "description", e.target.value)}
+                    placeholder="Описание условия"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <div className="mt-6">
+            <Label htmlFor="additionalNote">Дополнительная заметка</Label>
+            <Textarea
+              id="additionalNote"
+              value={leasingData.additionalNote}
+              onChange={(e) => setLeasingData({ ...leasingData, additionalNote: e.target.value })}
+              placeholder="Все дополнительные вопросы обсуждаемы с каждым клиентом индивидуально"
+              rows={3}
+            />
+          </div>
         </CardContent>
       </Card>
     </div>
