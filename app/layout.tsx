@@ -5,6 +5,8 @@ import "./globals.css"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import MobileDock from "@/components/mobile-dock"
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { fetchUsdBynRate } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -15,6 +17,9 @@ const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
   variable: '--font-montserrat',
 })
+
+const UsdBynRateContext = createContext<number | null>(null);
+export const useUsdBynRate = () => useContext(UsdBynRateContext);
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://autobelcenter.by'),
@@ -97,85 +102,23 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <html lang="ru">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#2563eb" />
-        <meta name="geo.region" content="BY-MI" />
-        <meta name="geo.placename" content="Минск" />
-        <meta name="geo.position" content="53.9045;27.5615" />
-        <meta name="ICBM" content="53.9045, 27.5615" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="format-detection" content="telephone=no" />
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [usdBynRate, setUsdBynRate] = useState<number | null>(null);
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "AutoDealer",
-              "name": "Белавто Центр",
-              "description": "Продажа качественных автомобилей с пробегом в Минске",
-              "url": "https://autobelcenter.by",
-              "logo": "https://autobelcenter.by/logo.png",
-              "image": "https://autobelcenter.by/logo.png",
-              "telephone": "+375291234567",
-              "email": "info@autobelcenter.by",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "Большое Стиклево 83",
-                "addressLocality": "Минск",
-                "addressCountry": "BY",
-                "postalCode": "220000"
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": "53.9045",
-                "longitude": "27.5615"
-              },
-              "openingHours": [
-                "Mo-Fr 09:00-21:00",
-                "Sa-Su 10:00-19:00"
-              ],
-              "sameAs": [
-                "https://www.instagram.com/autobelcenter",
-                "https://t.me/autobelcenter"
-              ],
-              "areaServed": {
-                "@type": "Country",
-                "name": "Belarus"
-              },
-              "hasOfferCatalog": {
-                "@type": "OfferCatalog",
-                "name": "Автомобили с пробегом",
-                "itemListElement": [
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Car",
-                      "name": "Автомобили с пробегом"
-                    }
-                  }
-                ]
-              }
-            })
-          }}
-        />
-      </head>
-      <body className={`${inter.variable} ${montserrat.variable} font-sans`}>
+  useEffect(() => {
+    fetchUsdBynRate().then(setUsdBynRate);
+  }, []);
+
+  return (
+    <UsdBynRateContext.Provider value={usdBynRate}>
+      <div className={`${inter.variable} ${montserrat.variable} font-sans min-h-screen bg-white flex flex-col`}>
         <Header />
-        <main>{children}</main>
+        <main className="flex-1 flex flex-col">
+          {children}
+        </main>
         <Footer />
         <MobileDock />
-      </body>
-    </html>
+      </div>
+    </UsdBynRateContext.Provider>
   )
 }
