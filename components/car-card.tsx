@@ -1,8 +1,12 @@
+"use client"
+
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Gauge, Fuel, Settings } from "lucide-react"
 import FadeInImage from "@/components/fade-in-image"
+import { useUsdBynRate } from "@/components/providers/usd-byn-rate-provider"
+import { convertUsdToByn } from "@/lib/utils"
 
 interface CarCardProps {
   car: {
@@ -22,6 +26,8 @@ interface CarCardProps {
 }
 
 export default function CarCard({ car }: CarCardProps) {
+  const usdBynRate = useUsdBynRate()
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -51,7 +57,14 @@ export default function CarCard({ car }: CarCardProps) {
               <h3 className="font-semibold text-lg text-gray-900">
                 {car.make} {car.model}
               </h3>
-              <p className="text-2xl font-bold text-blue-600">{formatPrice(car.price)}</p>
+              <div className="space-y-1">
+                <p className="text-2xl font-bold text-blue-600">{formatPrice(car.price)}</p>
+                {usdBynRate && (
+                  <p className="text-lg font-semibold text-gray-700">
+                    ≈ {convertUsdToByn(car.price, usdBynRate)} BYN
+                  </p>
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">

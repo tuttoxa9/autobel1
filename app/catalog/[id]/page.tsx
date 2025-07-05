@@ -9,6 +9,8 @@ import Image from "next/image"
 import { doc, getDoc, collection, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { getCachedImageUrl } from "@/lib/image-cache"
+import { useUsdBynRate } from "@/components/providers/usd-byn-rate-provider"
+import { convertUsdToByn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -125,6 +127,7 @@ export default function CarDetailsPage() {
   const params = useParams()
   const router = useRouter()
   const [car, setCar] = useState<Car | null>(null)
+  const usdBynRate = useUsdBynRate()
   const [loading, setLoading] = useState(true)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isBookingOpen, setIsBookingOpen] = useState(false)
@@ -400,6 +403,11 @@ export default function CarDetailsPage() {
                   <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 whitespace-nowrap">
                     {formatPrice(car.price)}
                   </div>
+                  {usdBynRate && (
+                    <div className="text-lg sm:text-xl font-semibold text-slate-700 whitespace-nowrap">
+                      ≈ {convertUsdToByn(car.price, usdBynRate)} BYN
+                    </div>
+                  )}
                   <p className="text-xs sm:text-sm text-slate-500 whitespace-nowrap">
                     от {formatPrice(Math.round(car.price * 0.8 / 60))}/мес
                   </p>
@@ -609,12 +617,22 @@ export default function CarDetailsPage() {
                             <div className="text-lg font-bold text-slate-900">
                               {selectedBank ? formatPrice(calculateMonthlyPayment()) : "Выберите банк"}
                             </div>
+                            {selectedBank && usdBynRate && (
+                              <div className="text-sm font-medium text-slate-600">
+                                ≈ {convertUsdToByn(calculateMonthlyPayment(), usdBynRate)} BYN
+                              </div>
+                            )}
                           </div>
                           <div>
                             <div className="text-xs text-slate-500 mb-1">Общая сумма</div>
                             <div className="text-base font-semibold text-slate-600">
                               {selectedBank ? formatPrice(calculateMonthlyPayment() * loanTerm[0] + downPayment[0]) : "Выберите банк"}
                             </div>
+                            {selectedBank && usdBynRate && (
+                              <div className="text-sm font-medium text-slate-600">
+                                ≈ {convertUsdToByn(calculateMonthlyPayment() * loanTerm[0] + downPayment[0], usdBynRate)} BYN
+                              </div>
+                            )}
                           </div>
                         </div>
                         <Button
@@ -821,6 +839,11 @@ export default function CarDetailsPage() {
                       <div className="text-3xl font-bold text-slate-900">
                         {formatPrice(calculateMonthlyPayment())}
                       </div>
+                      {usdBynRate && (
+                        <div className="text-xl font-semibold text-slate-700">
+                          ≈ {convertUsdToByn(calculateMonthlyPayment(), usdBynRate)} BYN
+                        </div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>

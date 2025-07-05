@@ -7,16 +7,16 @@ export function cn(...inputs: ClassValue[]) {
 
 export async function fetchUsdBynRate() {
   try {
-    const res = await fetch('https://api.nbrb.by/exrates/rates/431'); // USD
+    const res = await fetch('/api/exchange-rate');
     if (!res.ok) return null;
     const data = await res.json();
-    return data.Cur_OfficialRate ?? null;
+    return data.rate ?? null;
   } catch {
     return null;
   }
 }
 
-export function convertUsdToByn(usd, rate) {
-  if(!rate) return '';
+export function convertUsdToByn(usd: number, rate: number): string {
+  if (!rate || !usd) return '';
   return Math.round(usd * rate).toLocaleString('ru-BY');
 }
