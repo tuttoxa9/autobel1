@@ -121,7 +121,7 @@ export default function AdminCredit() {
     setCreditData({
       ...creditData,
       benefits: [
-        ...creditData.benefits,
+        ...(creditData.benefits || []),
         {
           icon: "percent",
           title: "",
@@ -132,13 +132,13 @@ export default function AdminCredit() {
   }
 
   const updateBenefit = (index: number, field: string, value: any) => {
-    const newBenefits = [...creditData.benefits]
+    const newBenefits = [...(creditData.benefits || [])]
     newBenefits[index] = { ...newBenefits[index], [field]: value }
     setCreditData({ ...creditData, benefits: newBenefits })
   }
 
   const removeBenefit = (index: number) => {
-    const newBenefits = creditData.benefits.filter((_, i) => i !== index)
+    const newBenefits = (creditData.benefits || []).filter((_, i) => i !== index)
     setCreditData({ ...creditData, benefits: newBenefits })
   }
 
