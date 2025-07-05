@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Menu, Phone } from "lucide-react"
+import { Menu, Phone, Loader2 } from "lucide-react"
 import { doc, getDoc, collection, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -35,11 +35,9 @@ export default function Header() {
   const [isCallbackOpen, setIsCallbackOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [formData, setFormData] = useState({ name: "", phone: "" })
-  const [settings, setSettings] = useState<Settings>({
-    companyName: "Белавто Центр",
-    phone: "+375 29 123-45-67",
-    workingHours: "Ежедневно 9:00-21:00",
-  })
+  const [settings, setSettings] = useState<Settings | null>(null)
+  const [phoneLoading, setPhoneLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadSettings()
@@ -47,12 +45,15 @@ export default function Header() {
 
   const loadSettings = async () => {
     try {
+      setLoading(true)
       const settingsDoc = await getDoc(doc(db, "settings", "main"))
       if (settingsDoc.exists()) {
         setSettings(settingsDoc.data() as Settings)
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -102,10 +103,18 @@ export default function Header() {
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Кнопка звонка для мобильных (слева) */}
         <div className="md:hidden">
-          <Dialog open={isCallbackOpen} onOpenChange={setIsCallbackOpen}>
+          <Dialog open={isCallbackOpen} onOpenChange={(open) => { setIsCallbackOpen(open); if (!open) setPhoneLoading(false); }}>
             <DialogTrigger asChild>
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs w-8 h-8 p-0 rounded-md">
-                <Phone className="h-4 w-4" />
+              <Button
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-xs w-8 h-8 p-0 rounded-md"
+                onClick={() => setPhoneLoading(true)}
+              >
+                {phoneLoading ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <Phone className="h-4 w-4" />
+                )}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
@@ -150,7 +159,16 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="left" className="w-80">
             <div className="flex items-center space-x-3 mb-8 p-4 border-b">
-              <span className="font-bold text-xl text-gray-900">{settings.companyName}</span>
+              <span className="font-bold text-xl text-gray-900">
+                {loading ? (
+                  <div className="flex items-center">
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    Загрузка...
+                  </div>
+                ) : (
+                  settings?.companyName || "Белавто Центр"
+                )}
+              </span>
             </div>
             <div className="flex flex-col space-y-4 mt-8">
               {navigation
@@ -169,12 +187,19 @@ export default function Header() {
                 ))}
             </div>
             <div className="mt-8 p-4 border-t">
-              <a
-                href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                className="text-blue-600 font-semibold text-lg block mb-4"
-              >
-                {settings.phone}
-              </a>
+              {loading ? (
+                <div className="flex items-center mb-4">
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <span className="text-gray-600">Загрузка телефона...</span>
+                </div>
+              ) : (
+                <a
+                  href={`tel:${settings?.phone?.replace(/\s/g, "") || ""}`}
+                  className="text-blue-600 font-semibold text-lg block mb-4"
+                >
+                  {settings?.phone || "+375 XX XXX-XX-XX"}
+                </a>
+              )}
               <Button
                 className="w-full bg-blue-600 hover:bg-blue-700"
                 onClick={() => {
@@ -211,16 +236,43 @@ export default function Header() {
         {/* Контакты и кнопка звонка для десктопа */}
         <div className="hidden md:flex items-center space-x-4">
           <div className="hidden sm:flex flex-col items-end">
-            <a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="text-xs sm:text-sm font-bold text-gray-900 tracking-tight">
-              {settings.phone}
-            </a>
-            <span className="text-xs text-gray-500 font-medium hidden lg:block">{settings.workingHours}</span>
+            {loading ? (
+              <div className="flex flex-col items-end">
+                <div className="flex items-center">
+                  <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                  <span className="text-xs text-gray-600">Загрузка...</span>
+                </div>
+                <span className="text-xs text-gray-500 font-medium hidden lg:block">Пн-Пт: 9:00-21:00, Сб-Вс: 10:00-19:00</span>
+              </div>
+            ) : (
+              <>
+                <a href={`tel:${settings?.phone?.replace(/\s/g, "") || ""}`} className="text-xs sm:text-sm font-bold text-gray-900 tracking-tight">
+                  {phoneLoading ? (
+                    <div className="flex items-center">
+                      <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                      Загрузка...
+                    </div>
+                  ) : (
+                    settings?.phone || "+375 XX XXX-XX-XX"
+                  )}
+                </a>
+                <span className="text-xs text-gray-500 font-medium hidden lg:block">{settings?.workingHours || "Пн-Пт: 9:00-21:00, Сб-Вс: 10:00-19:00"}</span>
+              </>
+            )}
           </div>
 
-          <Dialog open={isCallbackOpen} onOpenChange={setIsCallbackOpen}>
+          <Dialog open={isCallbackOpen} onOpenChange={(open) => { setIsCallbackOpen(open); if (!open) setPhoneLoading(false); }}>
             <DialogTrigger asChild>
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm px-2 sm:px-4">
-                <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <Button
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm px-2 sm:px-4"
+                onClick={() => setPhoneLoading(true)}
+              >
+                {phoneLoading ? (
+                  <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 animate-spin" />
+                ) : (
+                  <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                )}
                 <span className="hidden sm:inline">Заказать звонок</span>
                 <span className="sm:hidden">Звонок</span>
               </Button>

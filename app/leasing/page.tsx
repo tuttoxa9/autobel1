@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, Loader2 } from "lucide-react"
+import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, Loader2, DollarSign, Clock, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart } from "lucide-react"
 import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -171,6 +171,34 @@ export default function LeasingPage() {
         return Shield
       case "building":
         return Building
+      case "dollar-sign":
+        return DollarSign
+      case "clock":
+        return Clock
+      case "file-text":
+        return FileText
+      case "users":
+        return Users
+      case "zap":
+        return Zap
+      case "award":
+        return Award
+      case "target":
+        return Target
+      case "briefcase":
+        return Briefcase
+      case "trending-up":
+        return TrendingUp
+      case "handshake":
+        return Handshake
+      case "check-square":
+        return CheckSquare
+      case "coins":
+        return Coins
+      case "timer":
+        return Timer
+      case "heart":
+        return Heart
       default:
         return Car
     }

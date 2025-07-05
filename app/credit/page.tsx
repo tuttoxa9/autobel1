@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calculator, CreditCard, CheckCircle, Building, Percent, Clock, Loader2 } from "lucide-react"
+import { Calculator, CreditCard, CheckCircle, Building, Percent, Clock, Loader2, DollarSign, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart, Shield, TrendingDown } from "lucide-react"
 import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -165,6 +165,36 @@ export default function CreditPage() {
         return Clock
       case "building":
         return Building
+      case "dollar-sign":
+        return DollarSign
+      case "file-text":
+        return FileText
+      case "users":
+        return Users
+      case "zap":
+        return Zap
+      case "award":
+        return Award
+      case "target":
+        return Target
+      case "briefcase":
+        return Briefcase
+      case "trending-up":
+        return TrendingUp
+      case "handshake":
+        return Handshake
+      case "check-square":
+        return CheckSquare
+      case "coins":
+        return Coins
+      case "timer":
+        return Timer
+      case "heart":
+        return Heart
+      case "shield":
+        return Shield
+      case "trending-down":
+        return TrendingDown
       default:
         return CreditCard
     }

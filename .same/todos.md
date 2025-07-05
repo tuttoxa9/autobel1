@@ -1,15 +1,17 @@
-# Issues to Fix
+# Задачи для модификации проекта autobel1
 
-## Current Errors:
-1. ✅ TypeError: Cannot read properties of undefined (reading 'title') - FIXED
-2. ✅ Admin about section component issues - FIXED
-3. ✅ UseEffect dependency issue causing infinite loop - FIXED
+## ✅ Выполненные задачи
+- [x] Клонирование репозитория
+- [x] Изучение структуры проекта
+- [x] Добавление больше иконок для лизинговых и кредитных преимуществ
+- [x] Добавление прелоадера в футер для информации из Firebase
+- [x] Добавление времени работы в шапку: "Пн-Пт: 9:00-21:00, Сб-Вс: 10:00-19:00"
+- [x] Добавление мини прелоадера для телефона
+- [x] Удаление статических данных-заглушек из компонентов
 
-## Tasks:
-1. [x] Fix the useEffect dependency issue in about page
-2. [x] Add null checks for data properties to prevent undefined errors
-3. [x] Test the admin about section functionality
-4. [x] Push fixes to GitHub repository
-5. [x] Verify application works correctly
+## 🔄 В процессе выполнения
+- [ ] Пуш изменений в Git с токеном
 
-## Status: ✅ ALL ISSUES FIXED AND PUSHED
+## 📋 Ожидают выполнения
+- [ ] Тестирование изменений
+- [ ] Финальная проверка
