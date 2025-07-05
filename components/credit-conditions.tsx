@@ -111,49 +111,44 @@ export default function CreditConditions() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Условия кредитования</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Ознакомьтесь с основными условиями получения автокредита в нашей компании
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Условия кредитования</h2>
+        <p className="text-gray-600 text-sm mb-6">
+          Основные условия получения автокредита
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="space-y-3">
         {conditions.map((condition) => (
-          <Card
+          <div
             key={condition.id}
-            className="group hover:shadow-lg transition-all duration-300 border-l-4 border-l-blue-500 hover:border-l-blue-600"
+            className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all duration-200"
           >
-            <CardContent className="p-6">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                    {(() => {
-                      const IconComponent = getIcon(condition.icon)
-                      return <IconComponent className="h-6 w-6 text-blue-600" />
-                    })()}
-                  </div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {condition.condition}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+              {(() => {
+                const IconComponent = getIcon(condition.icon)
+                return <IconComponent className="h-4 w-4 text-blue-600" />
+              })()}
+            </div>
+            <p className="text-gray-700 text-sm leading-relaxed flex-1">
+              {condition.condition}
+            </p>
+          </div>
         ))}
       </div>
 
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-        <div className="text-center">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Индивидуальный подход
-          </h3>
-          <p className="text-gray-600">
-            Каждая заявка рассматривается индивидуально. Мы поможем найти оптимальное решение для вашей ситуации.
-          </p>
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
+        <div className="flex items-start space-x-3">
+          <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+            <CheckCircle className="h-3 w-3 text-blue-600" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-gray-900 text-sm mb-1">Индивидуальный подход</h4>
+            <p className="text-gray-600 text-xs">
+              Каждая заявка рассматривается индивидуально для поиска оптимального решения
+            </p>
+          </div>
         </div>
       </div>
     </div>

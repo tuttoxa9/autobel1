@@ -528,38 +528,41 @@ export default function CreditPage() {
               </div>
             </div>
 
-            {/* Преимущества (справа) */}
-            <div>
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Преимущества автокредита</h2>
+            {/* Преимущества и Условия (справа) */}
+            <div className="space-y-12">
+              {/* Преимущества */}
+              <div>
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Преимущества автокредита</h2>
+                </div>
+
+                <div className="space-y-6">
+                  {settings?.benefits?.map((benefit, index) => {
+                    const IconComponent = getIcon(benefit.icon)
+                    return (
+                      <div key={index} className="flex items-start space-x-4 group">
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                          <IconComponent className="h-6 w-6 text-green-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
+                          <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
 
-              <div className="space-y-6">
-                {settings?.benefits?.map((benefit, index) => {
-                  const IconComponent = getIcon(benefit.icon)
-                  return (
-                    <div key={index} className="flex items-start space-x-4 group">
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                        <IconComponent className="h-6 w-6 text-green-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
-                        <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
-                      </div>
-                    </div>
-                  )
-                })}
+              {/* Условия кредитования */}
+              <div>
+                <CreditConditions />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Условия кредитования */}
-        <section className="py-16 bg-gray-50 rounded-lg">
-          <div className="container px-4">
-            <CreditConditions />
-          </div>
-        </section>
+
       </div>
     </div>
   )
