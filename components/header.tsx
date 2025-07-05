@@ -107,7 +107,7 @@ export default function Header() {
             <DialogTrigger asChild>
               <Button
                 size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-xs w-8 h-8 p-0 rounded-md"
+                className="bg-blue-600 hover:bg-blue-700 text-xs w-8 h-8 p-0 rounded-full"
                 onClick={() => setPhoneLoading(true)}
               >
                 {phoneLoading ? (
