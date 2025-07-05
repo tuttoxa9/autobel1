@@ -49,11 +49,16 @@ export default function LeasingPage() {
   })
 
   const [leasingForm, setLeasingForm] = useState({
+    clientType: "organization", // "organization" или "individual"
+    // Поля для организации
     companyName: "",
     contactPerson: "",
+    unp: "",
+    // Поля для физ. лица
+    fullName: "",
+    // Общие поля
     phone: "",
     email: "",
-    unp: "",
     carPrice: "",
     advance: "",
     leasingTerm: "",
@@ -163,19 +168,26 @@ export default function LeasingPage() {
 
       // Отправляем уведомление в Telegram
       try {
+        const clientName = leasingForm.clientType === "individual"
+          ? leasingForm.fullName
+          : leasingForm.contactPerson;
+
         await fetch('/api/send-telegram', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            name: leasingForm.contactPerson,
+            name: clientName,
             phone: leasingForm.phone,
             email: leasingForm.email,
             carPrice: leasingForm.carPrice,
             downPayment: leasingForm.advance,
             loanTerm: leasingForm.leasingTerm,
             message: leasingForm.message,
+            clientType: leasingForm.clientType,
+            companyName: leasingForm.companyName,
+            unp: leasingForm.unp,
             type: 'leasing_request',
           }),
         })
@@ -184,11 +196,13 @@ export default function LeasingPage() {
       }
 
       setLeasingForm({
+        clientType: "organization",
         companyName: "",
         contactPerson: "",
+        unp: "",
+        fullName: "",
         phone: "",
         email: "",
-        unp: "",
         carPrice: "",
         advance: "",
         leasingTerm: "",
@@ -386,39 +400,85 @@ export default function LeasingPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Выбор типа клиента */}
                   <div>
-                    <Label htmlFor="companyName">Название организации</Label>
-                    <Input
-                      id="companyName"
-                      value={leasingForm.companyName}
-                      onChange={(e) => setLeasingForm({ ...leasingForm, companyName: e.target.value })}
-                      placeholder="ООО 'Ваша компания'"
-                      required
-                    />
+                    <Label>Тип клиента</Label>
+                    <div className="flex gap-4 mt-2">
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          value="organization"
+                          checked={leasingForm.clientType === "organization"}
+                          onChange={(e) => setLeasingForm({ ...leasingForm, clientType: e.target.value })}
+                          className="text-blue-600"
+                        />
+                        <span>Организация</span>
+                      </label>
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          value="individual"
+                          checked={leasingForm.clientType === "individual"}
+                          onChange={(e) => setLeasingForm({ ...leasingForm, clientType: e.target.value })}
+                          className="text-blue-600"
+                        />
+                        <span>Физ. лицо</span>
+                      </label>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Поля для организации */}
+                  {leasingForm.clientType === "organization" && (
+                    <>
+                      <div>
+                        <Label htmlFor="companyName">Название организации</Label>
+                        <Input
+                          id="companyName"
+                          value={leasingForm.companyName}
+                          onChange={(e) => setLeasingForm({ ...leasingForm, companyName: e.target.value })}
+                          placeholder="ООО 'Ваша компания'"
+                          required
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="contactPerson">Контактное лицо</Label>
+                          <Input
+                            id="contactPerson"
+                            value={leasingForm.contactPerson}
+                            onChange={(e) => setLeasingForm({ ...leasingForm, contactPerson: e.target.value })}
+                            placeholder="Иванов Иван Иванович"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="unp">УНП</Label>
+                          <Input
+                            id="unp"
+                            value={leasingForm.unp}
+                            onChange={(e) => setLeasingForm({ ...leasingForm, unp: e.target.value })}
+                            placeholder="123456789"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Поля для физ. лица */}
+                  {leasingForm.clientType === "individual" && (
                     <div>
-                      <Label htmlFor="contactPerson">Контактное лицо</Label>
+                      <Label htmlFor="fullName">ФИО</Label>
                       <Input
-                        id="contactPerson"
-                        value={leasingForm.contactPerson}
-                        onChange={(e) => setLeasingForm({ ...leasingForm, contactPerson: e.target.value })}
+                        id="fullName"
+                        value={leasingForm.fullName}
+                        onChange={(e) => setLeasingForm({ ...leasingForm, fullName: e.target.value })}
                         placeholder="Иванов Иван Иванович"
                         required
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="unp">УНП</Label>
-                      <Input
-                        id="unp"
-                        value={leasingForm.unp}
-                        onChange={(e) => setLeasingForm({ ...leasingForm, unp: e.target.value })}
-                        placeholder="123456789"
-                        required
-                      />
-                    </div>
-                  </div>
+                  )}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
