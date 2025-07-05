@@ -193,7 +193,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
             {aboutData?.services?.items?.map((service, index) => {
               const getIcon = (iconName: string) => {
-
+                console.log(`Услуга ${index + 1}: иконка = "${iconName}", тип = ${typeof iconName}`);
                 switch (iconName) {
                   case "shield": return Shield
                   case "award": return Award
@@ -219,11 +219,17 @@ export default function AboutPage() {
                   case "calculator": return Calculator
                   case "handshake": return Handshake
                   default:
-
+                    console.log(`НЕИЗВЕСТНАЯ ИКОНКА для услуги ${index + 1}: "${iconName}"`);
                     return Shield
                 }
               }
-              const IconComponent = getIcon(service?.icon || 'shield')
+              // Принудительная проверка для отладки
+              let iconToUse = service?.icon || 'shield';
+              if (index === 2 && !service?.icon) {
+                console.log("ПРИНУДИТЕЛЬНО устанавливаем иконку award для третьей услуги");
+                iconToUse = 'award';
+              }
+              const IconComponent = getIcon(iconToUse)
               const getGradientColor = (index: number) => {
                 const colors = [
                   { from: "blue-500", to: "blue-600", bg: "blue-50" },
