@@ -581,7 +581,7 @@ export default function CarDetailsPage() {
                 <Tabs defaultValue="description" className="w-full">
                   <TabsList className="grid grid-cols-3 bg-slate-50 rounded-t-xl p-1 w-full h-auto">
                     <TabsTrigger value="description" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                      Подробное описание
+                      Описание
                     </TabsTrigger>
                     <TabsTrigger value="equipment" className="rounded-lg font-medium text-xs sm:text-sm py-2 px-0.5 sm:px-1 text-center whitespace-nowrap overflow-hidden text-ellipsis">
                       Комплектация
