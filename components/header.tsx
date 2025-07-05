@@ -101,7 +101,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="container flex h-16 items-center px-4">
+      <div className="container flex h-16 items-center px-4 md:justify-between">
         {/* Кнопка звонка для мобильных (слева) */}
         <div className="md:hidden">
           <Dialog open={isCallbackOpen} onOpenChange={(open) => { setIsCallbackOpen(open); if (!open) setPhoneLoading(false); }}>
@@ -151,8 +151,8 @@ export default function Header() {
           </Dialog>
         </div>
 
-        {/* Логотип по центру */}
-        <Link href="/" className="flex items-center space-x-3 flex-1 justify-center md:flex-none md:justify-start">
+        {/* Логотип по центру на мобильных, слева на десктопе */}
+        <Link href="/" className="flex items-center space-x-3 flex-1 justify-center md:flex-none md:justify-start"
           <Image
             src="/logo4.png"
             alt="Белавто Центр"
