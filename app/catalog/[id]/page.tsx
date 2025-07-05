@@ -405,45 +405,47 @@ export default function CarDetailsPage() {
           </ol>
         </nav>
 
-        {/* НОВЫЙ КОМПАКТНЫЙ МАКЕТ */}
-        <div className="space-y-6">
-          {/* Верхний блок: Заголовок + Цена + Статус */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-6">
-            <div className="flex flex-col gap-3 sm:gap-4">
-              {/* Заголовок и статус */}
-              <div className="flex flex-wrap items-start gap-2">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 flex-1 min-w-0">
+        {/* КОМПАКТНЫЙ ЗАГОЛОВОК */}
+        <div className="mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            {/* Левая часть: Название + описание */}
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
                   {car.make} {car.model}
                 </h1>
                 {car.isAvailable ? (
-                  <Badge className="bg-green-100 text-green-700 border-green-200 inline-flex shrink-0">
+                  <Badge className="bg-green-100 text-green-700 border-green-200">
                     В наличии
                   </Badge>
                 ) : (
-                  <Badge className="bg-red-100 text-red-700 border-red-200 inline-flex shrink-0">
+                  <Badge className="bg-red-100 text-red-700 border-red-200">
                     Продан
                   </Badge>
                 )}
               </div>
-              {/* Описание и цена */}
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-4">
-                <p className="text-slate-600 text-sm sm:text-base">{car.year} год • {car.color} • {car.bodyType}</p>
-                <div className="flex flex-col sm:text-right">
-                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 whitespace-nowrap">
-                    {formatPrice(car.price)}
-                  </div>
-                  {usdBynRate && (
-                    <div className="text-lg sm:text-xl font-semibold text-slate-700 whitespace-nowrap">
-                      ≈ {convertUsdToByn(car.price, usdBynRate)} BYN
-                    </div>
-                  )}
-                  <p className="text-xs sm:text-sm text-slate-500 whitespace-nowrap">
-                    от {formatPrice(Math.round(car.price * 0.8 / 60))}/мес
-                  </p>
-                </div>
+              <p className="text-slate-600">{car.year} год • {car.color} • {car.bodyType}</p>
+            </div>
+
+            {/* Правая часть: Цена */}
+            <div className="text-left sm:text-right">
+              <div className="text-2xl sm:text-3xl font-bold text-slate-900">
+                {formatPrice(car.price)}
               </div>
+              {usdBynRate && (
+                <div className="text-lg font-semibold text-slate-700">
+                  ≈ {convertUsdToByn(car.price, usdBynRate)} BYN
+                </div>
+              )}
+              <p className="text-sm text-slate-500">
+                от {formatPrice(Math.round(car.price * 0.8 / 60))}/мес
+              </p>
             </div>
           </div>
+        </div>
+
+        {/* ОСНОВНОЙ КОНТЕНТ */}
+        <div className="space-y-4">
 
           {/* Основной контент: Галерея + Информация + Кнопки */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
