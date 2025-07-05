@@ -152,7 +152,7 @@ export default function Header() {
         </div>
 
         {/* Логотип по центру на мобильных, слева на десктопе */}
-        <Link href="/" className="flex items-center space-x-3 flex-1 justify-center md:flex-none md:justify-start"
+        <Link href="/" className="flex items-center space-x-3 flex-1 justify-center md:flex-none md:justify-start">
           <Image
             src="/logo4.png"
             alt="Белавто Центр"
