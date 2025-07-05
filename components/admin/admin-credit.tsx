@@ -10,7 +10,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Save, Loader2, Plus, Trash2 } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ImageUpload from "./image-upload"
+import AdminCreditConditions from "./admin-credit-conditions"
 
 export default function AdminCredit() {
   const [loading, setLoading] = useState(true)
@@ -158,7 +160,24 @@ export default function AdminCredit() {
         </Button>
       </div>
 
-      <div className="space-y-6">
+      <Tabs defaultValue="main" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 bg-slate-800 border-slate-700">
+          <TabsTrigger
+            value="main"
+            className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+          >
+            Основные настройки
+          </TabsTrigger>
+          <TabsTrigger
+            value="conditions"
+            className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+          >
+            Условия кредитования
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="main" className="mt-6">
+          <div className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Основная информация */}
           <Card className="bg-slate-800/50 backdrop-blur-lg border-slate-700">
@@ -328,7 +347,13 @@ export default function AdminCredit() {
             ))}
           </CardContent>
         </Card>
-      </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="conditions" className="mt-6">
+          <AdminCreditConditions />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

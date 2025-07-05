@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calculator, CreditCard, CheckCircle, Building, Percent, Clock, Loader2, DollarSign, FileText, Users, Zap, Award, Target, Briefcase, TrendingUp, Handshake, CheckSquare, Coins, Timer, Heart, Shield, TrendingDown } from "lucide-react"
 import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import CreditConditions from "@/components/credit-conditions"
 
 interface CreditPageSettings {
   title: string
@@ -468,52 +469,70 @@ export default function CreditPage() {
           </div>
         </div>
 
-        {/* Преимущества */}
+        {/* Банки-партнеры и Преимущества */}
         <section className="py-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Преимущества автокредита</h2>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Банки-партнеры (слева) */}
+            <div>
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Наши банки-партнеры</h2>
+                <p className="text-gray-600">Работаем с ведущими банками Беларуси</p>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings?.benefits?.map((benefit, index) => {
-              const IconComponent = getIcon(benefit.icon)
-              return (
-                <div key={index} className="text-center group">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <IconComponent className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
-                </div>
-              )
-            })}
+              <div className="space-y-6">
+                {settings?.partners?.map((partner, index) => (
+                  <Card key={index} className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex items-center space-x-4">
+                        <img
+                          src={partner.logoUrl || "/placeholder.svg"}
+                          alt={partner.name}
+                          className="h-12 w-16 object-contain flex-shrink-0"
+                        />
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-1">{partner.name}</h3>
+                          <div className="space-y-1 text-sm text-gray-600">
+                            <p>Ставка от {partner.minRate}% годовых</p>
+                            <p>Срок до {partner.maxTerm} месяцев</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Преимущества (справа) */}
+            <div>
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Преимущества автокредита</h2>
+              </div>
+
+              <div className="space-y-6">
+                {settings?.benefits?.map((benefit, index) => {
+                  const IconComponent = getIcon(benefit.icon)
+                  return (
+                    <div key={index} className="flex items-start space-x-4 group">
+                      <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                        <IconComponent className="h-6 w-6 text-green-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
+                        <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Банки-партнеры */}
-        <section className="py-16 bg-white rounded-lg">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Наши банки-партнеры</h2>
-            <p className="text-gray-600">Работаем с ведущими банками Беларуси</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {settings?.partners?.map((partner, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <img
-                    src={partner.logoUrl || "/placeholder.svg"}
-                    alt={partner.name}
-                    className="h-16 mx-auto mb-4 object-contain"
-                  />
-                  <h3 className="text-xl font-semibold mb-2">{partner.name}</h3>
-                  <div className="space-y-1 text-sm text-gray-600">
-                    <p>Ставка от {partner.minRate}% годовых</p>
-                    <p>Срок до {partner.maxTerm} месяцев</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        {/* Условия кредитования */}
+        <section className="py-16 bg-gray-50 rounded-lg">
+          <div className="container px-4">
+            <CreditConditions />
           </div>
         </section>
       </div>
