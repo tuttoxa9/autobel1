@@ -106,13 +106,13 @@ export default function AdminCredit() {
     })
   }
 
-  const updatePartner = (index, field, value) => {
+  const updatePartner = (index: number, field: string, value: any) => {
     const newPartners = [...creditData.partners]
     newPartners[index] = { ...newPartners[index], [field]: value }
     setCreditData({ ...creditData, partners: newPartners })
   }
 
-  const removePartner = (index) => {
+  const removePartner = (index: number) => {
     const newPartners = creditData.partners.filter((_, i) => i !== index)
     setCreditData({ ...creditData, partners: newPartners })
   }
@@ -131,13 +131,13 @@ export default function AdminCredit() {
     })
   }
 
-  const updateBenefit = (index, field, value) => {
+  const updateBenefit = (index: number, field: string, value: any) => {
     const newBenefits = [...creditData.benefits]
     newBenefits[index] = { ...newBenefits[index], [field]: value }
     setCreditData({ ...creditData, benefits: newBenefits })
   }
 
-  const removeBenefit = (index) => {
+  const removeBenefit = (index: number) => {
     const newBenefits = creditData.benefits.filter((_, i) => i !== index)
     setCreditData({ ...creditData, benefits: newBenefits })
   }
@@ -293,7 +293,7 @@ export default function AdminCredit() {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {creditData.benefits && creditData.benefits.map((benefit, index) => (
+            {creditData.benefits && creditData.benefits.length > 0 ? creditData.benefits.map((benefit, index) => (
               <div key={index} className="p-4 bg-slate-700/50 rounded-lg space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-white font-medium">Преимущество {index + 1}</h4>
@@ -344,7 +344,12 @@ export default function AdminCredit() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="text-center py-8 text-gray-400">
+                <p>Преимущества не добавлены</p>
+                <p className="text-sm">Нажмите кнопку "Добавить преимущество" чтобы создать первое преимущество</p>
+              </div>
+            )}
           </CardContent>
         </Card>
           </div>
