@@ -48,8 +48,8 @@ cp .env.example .env.local
 
 ```env
 # Firebase Configuration (уже настроено)
-NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDSCCGXMJCbZw1SYpwXy58K9iDhpveDzIA
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=autobel-a6390
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyBFGDZi2gWFBlHtsh2JIgklXlmzbokE7jM
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=belauto-5dd94
 # ... остальные Firebase переменные
 
 # Cloudflare Configuration

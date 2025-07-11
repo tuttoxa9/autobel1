@@ -1,7 +1,7 @@
 // Firebase конфигурация
-const FIREBASE_PROJECT_ID = "autobel-a6390";
+const FIREBASE_PROJECT_ID = "belauto-5dd94";
 const FIRESTORE_BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/`;
-const STORAGE_BASE_URL = `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_PROJECT_ID}.appspot.com/o/`;
+const STORAGE_BASE_URL = `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_PROJECT_ID}.firebasestorage.app/o/`;
 
 export default {
   async fetch(request, env, ctx) {
