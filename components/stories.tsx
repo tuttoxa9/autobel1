@@ -114,19 +114,7 @@ export default function Stories() {
   }, [selectedStory, isPlaying])
 
   const handleStoryClick = (index: number) => {
-    const story = stories[index]
-
-    // Если у истории есть ссылка, переходим по ней
-    if (story.linkUrl) {
-      if (story.linkUrl.startsWith('http')) {
-        window.open(story.linkUrl, '_blank')
-      } else {
-        window.location.href = story.linkUrl
-      }
-      return
-    }
-
-    // Иначе открываем полноэкранный просмотр
+    // Всегда сначала открываем полноэкранный просмотр
     setSelectedStory(index)
     setCurrentIndex(index)
     setProgress(0)
@@ -208,7 +196,7 @@ export default function Stories() {
               <div
                 className={`w-16 h-16 rounded-full p-1 transition-all duration-300 border-2 ${
                   viewedStories.has(story.id) ? "border-gray-300" : "border-gradient-to-r from-purple-500 to-pink-500"
-                } group-hover:scale-105 ${story.linkUrl ? 'ring-2 ring-blue-400 ring-opacity-50' : ''}`}
+                } group-hover:scale-105`}
                 style={!viewedStories.has(story.id) ? {
                   background: 'linear-gradient(45deg, #8B5CF6, #EC4899)',
                   padding: '2px'
@@ -229,13 +217,7 @@ export default function Stories() {
                   </div>
                 </div>
               )}
-              {story.linkUrl && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                  <svg className="h-3 w-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </div>
-              )}
+
               <div className="text-center mt-2 max-w-16">
                 <p className="text-xs text-gray-600 truncate font-medium">{story.caption}</p>
                 {story.subtitle && (
