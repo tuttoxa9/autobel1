@@ -124,7 +124,6 @@ export default function Stories() {
 
   const handleFullscreenClick = () => {
     const story = stories[currentIndex]
-
     // Если у истории есть ссылка, переходим по ней
     if (story.linkUrl) {
       if (story.linkUrl.startsWith('http')) {
@@ -133,6 +132,7 @@ export default function Stories() {
         window.location.href = story.linkUrl
       }
     }
+    // если нет ссылки - ничего не делаем
   }
 
   const handleNext = () => {
@@ -250,8 +250,8 @@ export default function Stories() {
 
               {/* Контент истории */}
               <div
-                className="relative h-full cursor-pointer"
-                onClick={handleFullscreenClick}
+                className={`relative h-full ${stories[currentIndex].linkUrl ? 'cursor-pointer' : ''}`}
+                onClick={stories[currentIndex].linkUrl ? handleFullscreenClick : undefined}
               >
                 {stories[currentIndex].mediaType === "image" ? (
                   <FadeInImage
