@@ -45,24 +45,19 @@ export default function YandexMap({ address, className }: YandexMapProps) {
       return
     }
 
-    // Загружаем скрипт Яндекс.Карт
-    const script = document.createElement("script")
-    script.src = `https://api-maps.yandex.ru/2.1/?apikey=${apiKey}&lang=ru_RU`
-    script.onload = () => {
-      window.ymaps.ready(initMap)
-    }
-    document.head.appendChild(script)
-
-    return () => {
-      // Очистка при размонтировании компонента
-      if (script.parentNode) {
-        script.parentNode.removeChild(script)
+    // Загружаем скрипт Яндекс.Карт только один раз
+    if (!document.querySelector('script[src*="api-maps.yandex.ru"]')) {
+      const script = document.createElement("script")
+      script.src = `https://api-maps.yandex.ru/2.1/?apikey=${apiKey}&lang=ru_RU`
+      script.onload = () => {
+        window.ymaps.ready(initMap)
       }
+      document.head.appendChild(script)
     }
-  }, [apiKey, address])
+  }, [apiKey])
 
   const initMap = async () => {
-    if (!mapRef.current) return
+    if (!mapRef.current || mapLoaded) return
 
     try {
       // Геокодируем адрес
@@ -70,12 +65,17 @@ export default function YandexMap({ address, className }: YandexMapProps) {
       const firstGeoObject = geocodeResult.geoObjects.get(0)
       const coords = firstGeoObject.geometry.getCoordinates()
 
-      // Создаем карту
+      // Создаем карту с минимальными элементами управления
       const map = new window.ymaps.Map(mapRef.current, {
         center: coords,
         zoom: 16,
-        controls: ["zoomControl", "fullscreenControl"],
+        controls: ["zoomControl"],
+      }, {
+        searchControlProvider: 'yandex#search'
       })
+
+      // Отключаем лишние взаимодействия для стабильности
+      map.behaviors.disable(['scrollZoom'])
 
       // Добавляем метку
       const placemark = new window.ymaps.Placemark(
