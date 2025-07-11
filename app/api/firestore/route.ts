@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Строим путь к Firestore
-  const baseUrl = `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'mebel1-36ef1'}/databases/(default)/documents`
+  const baseUrl = `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'belauto-5dd94'}/databases/(default)/documents`
   let firestoreUrl = `${baseUrl}/${collection}`
 
   if (documentId) {
