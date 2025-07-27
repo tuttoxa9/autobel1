@@ -42,7 +42,7 @@ import {
   Check
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
-import CarDetailsSkeleton from "@/components/car-details-skeleton"
+
 
 // Компонент ошибки для несуществующего автомобиля
 const CarNotFoundComponent = ({ contactPhone }: { contactPhone: string }) => (
@@ -116,7 +116,7 @@ export default function CarDetailsPage() {
   const [contactPhone, setContactPhone] = useState<string>("")
   const [carNotFound, setCarNotFound] = useState(false)
   const usdBynRate = useUsdBynRate()
-  const [loading, setLoading] = useState(true)
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isBookingOpen, setIsBookingOpen] = useState(false)
   const [isCallbackOpen, setIsCallbackOpen] = useState(false)
@@ -214,7 +214,7 @@ export default function CarDetailsPage() {
 
   const loadCarData = async (carId: string) => {
     try {
-      setLoading(true)
+
       const carDoc = await getDoc(doc(db, "cars", carId))
       if (carDoc.exists()) {
         const carData = { id: carDoc.id, ...carDoc.data() }
@@ -234,7 +234,7 @@ export default function CarDetailsPage() {
       setCarNotFound(true)
       setCar(null)
     } finally {
-      setLoading(false)
+
     }
   }
 
@@ -496,9 +496,7 @@ export default function CarDetailsPage() {
     }
   }
 
-  if (loading) {
-    return <CarDetailsSkeleton />
-  }
+
 
   if (carNotFound) {
     return <CarNotFoundComponent contactPhone={contactPhone} />

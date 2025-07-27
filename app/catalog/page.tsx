@@ -30,7 +30,7 @@ interface Car {
 export default function CatalogPage() {
   const [cars, setCars] = useState<Car[]>([])
   const [filteredCars, setFilteredCars] = useState<Car[]>([])
-  const [loading, setLoading] = useState(true)
+
   const [filters, setFilters] = useState({
     priceFrom: "",
     priceTo: "",
@@ -95,7 +95,7 @@ export default function CatalogPage() {
 
   const loadCars = async () => {
     try {
-      setLoading(true)
+
       const snapshot = await getDocs(collection(db, "cars"))
       const carsData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -105,7 +105,7 @@ export default function CatalogPage() {
     } catch (error) {
       console.error("Ошибка загрузки автомобилей:", error)
     } finally {
-      setLoading(false)
+
     }
   }
 
@@ -423,7 +423,7 @@ export default function CatalogPage() {
             </div>
 
             {/* Сетка автомобилей */}
-            {loading ? (
+            {false ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {Array.from({ length: 12 }).map((_, index) => (
                   <CarCardSkeleton key={index} />

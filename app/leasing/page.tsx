@@ -41,7 +41,6 @@ interface LeasingPageSettings {
 
 export default function LeasingPage() {
   const [settings, setSettings] = useState<LeasingPageSettings | null>(null)
-  const [loading, setLoading] = useState(true)
 
   const [calculator, setCalculator] = useState({
     carPrice: [80000],
@@ -123,8 +122,8 @@ export default function LeasingPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
-    } finally {
-      setLoading(false)
+    } catch (error) {
+      console.error("Ошибка загрузки настроек:", error)
     }
   }
 
@@ -276,92 +275,7 @@ export default function LeasingPage() {
   const residualValue = (calculator.carPrice[0] * calculator.residualValue[0]) / 100
   const totalPayments = monthlyPayment * calculator.leasingTerm[0] + calculator.advance[0]
 
-  if (loading) {
-    return (
-      <div className="min-h-[calc(100vh-120px)] bg-gray-50 pb-24 md:pb-0">
-        <div className="container px-4 py-8">
-          {/* Breadcrumb skeleton */}
-          <div className="mb-6">
-            <div className="flex items-center space-x-2">
-              <div className="w-16 h-4 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-1 h-4 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-12 h-4 bg-gray-200 rounded animate-pulse"></div>
-            </div>
-          </div>
 
-          {/* Header skeleton */}
-          <div className="text-center mb-12">
-            <div className="w-96 h-10 bg-gray-200 rounded animate-pulse mx-auto mb-4"></div>
-            <div className="w-80 h-6 bg-gray-200 rounded animate-pulse mx-auto mb-6"></div>
-            <div className="w-full max-w-3xl h-16 bg-gray-200 rounded animate-pulse mx-auto"></div>
-          </div>
-
-          {/* Two column layout skeleton */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Calculator skeleton */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <div className="w-48 h-6 bg-gray-200 rounded animate-pulse mb-6"></div>
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <div className="w-24 h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
-                    <div className="w-full h-3 bg-gray-200 rounded animate-pulse mb-2"></div>
-                    <div className="w-full h-8 bg-gray-200 rounded animate-pulse"></div>
-                  </div>
-                  <div>
-                    <div className="w-20 h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
-                    <div className="w-full h-3 bg-gray-200 rounded animate-pulse mb-2"></div>
-                    <div className="w-full h-8 bg-gray-200 rounded animate-pulse"></div>
-                  </div>
-                </div>
-                <div className="w-full h-32 bg-green-50 rounded animate-pulse"></div>
-              </div>
-            </div>
-
-            {/* Form skeleton */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <div className="w-40 h-6 bg-gray-200 rounded animate-pulse mb-6"></div>
-              <div className="space-y-4">
-                {Array.from({ length: 8 }).map((_, index) => (
-                  <div key={index} className="w-full h-10 bg-gray-200 rounded animate-pulse"></div>
-                ))}
-                <div className="w-full h-12 bg-green-200 rounded animate-pulse"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Partners and benefits skeleton */}
-          <div className="py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div>
-                <div className="w-64 h-8 bg-gray-200 rounded animate-pulse mb-8"></div>
-                <div className="grid grid-cols-2 gap-4">
-                  {Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className="w-full h-24 bg-white rounded border animate-pulse"></div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div className="w-56 h-8 bg-gray-200 rounded animate-pulse mb-8"></div>
-                <div className="space-y-6">
-                  {Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-green-200 rounded-lg animate-pulse"></div>
-                      <div className="flex-1">
-                        <div className="w-48 h-5 bg-gray-200 rounded animate-pulse mb-2"></div>
-                        <div className="w-full h-4 bg-gray-200 rounded animate-pulse mb-1"></div>
-                        <div className="w-3/4 h-4 bg-gray-200 rounded animate-pulse"></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   if (!settings) {
     return (
