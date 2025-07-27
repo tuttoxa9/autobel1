@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ContactsPageSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
+    <div className="min-h-[calc(100vh-120px)] bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50 pb-24">
       <div className="container px-4 py-8">
         {/* Хлебные крошки скелетон */}
         <nav className="mb-6">

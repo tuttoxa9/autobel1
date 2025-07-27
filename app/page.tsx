@@ -152,7 +152,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 homepage -mt-14">
+    <div className="min-h-[calc(100vh-120px)] bg-gray-100 homepage -mt-14 pb-24 md:pb-0">
       {/* Главный баннер */}
       <section className="relative min-h-[85vh] sm:min-h-[80vh] md:min-h-[75vh] lg:min-h-[80vh] xl:min-h-[85vh] flex items-center justify-center pt-14">
 

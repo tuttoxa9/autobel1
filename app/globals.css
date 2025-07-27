@@ -217,8 +217,8 @@
 
   /* Предотвращение мерцания при навигации */
   @media (max-width: 768px) {
-    body {
-      padding-bottom: 90px; /* Резервируем место для док-меню */
+    .mobile-dock-stable {
+      will-change: transform;
     }
   }
 

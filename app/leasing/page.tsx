@@ -278,7 +278,7 @@ export default function LeasingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-[calc(100vh-120px)] bg-gray-50 pb-24 md:pb-0">
         <div className="container px-4 py-8">
           {/* Breadcrumb skeleton */}
           <div className="mb-6">
@@ -374,7 +374,7 @@ export default function LeasingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-[calc(100vh-120px)] bg-gray-50 pb-24 md:pb-0">
       <div className="container px-4 py-8">
         {/* Хлебные крошки */}
         <nav className="mb-6">

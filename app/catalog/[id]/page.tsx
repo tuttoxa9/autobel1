@@ -46,7 +46,7 @@ import CarDetailsSkeleton from "@/components/car-details-skeleton"
 
 // Компонент ошибки для несуществующего автомобиля
 const CarNotFoundComponent = ({ contactPhone }: { contactPhone: string }) => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex items-center justify-center">
+  <div className="min-h-[calc(100vh-120px)] bg-gradient-to-br from-slate-50 to-white flex items-center justify-center pb-24">
     <div className="text-center max-w-md mx-auto px-4">
       <div className="mb-6">
         <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
@@ -509,7 +509,7 @@ export default function CarDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+    <div className="min-h-[calc(100vh-120px)] bg-gradient-to-br from-slate-50 to-white pb-24 md:pb-0">
       <div className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Хлебные крошки */}
         <nav className="mb-6">

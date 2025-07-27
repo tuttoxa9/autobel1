@@ -1,6 +1,6 @@
 export default function CarDetailsSkeleton() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-[calc(100vh-120px)] bg-gray-50 pb-24">
       <div className="container mx-auto px-4 py-6 max-w-6xl">
         {/* Хлебные крошки */}
         <div className="flex items-center space-x-2 mb-6">

@@ -52,7 +52,7 @@ export default function AdminPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-[calc(100vh-120px)] flex items-center justify-center bg-white pb-24">
         <Card className="w-full max-w-md bg-gray-50 border-gray-200 shadow-lg">
           <CardHeader className="text-center">
             <div className="h-16 w-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -104,7 +104,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-[calc(100vh-120px)] bg-white pb-24 md:pb-0">
       {/* Шапка админки */}
       <header className="bg-gray-50 border-b border-gray-200 shadow-sm">
         <div className="container px-4 py-4">

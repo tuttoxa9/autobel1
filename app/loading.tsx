@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white p-8">
+    <div className="min-h-[calc(100vh-120px)] bg-gradient-to-br from-slate-50 to-white p-8 pb-24">
       <div className="container mx-auto">
         {/* Header skeleton */}
         <div className="flex justify-between items-center mb-8">

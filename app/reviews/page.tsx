@@ -59,7 +59,7 @@ export default function ReviewsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-[calc(100vh-120px)] bg-gray-50 pb-24 md:pb-0">
         <div className="container px-4 py-8">
           {/* Header skeleton */}
           <div className="text-center mb-12">
@@ -92,7 +92,7 @@ export default function ReviewsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-[calc(100vh-120px)] bg-gray-50 pb-24 md:pb-0">
       <div className="container px-4 py-8">
         {/* Хлебные крошки */}
         <nav className="mb-6">
