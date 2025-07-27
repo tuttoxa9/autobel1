@@ -97,8 +97,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
-          <MobileDock />
         </UsdBynRateProvider>
+        <MobileDock />
       </body>
     </html>
   )
