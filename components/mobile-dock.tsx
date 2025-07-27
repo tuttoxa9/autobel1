@@ -25,7 +25,7 @@ export default function MobileDock() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[9999] md:hidden mobile-dock-stable">
       <div className="mx-2 mb-2">
-        <div className={`bg-gray-900/95 backdrop-blur-sm border border-gray-700/60 rounded-2xl shadow-xl shadow-black/25 transition-opacity duration-200 ${
+        <div className={`bg-white/95 backdrop-blur-sm border border-gray-200/60 rounded-2xl shadow-xl shadow-gray-300/25 transition-opacity duration-200 ${
           isMounted ? 'opacity-100' : 'opacity-90'
         }`}>
           <div className="grid grid-cols-4 px-1 py-1">
@@ -43,13 +43,13 @@ export default function MobileDock() {
                   href={item.href}
                   className={`flex flex-col items-center justify-center py-3 px-2 text-xs transition-all duration-150 rounded-xl ${
                     isActive
-                      ? "text-blue-400 bg-blue-500/20 shadow-sm"
-                      : "text-gray-300 hover:text-blue-400 hover:bg-gray-700/50 active:scale-95"
+                      ? "text-blue-600 bg-blue-50 shadow-sm"
+                      : "text-gray-600 hover:text-blue-600 hover:bg-gray-50 active:scale-95"
                   }`}
                   style={{ willChange: 'transform' }}
                 >
                   <item.icon className={`h-6 w-6 mb-1 transition-colors duration-150 ${
-                    isActive ? "text-blue-400" : "text-gray-300"
+                    isActive ? "text-blue-600" : "text-gray-600"
                   }`} />
                   <span className="text-xs font-medium">{item.name}</span>
                 </Link>
