@@ -41,17 +41,22 @@ export default function MobileDock() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex flex-col items-center justify-center py-3 px-2 text-xs transition-all duration-150 rounded-xl ${
+                  className={`flex flex-col items-center justify-center py-3 px-2 text-xs transition-all duration-200 rounded-xl relative overflow-hidden ${
                     isActive
-                      ? "text-blue-600 bg-blue-50 shadow-sm"
+                      ? "text-white bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg transform scale-105"
                       : "text-gray-600 hover:text-blue-600 hover:bg-gray-50 active:scale-95"
                   }`}
                   style={{ willChange: 'transform' }}
                 >
-                  <item.icon className={`h-6 w-6 mb-1 transition-colors duration-150 ${
-                    isActive ? "text-blue-600" : "text-gray-600"
+                  <item.icon className={`h-6 w-6 mb-1 transition-all duration-200 ${
+                    isActive ? "text-white drop-shadow-sm" : "text-gray-600"
                   }`} />
-                  <span className="text-xs font-medium">{item.name}</span>
+                  <span className={`text-xs font-medium transition-all duration-200 ${
+                    isActive ? "text-white drop-shadow-sm" : ""
+                  }`}>{item.name}</span>
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-700/20 rounded-xl pointer-events-none" />
+                  )}
                 </Link>
               )
             })}

@@ -674,7 +674,7 @@ export default function CarDetailsPage() {
                     <Fuel className="h-4 w-4 text-slate-600 mx-auto mb-1" />
                     <div className="text-xs text-slate-600 font-medium mb-1">Двигатель</div>
                     <div className="font-bold text-slate-900 text-xs leading-tight">
-                      {formatEngineVolume(car.engineVolume)}<br/>{car.fuelType}
+                      {car.fuelType === "Электро" ? car.fuelType : `${formatEngineVolume(car.engineVolume)}`}<br/>{car.fuelType !== "Электро" && car.fuelType}
                     </div>
                   </div>
                   <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-center">
@@ -804,7 +804,9 @@ export default function CarDetailsPage() {
                   <div className="text-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
                     <Fuel className="h-5 w-5 text-slate-600 mx-auto mb-2" />
                     <div className="text-xs text-slate-600 font-medium mb-1">Двигатель</div>
-                    <div className="font-bold text-slate-900 text-sm">{formatEngineVolume(car.engineVolume)} {car.fuelType}</div>
+                    <div className="font-bold text-slate-900 text-sm">
+                      {car.fuelType === "Электро" ? car.fuelType : `${formatEngineVolume(car.engineVolume)} ${car.fuelType}`}
+                    </div>
                   </div>
                   <div className="text-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
                     <Settings className="h-5 w-5 text-slate-600 mx-auto mb-2" />

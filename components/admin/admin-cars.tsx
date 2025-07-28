@@ -72,7 +72,7 @@ export default function AdminCars() {
         ...carForm,
         price: Number(carForm.price),
         mileage: Number(carForm.mileage),
-        engineVolume: parseFloat(carForm.engineVolume),
+        engineVolume: carForm.fuelType === "Электро" ? 0 : parseFloat(carForm.engineVolume || "0"),
         year: Number(carForm.year),
         imageUrls: carForm.imageUrls.filter((url) => url.trim() !== ""),
         createdAt: editingCar ? editingCar.createdAt : new Date(),
@@ -246,21 +246,29 @@ export default function AdminCars() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label>Объем двигателя (л)</Label>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={carForm.engineVolume}
-                    onChange={(e) => setCarForm({ ...carForm, engineVolume: e.target.value })}
-                    required
-                  />
-                </div>
-                <div>
+                {carForm.fuelType !== "Электро" && (
+                  <div>
+                    <Label>Объем двигателя (л)</Label>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      value={carForm.engineVolume}
+                      onChange={(e) => setCarForm({ ...carForm, engineVolume: e.target.value })}
+                      required={carForm.fuelType !== "Электро"}
+                    />
+                  </div>
+                )}
+                <div className={carForm.fuelType === "Электро" ? "md:col-span-2" : ""}>
                   <Label>Тип топлива</Label>
                   <Select
                     value={carForm.fuelType}
-                    onValueChange={(value) => setCarForm({ ...carForm, fuelType: value })}
+                    onValueChange={(value) => {
+                      setCarForm({
+                        ...carForm,
+                        fuelType: value,
+                        engineVolume: value === "Электро" ? "0" : carForm.engineVolume
+                      })
+                    }}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Выберите тип топлива" />
