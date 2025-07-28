@@ -46,7 +46,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-gray-900 text-white mb-16 md:mb-0 rounded-t-[50px] mt-8 footer-corner-fill">
+    <footer className="bg-gray-900 text-white pb-20 md:pb-0 rounded-t-[50px] mt-8 footer-corner-fill">
       <div className="container px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Колонка 1: Логотип и слоган */}
@@ -208,19 +208,12 @@ export default function Footer() {
 
       {/* Нижняя строка */}
       <div className="border-t border-gray-800">
-        <div className="container px-4 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+        <div className="container px-4 py-6">
+          <div className="text-center md:flex md:justify-between md:items-center space-y-2 md:space-y-0">
             <p className="text-gray-400 text-sm">
-              © {currentYear} {loading ? (
-                <span className="inline-flex items-center">
-                  <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                  Загрузка...
-                </span>
-              ) : (
-                settings?.companyName || "Компания"
-              )}. Все права защищены.
+              © {currentYear} Белавто Центр. Все права защищены.
             </p>
-            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors text-sm">
+            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors text-sm block md:inline">
               Политика конфиденциальности
             </Link>
           </div>
