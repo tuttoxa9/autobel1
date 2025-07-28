@@ -42,7 +42,7 @@ import {
   Check
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Spinner } from "@/components/ui/spinner"
+import { BankSelectSkeleton, BankLoadingSkeleton } from "@/components/ui/skeleton"
 
 
 // Компонент ошибки для несуществующего автомобиля
@@ -996,12 +996,7 @@ export default function CarDetailsPage() {
                       </SelectContent>
                     </Select>
                   ) : loadingBanks ? (
-                    <div className="text-center py-4">
-                      <div className="flex justify-center mb-2">
-                        <Spinner size="sm" />
-                      </div>
-                      <p className="text-sm text-gray-600">Загружаем банки-партнеры...</p>
-                    </div>
+                    <BankSelectSkeleton />
                   ) : (
                     <div className="flex items-center justify-center gap-2 text-amber-600 bg-amber-50 p-3 rounded-lg">
                       <AlertCircle className="h-5 w-5" />
@@ -1071,13 +1066,7 @@ export default function CarDetailsPage() {
                 ) : (
                   <div className="flex flex-col items-center justify-center h-64 text-center">
                     {loadingBanks ? (
-                      <div className="w-full space-y-4 text-center">
-                        <div className="flex justify-center">
-                          <Spinner size="lg" />
-                        </div>
-                        <div className="space-y-2">
-                          <h3 className="text-lg font-semibold text-gray-800">Загружаем банки-партнеры</h3>
-                          <p className="text-gray-600">Подготавливаем лучшие предложения...</p>
+                      <BankLoadingSkeleton />
                         </div>
                       </div>
                     ) : partnerBanks.length === 0 ? (

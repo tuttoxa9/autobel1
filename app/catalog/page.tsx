@@ -12,7 +12,7 @@ import CarCard from "@/components/car-card"
 import { Filter, SlidersHorizontal } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import CarCardSkeleton from "@/components/car-card-skeleton"
-import { CardsLoadingState } from "@/components/ui/spinner"
+import CarCardSkeleton from "@/components/car-card-skeleton"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -426,7 +426,11 @@ export default function CatalogPage() {
 
             {/* Сетка автомобилей */}
             {loading ? (
-              <CardsLoadingState count={9} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {Array.from({ length: 9 }).map((_, i) => (
+                  <CarCardSkeleton key={i} />
+                ))}
+              </div>
             ) : filteredCars && filteredCars.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredCars.map((car, index) => (

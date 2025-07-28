@@ -18,7 +18,7 @@ import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import CreditConditions from "@/components/credit-conditions"
 import { getCachedImageUrl } from "@/lib/image-cache"
-import { LoadingState } from "@/components/ui/spinner"
+import { CreditPageSkeleton } from "@/components/ui/skeleton"
 
 interface CreditPageSettings {
   title: string
@@ -343,12 +343,7 @@ export default function CreditPage() {
 
 
   if (loading) {
-    return (
-      <LoadingState
-        title="Загружаем информацию о кредитах"
-        subtitle="Подготавливаем для вас лучшие предложения..."
-      />
-    )
+    return <CreditPageSkeleton />
   }
 
   if (!settings) {

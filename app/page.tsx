@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import Stories from "@/components/stories"
 import CarCard from "@/components/car-card"
 import CarCardSkeleton from "@/components/car-card-skeleton"
-import { CardsLoadingState } from "@/components/ui/spinner"
+import CarCardSkeleton from "@/components/car-card-skeleton"
 import FadeInImage from "@/components/fade-in-image"
 import { CheckCircle, Check } from "lucide-react"
 import { collection, query, orderBy, limit, getDocs, doc, getDoc, addDoc } from "firebase/firestore"
@@ -222,7 +222,11 @@ export default function HomePage() {
         <div className="container px-4">
 
           {loadingCars ? (
-            <CardsLoadingState count={4} className="grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <CarCardSkeleton key={i} />
+              ))}
+            </div>
           ) : cars && cars.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {cars.map((car) => (

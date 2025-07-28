@@ -13,7 +13,7 @@ import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, DollarSig
 import { doc, getDoc, addDoc, collection, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { getCachedImageUrl } from "@/lib/image-cache"
-import { LoadingState } from "@/components/ui/spinner"
+import { LeasingPageSkeleton } from "@/components/ui/skeleton"
 import LeasingConditions from "@/components/leasing-conditions"
 import LeasingCalculator from "@/components/leasing-calculator"
 
@@ -281,12 +281,7 @@ export default function LeasingPage() {
 
 
   if (loading) {
-    return (
-      <LoadingState
-        title="Загружаем информацию о лизинге"
-        subtitle="Подготавливаем для вас лучшие условия лизинга..."
-      />
-    )
+    return <LeasingPageSkeleton />
   }
 
   if (!settings) {

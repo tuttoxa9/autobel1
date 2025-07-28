@@ -5,7 +5,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
 import { Shield, Eye, UserCheck, Lock, FileText, Calendar } from "lucide-react"
-import { LoadingState } from "@/components/ui/spinner"
+import { PrivacyPageSkeleton } from "@/components/ui/skeleton"
 
 interface PrivacyData {
   title: string
@@ -130,13 +130,7 @@ Email: privacy@avtobusiness.by
   }
 
   if (loading) {
-    return (
-      <LoadingState
-        title="Загружаем политику конфиденциальности"
-        subtitle="Подготавливаем актуальную информацию..."
-        className="min-h-[calc(100vh-120px)] pb-24 md:pb-0"
-      />
-    )
+    return <PrivacyPageSkeleton />
   }
 
   const sections = [

@@ -5,7 +5,7 @@ import { collection, query, where, orderBy, getDocs } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star, User } from "lucide-react"
-import { LoadingState } from "@/components/ui/spinner"
+import { ReviewsPageSkeleton } from "@/components/ui/skeleton"
 
 interface Review {
   id: string
@@ -59,13 +59,7 @@ export default function ReviewsPage() {
   }
 
   if (loading) {
-    return (
-      <LoadingState
-        title="Загружаем отзывы"
-        subtitle="Подготавливаем для вас отзывы наших клиентов..."
-        className="min-h-[calc(100vh-120px)] pb-24 md:pb-0"
-      />
-    )
+    return <ReviewsPageSkeleton />
   }
 
   return (

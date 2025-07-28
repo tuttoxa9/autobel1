@@ -6,7 +6,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
 import { Shield, Users, Award, Clock, Car, Phone, MapPin, CheckCircle, Star, Wrench, CreditCard, DollarSign, FileText, Building, TrendingUp, Calculator, Handshake, Check } from "lucide-react"
-import { LoadingState } from "@/components/ui/spinner"
+import { AboutPageSkeleton } from "@/components/ui/skeleton"
 
 export default function AboutPage() {
   const [loading, setLoading] = useState(true)
@@ -68,12 +68,7 @@ export default function AboutPage() {
   }, [])
 
   if (loading) {
-    return (
-      <LoadingState
-        title="Загружаем информацию о компании"
-        subtitle="Подготавливаем для вас данные о нашей компании..."
-      />
-    )
+    return <AboutPageSkeleton />
   }
 
   return (
