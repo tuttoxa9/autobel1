@@ -101,8 +101,6 @@ export default function CreditPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
-    } catch (error) {
-      console.error("Ошибка загрузки настроек:", error)
     }
   }
 

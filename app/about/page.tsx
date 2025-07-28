@@ -56,8 +56,6 @@ export default function AboutPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
-    } catch (error) {
-      console.error("Ошибка загрузки данных:", error)
     }
   }
 

@@ -122,8 +122,6 @@ export default function LeasingPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
-    } catch (error) {
-      console.error("Ошибка загрузки настроек:", error)
     }
   }
 
