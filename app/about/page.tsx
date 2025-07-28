@@ -6,8 +6,10 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Card, CardContent } from "@/components/ui/card"
 import { Shield, Users, Award, Clock, Car, Phone, MapPin, CheckCircle, Star, Wrench, CreditCard, DollarSign, FileText, Building, TrendingUp, Calculator, Handshake, Check } from "lucide-react"
+import { LoadingState } from "@/components/ui/spinner"
 
 export default function AboutPage() {
+  const [loading, setLoading] = useState(true)
   const [aboutData, setAboutData] = useState({
     pageTitle: "О компании \"АвтоБел Центр\"",
     pageSubtitle: "Мы помогаем людям найти идеальный автомобиль уже более 12 лет. Наша миссия — сделать покупку автомобиля простой, безопасной и выгодной.",
@@ -56,12 +58,23 @@ export default function AboutPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     loadAboutData()
   }, [])
+
+  if (loading) {
+    return (
+      <LoadingState
+        title="Загружаем информацию о компании"
+        subtitle="Подготавливаем для вас данные о нашей компании..."
+      />
+    )
+  }
 
   return (
     <div className="min-h-[calc(100vh-120px)] bg-gray-50 pb-24 md:pb-0">

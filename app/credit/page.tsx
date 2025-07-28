@@ -18,6 +18,7 @@ import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import CreditConditions from "@/components/credit-conditions"
 import { getCachedImageUrl } from "@/lib/image-cache"
+import { LoadingState } from "@/components/ui/spinner"
 
 interface CreditPageSettings {
   title: string
@@ -38,6 +39,7 @@ interface CreditPageSettings {
 
 export default function CreditPage() {
   const [settings, setSettings] = useState<CreditPageSettings | null>(null)
+  const [loading, setLoading] = useState(true)
   const [isBelarusianRubles, setIsBelarusianRubles] = useState(false)
   const usdBynRate = useUsdBynRate()
 
@@ -84,6 +86,7 @@ export default function CreditPage() {
 
   const loadSettings = async () => {
     try {
+      setLoading(true)
       const doc_ref = doc(db, "pages", "credit")
       const doc_snap = await getDoc(doc_ref)
 
@@ -101,6 +104,8 @@ export default function CreditPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -336,6 +341,15 @@ export default function CreditPage() {
   const overpayment = totalAmount - (calculator.carPrice[0] - calculator.downPayment[0])
 
 
+
+  if (loading) {
+    return (
+      <LoadingState
+        title="Загружаем информацию о кредитах"
+        subtitle="Подготавливаем для вас лучшие предложения..."
+      />
+    )
+  }
 
   if (!settings) {
     return (

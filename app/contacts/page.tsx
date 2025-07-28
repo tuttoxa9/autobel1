@@ -13,8 +13,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { MapPin, Phone, Mail, Clock, Instagram, ExternalLink, Check } from "lucide-react"
 import YandexMap from "@/components/yandex-map"
+import { LoadingState } from "@/components/ui/spinner"
 
 export default function ContactsPage() {
+  const [loading, setLoading] = useState(true)
   const [contactForm, setContactForm] = useState({
     name: "",
     phone: "+375",
@@ -69,6 +71,8 @@ export default function ContactsPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки данных:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -126,7 +130,14 @@ export default function ContactsPage() {
     }
   }
 
-
+  if (loading) {
+    return (
+      <LoadingState
+        title="Загружаем контактную информацию"
+        subtitle="Подготавливаем для вас актуальные контакты..."
+      />
+    )
+  }
 
   return (
     <div className="min-h-[calc(100vh-120px)] bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50 pb-24 md:pb-0">

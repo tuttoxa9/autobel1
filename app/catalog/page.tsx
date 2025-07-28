@@ -12,6 +12,7 @@ import CarCard from "@/components/car-card"
 import { Filter, SlidersHorizontal } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import CarCardSkeleton from "@/components/car-card-skeleton"
+import { CardsLoadingState } from "@/components/ui/spinner"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -30,6 +31,7 @@ interface Car {
 export default function CatalogPage() {
   const [cars, setCars] = useState<Car[]>([])
   const [filteredCars, setFilteredCars] = useState<Car[]>([])
+  const [loading, setLoading] = useState(true)
 
   const [filters, setFilters] = useState({
     priceFrom: "",
@@ -95,7 +97,7 @@ export default function CatalogPage() {
 
   const loadCars = async () => {
     try {
-
+      setLoading(true)
       const snapshot = await getDocs(collection(db, "cars"))
       const carsData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -105,7 +107,7 @@ export default function CatalogPage() {
     } catch (error) {
       console.error("Ошибка загрузки автомобилей:", error)
     } finally {
-
+      setLoading(false)
     }
   }
 
@@ -423,12 +425,8 @@ export default function CatalogPage() {
             </div>
 
             {/* Сетка автомобилей */}
-            {false ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {Array.from({ length: 12 }).map((_, index) => (
-                  <CarCardSkeleton key={index} />
-                ))}
-              </div>
+            {loading ? (
+              <CardsLoadingState count={9} />
             ) : filteredCars && filteredCars.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredCars.map((car, index) => (

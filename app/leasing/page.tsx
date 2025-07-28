@@ -13,6 +13,7 @@ import { Calculator, Car, CheckCircle, Building, TrendingDown, Shield, DollarSig
 import { doc, getDoc, addDoc, collection, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { getCachedImageUrl } from "@/lib/image-cache"
+import { LoadingState } from "@/components/ui/spinner"
 import LeasingConditions from "@/components/leasing-conditions"
 import LeasingCalculator from "@/components/leasing-calculator"
 
@@ -41,6 +42,7 @@ interface LeasingPageSettings {
 
 export default function LeasingPage() {
   const [settings, setSettings] = useState<LeasingPageSettings | null>(null)
+  const [loading, setLoading] = useState(true)
 
   const [calculator, setCalculator] = useState({
     carPrice: [80000],
@@ -73,6 +75,7 @@ export default function LeasingPage() {
 
   const loadSettings = async () => {
     try {
+      setLoading(true)
       const doc_ref = doc(db, "pages", "leasing")
       const doc_snap = await getDoc(doc_ref)
 
@@ -122,6 +125,8 @@ export default function LeasingPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -274,6 +279,15 @@ export default function LeasingPage() {
   const totalPayments = monthlyPayment * calculator.leasingTerm[0] + calculator.advance[0]
 
 
+
+  if (loading) {
+    return (
+      <LoadingState
+        title="Загружаем информацию о лизинге"
+        subtitle="Подготавливаем для вас лучшие условия лизинга..."
+      />
+    )
+  }
 
   if (!settings) {
     return (
