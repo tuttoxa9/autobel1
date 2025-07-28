@@ -18,7 +18,7 @@ import { doc, getDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import CreditConditions from "@/components/credit-conditions"
 import { getCachedImageUrl } from "@/lib/image-cache"
-import { CreditPageSkeleton } from "@/components/ui/skeleton"
+
 
 interface CreditPageSettings {
   title: string
@@ -39,7 +39,7 @@ interface CreditPageSettings {
 
 export default function CreditPage() {
   const [settings, setSettings] = useState<CreditPageSettings | null>(null)
-  const [loading, setLoading] = useState(true)
+
   const [isBelarusianRubles, setIsBelarusianRubles] = useState(false)
   const usdBynRate = useUsdBynRate()
 
@@ -86,7 +86,6 @@ export default function CreditPage() {
 
   const loadSettings = async () => {
     try {
-      setLoading(true)
       const doc_ref = doc(db, "pages", "credit")
       const doc_snap = await getDoc(doc_ref)
 
@@ -104,8 +103,6 @@ export default function CreditPage() {
       }
     } catch (error) {
       console.error("Ошибка загрузки настроек:", error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -342,9 +339,7 @@ export default function CreditPage() {
 
 
 
-  if (loading) {
-    return <CreditPageSkeleton />
-  }
+
 
   if (!settings) {
     return (
