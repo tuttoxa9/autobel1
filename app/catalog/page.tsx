@@ -12,7 +12,6 @@ import CarCard from "@/components/car-card"
 import { Filter, SlidersHorizontal } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import CarCardSkeleton from "@/components/car-card-skeleton"
-import CarCardSkeleton from "@/components/car-card-skeleton"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 

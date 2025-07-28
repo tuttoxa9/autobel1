@@ -1067,8 +1067,6 @@ export default function CarDetailsPage() {
                   <div className="flex flex-col items-center justify-center h-64 text-center">
                     {loadingBanks ? (
                       <BankLoadingSkeleton />
-                        </div>
-                      </div>
                     ) : partnerBanks.length === 0 ? (
                       <>
                         <AlertCircle className="h-10 w-10 text-amber-500 mb-4" />
